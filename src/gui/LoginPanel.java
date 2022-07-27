@@ -8,7 +8,7 @@ public class LoginPanel extends AbstractGridBagLayoutJPanel {
     private static final long serialVersionUID = 8475751505006519027L;
 
     public LoginPanel() {
-        super("EAMS - Login", new Dimension(GUI.getMinScreenSize()*9/16, GUI.getMinScreenSize()*9/16));
+        super("EAMS - Login", new Dimension(GUI.getMinScreenSize()*12/16, GUI.getMinScreenSize()*9/16));
         
         JPanel p0 = new JPanel(new FlowLayout());
         

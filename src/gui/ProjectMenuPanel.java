@@ -4,10 +4,10 @@ import javax.swing.*;
 import utils.JComponentLoader;
 import java.awt.*;
 
-public class ProyectMenuPanel extends AbstractGridBagLayoutJPanel {
+public class ProjectMenuPanel extends AbstractGridBagLayoutJPanel {
     private static final long serialVersionUID = 8475751505006519027L;
 
-    public ProyectMenuPanel() {
+    public ProjectMenuPanel() {
         super("EAMS - Proyects and donations", new Dimension(GUI.getMinScreenSize()*14/16, GUI.getMinScreenSize()*12/16));
         
         // Titolo schermata
@@ -25,7 +25,7 @@ public class ProyectMenuPanel extends AbstractGridBagLayoutJPanel {
         
         // Proyect panel
         
-        JComponent proyectPanel = new ProyectPanel();
+        JComponent proyectPanel = new ProjectPanel();
         switchPane.addTab("Progetti", proyectPanel);
         
         c.gridx = 0;

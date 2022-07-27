@@ -3,11 +3,11 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class ProyectPanel extends JPanel {
+public class ProjectPanel extends JPanel {
     private static final long serialVersionUID = 8475751505006519027L;
     public final GridBagConstraints c;
     
-    public ProyectPanel() {
+    public ProjectPanel() {
         this.c = new GridBagConstraints();
         this.setLayout(new GridBagLayout());
         
@@ -29,7 +29,7 @@ public class ProyectPanel extends JPanel {
         
         c.gridx = 0;
         c.gridy = 2;
-        var a2 = new JButton("Modificare progetto");
+        var a2 = new JButton("Modificare stato progetto");
         a2.setLayout(null);
         a2.addActionListener(e -> {
         	// TODO
@@ -38,12 +38,21 @@ public class ProyectPanel extends JPanel {
         
         c.gridx = 0;
         c.gridy = 3;
-        var a3 = new JButton("Lista progetti attivi");
+        var a3 = new JButton("Filtra progetti attivi");
         a3.setLayout(null);
         a3.addActionListener(e -> {
         	// TODO
         });
         this.add(a3, c);
+        
+        c.gridx = 0;
+        c.gridy = 4;
+        var a4 = new JButton("Cercare progetti");
+        a4.setLayout(null);
+        a4.addActionListener(e -> {
+        	// TODO
+        });
+        this.add(a4, c);
         
         // Second column
         

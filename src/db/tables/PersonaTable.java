@@ -2,9 +2,11 @@ package db.tables;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,15 +61,46 @@ public class PersonaTable implements Table<Persona, Integer> {
 	}
 
 	@Override
-	public Optional<Persona> findByPrimaryKey(Integer primaryKey) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<Persona> findByPrimaryKey(Integer codiceFiscale) {
+        final String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, codiceFiscale);
+            final ResultSet resultSet = statement.executeQuery();
+            return readFromResultSet(resultSet).stream().findFirst();
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
 	}
 
 	@Override
 	public List<Persona> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		try (final Statement statement = this.connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
+            return readFromResultSet(resultSet);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+	}
+	
+	private List<Persona> readFromResultSet(final ResultSet resultSet) {
+		final List<Persona> persone = new ArrayList<>();
+		try {
+			while (resultSet.next()) {
+				final String codiceFiscale = resultSet.getString("CodiceFiscale");
+				final String nome = resultSet.getString("Nome");
+				final String cognome = resultSet.getString("Cognome");
+				final String telefono = resultSet.getString("Telefono");
+				final String indirizzo = resultSet.getString("Indirizzo");
+				final String città = resultSet.getString("Città");
+				final String regione = resultSet.getString("Regione");
+				final String codicePostale = resultSet.getString("CodicePostale");
+				final String tipo = resultSet.getString("Tipo");
+				
+				final Persona persona = new Persona(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo);
+				persone.add(persona);
+			}
+		} catch (final SQLException e) {}
+		return persone;
 	}
 
 	@Override

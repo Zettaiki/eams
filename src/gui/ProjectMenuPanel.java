@@ -36,7 +36,7 @@ public class ProjectMenuPanel extends AbstractGridBagLayoutJPanel {
         
         c.gridx = 0;
         c.gridy = 2;
-        var a0 = new JButton("Ritorna al menù");
+        var a0 = new JButton("Ritorna al menu");
         a0.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new MenuPanel());

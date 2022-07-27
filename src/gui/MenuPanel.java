@@ -40,7 +40,8 @@ public class MenuPanel extends AbstractGridBagLayoutJPanel {
         c.gridy = 3;
         var a1 = new JButton("Volontariato");
         a1.addActionListener(e -> {
-        	// TODO
+        	JFrame parent = JComponentLoader.getParentFrame(this);
+            JComponentLoader.load(parent, new VolunteeringPanel());
         });
         this.add(a1, c);
         

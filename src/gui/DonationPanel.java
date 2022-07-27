@@ -38,7 +38,7 @@ public class DonationPanel extends JPanel {
         
         c.gridx = 0;
         c.gridy = 3;
-        var a3 = new JButton("Ricerca donatore più frequente");
+        var a3 = new JButton("Donatore maggior quantita");
         a3.setLayout(null);
         a3.addActionListener(e -> {
         	// TODO

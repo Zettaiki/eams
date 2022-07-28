@@ -54,6 +54,7 @@ public class PersonaTable implements Table<Persona, String> {
 	public boolean dropTable() {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate("DROP TABLE " + TABLE_NAME);
+            System.out.println("-- debug \n DELETED");
             return true;
         } catch (final SQLException e) {
             return false;

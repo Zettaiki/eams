@@ -22,8 +22,8 @@ class PersonaTableTests {
     final static ConnectionProvider connectionProvider = new ConnectionProvider(username, password, dbName);
     final static PersonaTable personaTable = new PersonaTable(connectionProvider.getMySQLConnection());
 
-    final Persona persona1 = new Persona("A", "Giacomo", "Cavalieri", "A", "A", "A", "A", "A", "A");
-    final Persona persona2 = new Persona("B", "Tommaso", "Cavalieri", "B", "B", "B", "B", "B", "B");
+    final Persona persona1 = new Persona("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", "A", "A", "A", "A", "A", "A");
+    final Persona persona2 = new Persona("BBBBBBBBBBBBBBBB", "Tommaso", "Cavalieri", "B", "B", "B", "B", "B", "B");
 
     @BeforeEach
     void setUp() throws Exception {

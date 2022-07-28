@@ -62,7 +62,7 @@ public class PersonaTable implements Table<Persona, String> {
 
 	@Override
 	public Optional<Persona> findByPrimaryKey(final String codiceFiscale) {
-        final String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
             final ResultSet resultSet = statement.executeQuery();
@@ -132,12 +132,12 @@ public class PersonaTable implements Table<Persona, String> {
 		final String query =
 	            "UPDATE " + TABLE_NAME + " SET " +
 	                "nome = ?," +
-	                "cognome = ? " + 
-	                "telefono = ? " + 
-	                "indirizzo = ? " + 
-	                "città = ? " + 
-	                "regione = ? " + 
-	                "codicePostale = ? " + 
+	                "cognome = ?," + 
+	                "telefono = ?," + 
+	                "indirizzo = ?," + 
+	                "città = ?," + 
+	                "regione = ?," + 
+	                "codicePostale = ?," + 
 	                "tipo = ? " + 
 	            "WHERE codiceFiscale = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

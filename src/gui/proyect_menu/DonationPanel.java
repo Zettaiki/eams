@@ -2,6 +2,7 @@ package gui.proyect_menu;
 
 import javax.swing.*;
 import java.awt.*;
+import utils.JComponentLoader;
 
 public class DonationPanel extends JPanel {
     private static final long serialVersionUID = 8475751505006519027L;
@@ -23,7 +24,8 @@ public class DonationPanel extends JPanel {
         var a1 = new JButton("Registrare donazione");
         a1.setLayout(null);
         a1.addActionListener(e -> {
-        	// TODO
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new InsertDonationPanel());
         });
         this.add(a1, c);
         

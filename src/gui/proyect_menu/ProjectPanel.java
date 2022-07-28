@@ -1,6 +1,9 @@
 package gui.proyect_menu;
 
 import javax.swing.*;
+
+import utils.JComponentLoader;
+
 import java.awt.*;
 
 public class ProjectPanel extends JPanel {
@@ -23,7 +26,8 @@ public class ProjectPanel extends JPanel {
         var a1 = new JButton("Aggiungere progetto");
         a1.setLayout(null);
         a1.addActionListener(e -> {
-        	// TODO
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new InsertProyectPanel());
         });
         this.add(a1, c);
         

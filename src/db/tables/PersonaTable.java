@@ -131,13 +131,13 @@ public class PersonaTable implements Table<Persona, String> {
 	public boolean update(final Persona updatedPersona) {
 		final String query =
 	            "UPDATE " + TABLE_NAME + " SET " +
-	                "nome = ?," +
-	                "cognome = ?," + 
-	                "telefono = ?," + 
-	                "indirizzo = ?," + 
-	                "città = ?," + 
-	                "regione = ?," + 
-	                "codicePostale = ?," + 
+	                "nome = ?, " +
+	                "cognome = ?, " + 
+	                "telefono = ?, " + 
+	                "indirizzo = ?, " + 
+	                "città = ?, " + 
+	                "regione = ?, " + 
+	                "codicePostale = ?, " + 
 	                "tipo = ? " + 
 	            "WHERE codiceFiscale = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

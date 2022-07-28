@@ -22,8 +22,10 @@ class PersonaTableTests {
     final static ConnectionProvider connectionProvider = new ConnectionProvider(username, password, dbName);
     final static PersonaTable personaTable = new PersonaTable(connectionProvider.getMySQLConnection());
 
-    final Persona persona1 = new Persona("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", "A", "A", "A", "A", "A", "A");
-    final Persona persona2 = new Persona("BBBBBBBBBBBBBBBB", "Tommaso", "Cavalieri", "B", "B", "B", "B", "B", "B");
+    final Persona persona1 = new Persona("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", 
+    		"33123446756678", "via Giuseppe", "Ancona", "Marche", "320256", "Interna");
+    final Persona persona2 = new Persona("BBBBBBBBBBBBBBBB", "Tommaso", "Cavalieri",
+    		"33563674789056", "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", "Esterna");
 
     @BeforeEach
     void setUp() throws Exception {
@@ -55,7 +57,8 @@ class PersonaTableTests {
     void updateTest() {
         assertFalse(personaTable.update(persona1));
         personaTable.save(persona2);
-        final Persona updatedPersona2 = new Persona("B", "Tommaso", "Cavalieri", "BB", "B", "B", "B", "B", "B");
+        final Persona updatedPersona2 = new Persona("BBBBBBBBBBBBBBBB", "Gianpaolo", "Cavalieri",
+        		"33563674789056", "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", "Esterna");
         assertTrue(personaTable.update(updatedPersona2));
         final Optional<Persona> foundPersona = personaTable.findByPrimaryKey(updatedPersona2.getCodiceFiscale());
         assertFalse(foundPersona.isEmpty());

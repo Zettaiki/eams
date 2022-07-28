@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 
+import gui.proyect_menu.ProjectMenuPanel;
+import gui.volunteering_menu.VolunteeringPanel;
 import utils.JComponentLoader;
 
 import java.awt.*;

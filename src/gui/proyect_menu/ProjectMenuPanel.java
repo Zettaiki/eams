@@ -1,8 +1,11 @@
-package gui;
+package gui.proyect_menu;
 
 import javax.swing.*;
-import utils.JComponentLoader;
 import java.awt.*;
+import gui.AbstractGridBagLayoutJPanel;
+import gui.GUI;
+import gui.MenuPanel;
+import utils.JComponentLoader;
 
 public class ProjectMenuPanel extends AbstractGridBagLayoutJPanel {
     private static final long serialVersionUID = 8475751505006519027L;

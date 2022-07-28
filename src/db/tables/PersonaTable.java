@@ -14,7 +14,7 @@ import java.util.Optional;
 import db.Table;
 import model.Persona;
 
-public class PersonaTable implements Table<Persona, Integer> {
+public class PersonaTable implements Table<Persona, String> {
 
 	public static final String TABLE_NAME = "persona";
     
@@ -61,10 +61,10 @@ public class PersonaTable implements Table<Persona, Integer> {
 	}
 
 	@Override
-	public Optional<Persona> findByPrimaryKey(Integer codiceFiscale) {
+	public Optional<Persona> findByPrimaryKey(final String codiceFiscale) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, codiceFiscale);
+            statement.setString(1, codiceFiscale);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -157,10 +157,10 @@ public class PersonaTable implements Table<Persona, Integer> {
 	}
 
 	@Override
-	public boolean delete(Integer codiceFiscale) {
+	public boolean delete(String codiceFiscale) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, codiceFiscale);
+            statement.setString(1, codiceFiscale);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

@@ -1,4 +1,4 @@
-package gui.proyect_menu;
+package gui.project_menu;
 
 import javax.swing.*;
 import java.awt.*;

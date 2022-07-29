@@ -1,4 +1,4 @@
-package gui.proyect_menu;
+package gui.project_menu;
 
 import javax.swing.*;
 
@@ -27,7 +27,7 @@ public class ProjectPanel extends JPanel {
         a1.setLayout(null);
         a1.addActionListener(e -> {
         	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-	        JComponentLoader.load(parentFrame, new InsertProyectPanel());
+	        JComponentLoader.load(parentFrame, new InsertProjectPanel());
         });
         this.add(a1, c);
         

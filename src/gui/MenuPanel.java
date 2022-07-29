@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 
-import gui.proyect_menu.ProjectMenuPanel;
+import gui.project_menu.ProjectMenuPanel;
 import gui.volunteering_menu.VolunteeringPanel;
 import utils.JComponentLoader;
 

@@ -1,4 +1,4 @@
-package gui.proyect_menu;
+package gui.project_menu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,10 +6,10 @@ import gui.AbstractGridBagLayoutJPanel;
 import gui.GUI;
 import utils.JComponentLoader;
 
-public class InsertProyectPanel extends AbstractGridBagLayoutJPanel {
+public class InsertProjectPanel extends AbstractGridBagLayoutJPanel {
     private static final long serialVersionUID = 8475751505006519027L;
 
-    public InsertProyectPanel() {
+    public InsertProjectPanel() {
         super("EAMS - Volunteering", new Dimension(GUI.getMinScreenSize()*14/16, GUI.getMinScreenSize()*12/16));
         
         // Titolo schermata

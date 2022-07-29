@@ -1,4 +1,4 @@
-package gui.proyect_menu;
+package gui.project_menu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,6 @@ import utils.JComponentLoader;
 
 public class InsertDonationPanel extends AbstractGridBagLayoutJPanel {
     private static final long serialVersionUID = 8475751505006519027L;
-    private boolean subscriptionCheckBox;
 
     public InsertDonationPanel() {
         super("EAMS - New donation", new Dimension(GUI.getMinScreenSize()*14/16, GUI.getMinScreenSize()*12/16));
@@ -72,7 +71,6 @@ public class InsertDonationPanel extends AbstractGridBagLayoutJPanel {
         this.add(a8, c);
         
         String[] proyectList = {"Progetto1", "Progetto2", "Progetto3"};
-        this.subscriptionCheckBox = false;
         
         c.gridx = 1;
         c.gridy = 5;
@@ -81,7 +79,6 @@ public class InsertDonationPanel extends AbstractGridBagLayoutJPanel {
         a9.addActionListener(e -> {
 	        // TODO
         });
-        a9.setEnabled(this.subscriptionCheckBox);
         this.add(a9, c);
         
         c.gridx = 0;
@@ -89,13 +86,7 @@ public class InsertDonationPanel extends AbstractGridBagLayoutJPanel {
         var a10 = new JCheckBox("Donazione periodica");
         a10.setSelected(false);
         a10.addActionListener(e -> {
-        	if(this.subscriptionCheckBox == false) {
-        		this.subscriptionCheckBox = true;
-        		a9.setEnabled(this.subscriptionCheckBox);
-        	} else {
-        		this.subscriptionCheckBox = false;
-        		a9.setEnabled(this.subscriptionCheckBox);
-        	}
+        	// TODO
         });
         this.add(a10, c);
         

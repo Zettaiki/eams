@@ -20,10 +20,10 @@ class PersonaTableTests {
     final static ConnectionProvider connectionProvider = new ConnectionProvider(username, password, dbName);
     final static PersonaTable personaTable = new PersonaTable(connectionProvider.getMySQLConnection());
 
-    final Persona persona1 = new Persona("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", 
-    		"33123446756678", "via Giuseppe", "Ancona", "Marche", "320256", "Interna");
-    final Persona persona2 = new Persona("BBBBBBBBBBBBBBBB", "Tommaso", "Cavalieri",
-    		"33563674789056", "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", "Esterna");
+    final Persona persona1 = new Persona("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", "mail1@nicemail.it",
+    		Optional.of("33123446756678"), "via Giuseppe", "Ancona", "Marche", "320256", Optional.of("Interna"));
+    final Persona persona2 = new Persona("BBBBBBBBBBBBBBBB", "Tommaso", "Cavalieri", "mail2@nicemail.it",
+    		Optional.of("33563674789056"), "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
@@ -48,8 +48,8 @@ class PersonaTableTests {
     void updateTest() {
         assertFalse(personaTable.update(this.persona1));
         personaTable.save(this.persona2);
-        final Persona updatedPersona2 = new Persona("BBBBBBBBBBBBBBBB", "Gianpaolo", "Cavalieri",
-        		"33563674789056", "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", "Esterna");
+        final Persona updatedPersona2 = new Persona("BBBBBBBBBBBBBBBB", "Gianpaolo", "Cavalieri", "mail2@nicemail.it",
+        		Optional.of("33563674789056"), "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", Optional.of("Esterna"));
         assertTrue(personaTable.update(updatedPersona2));
         final Optional<Persona> foundPersona = personaTable.findByPrimaryKey(updatedPersona2.getCodiceFiscale());
         assertFalse(foundPersona.isEmpty());

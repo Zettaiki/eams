@@ -14,7 +14,7 @@ import model.Persona;
 
 class PersonaTableTests {
     final static String username = "root";
-    final static String password = "unisql";
+    final static String password = "";
     final static String dbName = "eams";
     
     final static ConnectionProvider connectionProvider = new ConnectionProvider(username, password, dbName);

@@ -34,15 +34,15 @@ public class PersonaTable implements Table<Persona, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"CodiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
-            			"Nome VARCHAR(25)," +
-            			"Cognome VARCHAR(25)," +
-            			"Telefono VARCHAR(24)," +
-            			"Indirizzo VARCHAR(60)," +
-            			"Città VARCHAR(15)," +
-            			"Regione VARCHAR(20)," +
-            			"CodicePostale VARCHAR(10)," +
-            			"Tipo VARCHAR(45)" +
+            			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
+            			"nome VARCHAR(25)," +
+            			"cognome VARCHAR(25)," +
+            			"telefono VARCHAR(24)," +
+            			"indirizzo VARCHAR(60)," +
+            			"città VARCHAR(15)," +
+            			"regione VARCHAR(20)," +
+            			"codicePostale VARCHAR(10)," +
+            			"tipo VARCHAR(45)" +
             		")");
             return true;
         } catch (final SQLException e) {
@@ -55,7 +55,7 @@ public class PersonaTable implements Table<Persona, String> {
 	public boolean dropTable() {
 		try (final Statement statement = this.connection.createStatement()) {			
 			statement.executeUpdate("SET foreign_key_checks = 0;");
-			statement.executeUpdate("DROP TABLE " + TABLE_NAME);            
+			statement.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);            
             statement.executeUpdate("SET foreign_key_checks = 1;");
             return true;
         } catch (final SQLException e) {
@@ -89,15 +89,15 @@ public class PersonaTable implements Table<Persona, String> {
 		final List<Persona> persone = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final String codiceFiscale = resultSet.getString("CodiceFiscale");
-				final String nome = resultSet.getString("Nome");
-				final String cognome = resultSet.getString("Cognome");
-				final String telefono = resultSet.getString("Telefono");
-				final String indirizzo = resultSet.getString("Indirizzo");
-				final String città = resultSet.getString("Città");
-				final String regione = resultSet.getString("Regione");
-				final String codicePostale = resultSet.getString("CodicePostale");
-				final String tipo = resultSet.getString("Tipo");
+				final String codiceFiscale = resultSet.getString("codiceFiscale");
+				final String nome = resultSet.getString("nome");
+				final String cognome = resultSet.getString("cognome");
+				final String telefono = resultSet.getString("telefono");
+				final String indirizzo = resultSet.getString("indirizzo");
+				final String città = resultSet.getString("città");
+				final String regione = resultSet.getString("regione");
+				final String codicePostale = resultSet.getString("codicePostale");
+				final String tipo = resultSet.getString("tipo");
 				
 				final Persona persona = new Persona(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo);
 				persone.add(persona);

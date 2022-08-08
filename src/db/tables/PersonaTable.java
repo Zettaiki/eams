@@ -34,18 +34,19 @@ public class PersonaTable implements Table<Persona, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"CodiceFiscale NOT NULL PRIMARY KEY CHAR(16)," +
-            			"Nome VARCHAR(25) NULL DEFAULT NULL," +
-            			"Cognome VARCHAR(25) NULL DEFAULT NULL," +
-            			"Telefono VARCHAR(24) NULL DEFAULT NULL," +
-            			"Indirizzo VARCHAR(60) NULL DEFAULT NULL," +
-            			"Città VARCHAR(15) NULL DEFAULT NULL," +
-            			"Regione VARCHAR(20) NULL DEFAULT NULL," +
-            			"CodicePostale VARCHAR(10) NULL DEFAULT NULL," +
-            			"Tipo VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin' NULL DEFAULT NULL" +
-            			")");
+            			"CodiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
+            			"Nome VARCHAR(25)," +
+            			"Cognome VARCHAR(25)," +
+            			"Telefono VARCHAR(24)," +
+            			"Indirizzo VARCHAR(60)," +
+            			"Città VARCHAR(15)," +
+            			"Regione VARCHAR(20)," +
+            			"CodicePostale VARCHAR(10)," +
+            			"Tipo VARCHAR(45)" +
+            		")");
             return true;
         } catch (final SQLException e) {
+        	System.out.println(e.toString());
             return false;
         }
 	}
@@ -132,13 +133,13 @@ public class PersonaTable implements Table<Persona, String> {
 	public boolean update(final Persona updatedPersona) {
 		final String query =
 	            "UPDATE " + TABLE_NAME + " SET " +
-	                "nome = ?, " +
-	                "cognome = ?, " + 
-	                "telefono = ?, " + 
-	                "indirizzo = ?, " + 
-	                "città = ?, " + 
-	                "regione = ?, " + 
-	                "codicePostale = ?, " + 
+	                "nome = ?," +
+	                "cognome = ?," + 
+	                "telefono = ?," + 
+	                "indirizzo = ?," + 
+	                "città = ?," + 
+	                "regione = ?," + 
+	                "codicePostale = ?," + 
 	                "tipo = ? " + 
 	            "WHERE codiceFiscale = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

@@ -52,6 +52,7 @@ class PersonaTableTests {
         final Optional<Persona> foundPersona = personaTable.findByPrimaryKey(updatedPersona2.getCodiceFiscale());
         assertFalse(foundPersona.isEmpty());
         assertEquals(updatedPersona2.getNome(), foundPersona.get().getNome());
+        assertEquals(updatedPersona2.getTipo(), foundPersona.get().getTipo());
     }
 
     @Test

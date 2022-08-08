@@ -1,5 +1,6 @@
 package db;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,13 @@ public interface Table<V,K> {
      * @return a list with all the rows of the database 
      */
     List<V> findAll();
+    
+    /**
+     * 
+     * @param resultSet
+     * @return
+     */
+    List<V> readFromResultSet(final ResultSet resultSet);
     
     /**
      * Saves an object to the database

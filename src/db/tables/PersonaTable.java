@@ -51,17 +51,6 @@ public class PersonaTable implements Table<Persona, String> {
         }
 	}
 
-	public boolean dropTable() {
-		try (final Statement statement = this.connection.createStatement()) {			
-			statement.executeUpdate("SET foreign_key_checks = 0;");
-			statement.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);            
-            statement.executeUpdate("SET foreign_key_checks = 1;");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
 	@Override
 	public Optional<Persona> findByPrimaryKey(final String codiceFiscale) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
@@ -84,7 +73,8 @@ public class PersonaTable implements Table<Persona, String> {
         }
 	}
 	
-	private List<Persona> readFromResultSet(final ResultSet resultSet) {
+	@Override
+	public List<Persona> readFromResultSet(final ResultSet resultSet) {
 		final List<Persona> persone = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
@@ -171,6 +161,17 @@ public class PersonaTable implements Table<Persona, String> {
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
+        }
+	}
+	
+	public boolean dropTable() {
+		try (final Statement statement = this.connection.createStatement()) {			
+			statement.executeUpdate("SET foreign_key_checks = 0;");
+			statement.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);            
+            statement.executeUpdate("SET foreign_key_checks = 1;");
+            return true;
+        } catch (final SQLException e) {
+            return false;
         }
 	}
 }

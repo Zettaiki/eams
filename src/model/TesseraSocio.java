@@ -37,7 +37,7 @@ public class TesseraSocio {
     @Override
     public boolean equals(final Object other) {
         return (other instanceof TesseraSocio)
-                && ((TesseraSocio) other).getIdSocio() == this.getIdSocio()
+                && ((TesseraSocio) other).getIdSocio().equals(this.getIdSocio())
                 && ((TesseraSocio) other).getCodiceFiscale().equals(this.getCodiceFiscale())
                 && ((TesseraSocio) other).getDataAssociazione().equals(this.getDataAssociazione());
     }

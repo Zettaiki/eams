@@ -11,13 +11,11 @@ import org.junit.jupiter.api.Test;
 import db.ConnectionProvider;
 import db.tables.PersonaTable;
 import model.Persona;
+import utils.ServerCredentials;
 
-class PersonaTableTests {
-    final static String username = "root";
-    final static String password = "";
-    final static String dbName = "eams";
-    
-    final static ConnectionProvider connectionProvider = new ConnectionProvider(username, password, dbName);
+class PersonaTableTests {    
+    final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
+    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static PersonaTable personaTable = new PersonaTable(connectionProvider.getMySQLConnection());
 
     final Persona persona1 = new Persona("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", "mail1@nicemail.it",

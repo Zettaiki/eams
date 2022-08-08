@@ -9,7 +9,6 @@ public class TesseraSocio {
     private final Date dataAssociazione;
     
 	public TesseraSocio(String idSocio, String codiceFiscale, Date dataAssociazione) {
-		super();
 		this.idSocio = idSocio;
 		this.codiceFiscale = codiceFiscale;
 		this.dataAssociazione = dataAssociazione;

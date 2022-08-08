@@ -104,19 +104,16 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 
 	@Override
 	public boolean update(TesseraSocio updatedTesserasocio) {
-		final String query =
-	            "UPDATE " + TABLE_NAME + " SET " +
-	                "codiceFiscale = ?," +
-	                "dataAssociazione = ? " + 
-	            "WHERE idSocio = ?";
-	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-	            statement.setString(1, updatedTesserasocio.getCodiceFiscale());
-	            statement.setDate(2, Utils.dateToSqlDate(updatedTesserasocio.getDataAssociazione()));
-	            statement.setString(3, updatedTesserasocio.getIdSocio());
-	            return statement.executeUpdate() > 0;
-	        } catch (final SQLException e) {
-	            throw new IllegalStateException(e);
-	        }
+		final String query = "UPDATE " + TABLE_NAME + " SET " + "codiceFiscale = ?," + "dataAssociazione = ? "
+				+ "WHERE idSocio = ?";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+			statement.setString(1, updatedTesserasocio.getCodiceFiscale());
+			statement.setDate(2, Utils.dateToSqlDate(updatedTesserasocio.getDataAssociazione()));
+			statement.setString(3, updatedTesserasocio.getIdSocio());
+			return statement.executeUpdate() > 0;
+		} catch (final SQLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override

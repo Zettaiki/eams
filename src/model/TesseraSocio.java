@@ -46,6 +46,4 @@ public class TesseraSocio {
     public int hashCode() {
         return Objects.hash(this.idSocio, this.codiceFiscale, this.dataAssociazione);
     }
-    
-    
 }

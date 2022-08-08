@@ -7,22 +7,20 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import db.Table;
-import utils.Utils;
-import model.TesseraSocio;
+import model.Newsletter;
 
-public class TesseraSocioTable implements Table<TesseraSocio, String> {
+public class NewsletterTable implements Table<Newsletter, Integer> {
 
-	public static final String TABLE_NAME = "tesserasocio";
+	public static final String TABLE_NAME = "newsletter";
 
 	private final Connection connection;
 
-	public TesseraSocioTable(final Connection connection) {
+	public NewsletterTable(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
     }
 
@@ -36,10 +34,9 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idSocio VARCHAR(15) NOT NULL PRIMARY KEY," +
-            			"codiceFiscale CHAR(16) NOT NULL," +
-            			"dataAssociazione DATETIME NOT NULL," +
-            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE" +
+            			"idNewsletter INT NOT NULL PRIMARY KEY," +
+            			"argomento VARCHAR(45) NOT NULL," +
+            			"descrizione MEDIUMTEXT NULL DEFAULT NULL" +
             		")");
             return true;
         } catch (final SQLException e) {        	
@@ -48,10 +45,10 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 	}
 
 	@Override
-	public Optional<TesseraSocio> findByPrimaryKey(String idSocio) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idSocio = ?";
+	public Optional<Newsletter> findByPrimaryKey(Integer idNewsletter) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idSocio);
+            statement.setInt(1, idNewsletter);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -60,7 +57,7 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 	}
 
 	@Override
-	public List<TesseraSocio> findAll() {
+	public List<Newsletter> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
             return readFromResultSet(resultSet);
@@ -68,31 +65,31 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
             throw new IllegalStateException(e);
         }
 	}
-	
+
 	@Override
-	public List<TesseraSocio> readFromResultSet(ResultSet resultSet) {
-		final List<TesseraSocio> tesseresocio = new ArrayList<>();
+	public List<Newsletter> readFromResultSet(ResultSet resultSet) {
+		final List<Newsletter> newsletters = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final String idSocio = resultSet.getString("idSocio");
-				final String codiceFiscale = resultSet.getString("codiceFiscale");
-				final Date dataAssociazione = Utils.sqlDateToDate(resultSet.getDate("dataAssociazione"));
-				
-				final TesseraSocio tesserasocio = new TesseraSocio(idSocio, codiceFiscale, dataAssociazione);
-				tesseresocio.add(tesserasocio);
+				final Integer idNewsletter = resultSet.getInt("idNewsletter");
+				final String argomento = resultSet.getString("argomento");
+			    final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
+			    
+				final Newsletter newsletter = new Newsletter(idNewsletter, argomento, descrizione);
+				newsletters.add(newsletter);
 			}
 		} catch (final SQLException e) {}
-		return tesseresocio;
+		return newsletters;
 	}
 
 	@Override
-	public boolean save(TesseraSocio tesserasocio) {
+	public boolean save(Newsletter newsletter) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idSocio, codiceFiscale, dataAssociazione) VALUES (?,?,?)";
+				"(idNewsletter, argomento, descrizione) VALUES (?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, tesserasocio.getIdSocio());
-            statement.setString(2, tesserasocio.getCodiceFiscale());
-            statement.setDate(3, Utils.dateToSqlDate(tesserasocio.getDataAssociazione()));
+            statement.setInt(1, newsletter.getIdNewsletter());
+            statement.setString(2, newsletter.getArgomento());
+            statement.setString(3, newsletter.getDescrizione().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -103,13 +100,13 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 	}
 
 	@Override
-	public boolean update(TesseraSocio updatedTesserasocio) {
-		final String query = "UPDATE " + TABLE_NAME + " SET codiceFiscale = ?," + "dataAssociazione = ? "
-				+ "WHERE idSocio = ?";
+	public boolean update(Newsletter updatedNewsletter) {
+		final String query = "UPDATE " + TABLE_NAME + " SET argomento = ?," + "descrizione = ? "
+				+ "WHERE idNewsletter = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedTesserasocio.getCodiceFiscale());
-			statement.setDate(2, Utils.dateToSqlDate(updatedTesserasocio.getDataAssociazione()));
-			statement.setString(3, updatedTesserasocio.getIdSocio());
+			statement.setString(1, updatedNewsletter.getArgomento());
+			statement.setString(2, updatedNewsletter.getDescrizione().orElse(null));
+			statement.setInt(3, updatedNewsletter.getIdNewsletter());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -117,10 +114,10 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 	}
 
 	@Override
-	public boolean delete(String idSocio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idSocio = ?";
+	public boolean delete(Integer idNewsletter) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idSocio);
+            statement.setInt(1, idNewsletter);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
@@ -137,5 +134,4 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
             return false;
         }
 	}
-
 }

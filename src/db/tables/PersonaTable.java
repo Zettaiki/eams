@@ -124,17 +124,9 @@ public class PersonaTable implements Table<Persona, String> {
 	@Override
 	public boolean update(final Persona updatedPersona) {
 		final String query =
-	            "UPDATE " + TABLE_NAME + " SET " +
-	                "nome = ?," +
-	                "cognome = ?," + 
-	                "mail = ?," + 
-	                "telefono = ?," + 
-	                "indirizzo = ?," + 
-	                "città = ?," + 
-	                "regione = ?," + 
-	                "codicePostale = ?," + 
-	                "tipo = ? " + 
-	            "WHERE codiceFiscale = ?";
+				"UPDATE " + TABLE_NAME + " SET " + "nome = ?," + "cognome = ?," + "mail = ?," + "telefono = ?,"
+						+ "indirizzo = ?," + "città = ?," + "regione = ?," + "codicePostale = ?," + "tipo = ? "
+						+ "WHERE codiceFiscale = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 	        	statement.setString(1, updatedPersona.getNome());
 	            statement.setString(2, updatedPersona.getCognome());

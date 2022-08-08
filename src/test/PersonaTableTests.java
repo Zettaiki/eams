@@ -40,9 +40,7 @@ class PersonaTableTests {
     @Test
     void creationAndDropTest() {
         assertTrue(personaTable.dropTable());
-        //assertFalse(personaTable.dropTable());
         assertTrue(personaTable.createTable());
-        //assertFalse(personaTable.createTable()); no perché if not exists nel try di createTable controlla già
     }
     
     @Test

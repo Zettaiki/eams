@@ -37,12 +37,12 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"idSocio VARCHAR(15) NOT NULL PRIMARY KEY," +
-            			"codiceFiscale CHAR(16) NOT NULL FOREIGN KEY REFERENCES persona(codiceFiscale)," +
-            			"dataAssociazione DATETIME" +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
+            			"codiceFiscale CHAR(16) NOT NULL," +
+            			"dataAssociazione DATETIME NOT NULL," +
+            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
-        } catch (final SQLException e) {
+        } catch (final SQLException e) {        	
             return false;
         }
 	}
@@ -110,9 +110,9 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
 	                "dataAssociazione = ? " + 
 	            "WHERE idSocio = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-	            statement.setString(1, updatedTesserasocio.getIdSocio());
-	            statement.setString(2, updatedTesserasocio.getCodiceFiscale());
-	            statement.setDate(3, Utils.dateToSqlDate(updatedTesserasocio.getDataAssociazione()));
+	            statement.setString(1, updatedTesserasocio.getCodiceFiscale());
+	            statement.setDate(2, Utils.dateToSqlDate(updatedTesserasocio.getDataAssociazione()));
+	            statement.setString(3, updatedTesserasocio.getIdSocio());
 	            return statement.executeUpdate() > 0;
 	        } catch (final SQLException e) {
 	            throw new IllegalStateException(e);
@@ -127,6 +127,17 @@ public class TesseraSocioTable implements Table<TesseraSocio, String> {
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
+        }
+	}
+	
+	public boolean dropTable() {
+		try (final Statement statement = this.connection.createStatement()) {			
+			statement.executeUpdate("SET foreign_key_checks = 0;");
+			statement.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);            
+            statement.executeUpdate("SET foreign_key_checks = 1;");
+            return true;
+        } catch (final SQLException e) {
+            return false;
         }
 	}
 

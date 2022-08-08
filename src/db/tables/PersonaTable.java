@@ -53,9 +53,10 @@ public class PersonaTable implements Table<Persona, String> {
 
 	@Override
 	public boolean dropTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate("DROP TABLE " + TABLE_NAME);
-            System.out.println("-- debug \n DELETED");
+		try (final Statement statement = this.connection.createStatement()) {			
+			statement.executeUpdate("SET foreign_key_checks = 0;");
+			statement.executeUpdate("DROP TABLE " + TABLE_NAME);            
+            statement.executeUpdate("SET foreign_key_checks = 1;");
             return true;
         } catch (final SQLException e) {
             return false;
@@ -154,6 +155,7 @@ public class PersonaTable implements Table<Persona, String> {
 	            statement.setString(9, updatedPersona.getTipo());
 	            return statement.executeUpdate() > 0;
 	        } catch (final SQLException e) {
+	        	System.out.println(e.toString());
 	            throw new IllegalStateException(e);
 	        }
 	}

@@ -15,15 +15,15 @@ public class TesseraSocio {
 	}
 
 	public String getIdSocio() {
-		return idSocio;
+		return this.idSocio;
 	}
 
 	public String getCodiceFiscale() {
-		return codiceFiscale;
+		return this.codiceFiscale;
 	}
 
 	public Date getDataAssociazione() {
-		return dataAssociazione;
+		return this.dataAssociazione;
 	}
     
 	@Override

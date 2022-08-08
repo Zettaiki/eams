@@ -107,6 +107,7 @@ public class DonazioneTable implements Table<Donazione, Integer> {
 			statement.executeUpdate();
 			return true;
 		} catch (final SQLIntegrityConstraintViolationException e) {
+			System.out.println(e.toString());
 			return false;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -115,8 +116,8 @@ public class DonazioneTable implements Table<Donazione, Integer> {
 
 	@Override
 	public boolean update(Donazione updatedDonazione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET " + "importo = ?," + "codiceFiscale = ? "
-				+ "dataDonazione = ? " + "idProgetto = ? " + "WHERE idDonazione = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET " + "importo = ?," + "codiceFiscale = ?, "
+				+ "dataDonazione = ?, " + "idProgetto = ? " + "WHERE idDonazione = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setBigDecimal(1, updatedDonazione.getImporto());
 			statement.setString(2, updatedDonazione.getCodiceFiscale());
@@ -131,7 +132,7 @@ public class DonazioneTable implements Table<Donazione, Integer> {
 
 	@Override
 	public boolean delete(Integer idDonazione) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idSocio = ?";
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idDonazione = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, idDonazione);
             return statement.executeUpdate() > 0;

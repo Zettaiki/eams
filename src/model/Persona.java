@@ -82,15 +82,15 @@ public class Persona {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append("(").append(codiceFiscale).append(") ")
-				.append(nome).append(" ")
-				.append(cognome).append(" ")
-				.append(mail).append(" ")
-				.append(indirizzo).append(" ")
-				.append(città).append(" ")
-				.append(regione).append(" ")
-				.append(codicePostale).append(" ")
-				.append(tipo).toString();
+				.append("(").append(this.codiceFiscale).append(") ")
+				.append(this.nome).append(" ")
+				.append(this.cognome).append(" ")
+				.append(this.mail).append(" ")
+				.append(this.indirizzo).append(" ")
+				.append(this.città).append(" ")
+				.append(this.regione).append(" ")
+				.append(this.codicePostale).append(" ")
+				.append(this.tipo).toString();
 	}
 
 	@Override
@@ -108,5 +108,9 @@ public class Persona {
                 && ((Persona) other).getTipo().equals(this.getTipo());
     }
 
-    // no hashcode method?
+	@Override
+    public int hashCode() {
+        return Objects.hash(this.codiceFiscale, this.nome, this.cognome, this.mail, this.telefono, this.indirizzo,
+        		this.città, this.regione, this.codicePostale, this.tipo);
+    }
 }

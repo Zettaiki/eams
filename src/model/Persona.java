@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Persona {
 	private final String codiceFiscale;
     private final String nome;
@@ -82,16 +84,20 @@ public class Persona {
 	@Override
     public boolean equals(final Object other) {
         return (other instanceof Persona)
-                && ((Persona) other).getCodiceFiscale() == this.getCodiceFiscale()
+                && ((Persona) other).getCodiceFiscale().equals(this.getCodiceFiscale())
                 && ((Persona) other).getNome().equals(this.getNome())
                 && ((Persona) other).getCognome().equals(this.getCognome())
                 && ((Persona) other).getTelefono().equals(this.getTelefono())
                 && ((Persona) other).getIndirizzo().equals(this.getIndirizzo())
                 && ((Persona) other).getCittà().equals(this.getCittà())
-        	&& ((Persona) other).getRegione().equals(this.getRegione())
-        	&& ((Persona) other).getCodicePostale().equals(this.getCodicePostale())
-        	&& ((Persona) other).getTipo().equals(this.getTipo());
+                && ((Persona) other).getRegione().equals(this.getRegione())
+                && ((Persona) other).getCodicePostale().equals(this.getCodicePostale())
+                && ((Persona) other).getTipo().equals(this.getTipo());
     }
 
     // no hashcode method?
+	@Override
+    public int hashCode() {
+        return Objects.hash(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo);
+    }
 }

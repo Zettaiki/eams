@@ -46,7 +46,6 @@ public class PersonaTable implements Table<Persona, String> {
             		")");
             return true;
         } catch (final SQLException e) {
-        	System.out.println(e.toString());
             return false;
         }
 	}
@@ -144,15 +143,15 @@ public class PersonaTable implements Table<Persona, String> {
 	                "tipo = ? " + 
 	            "WHERE codiceFiscale = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-	        	statement.setString(1, updatedPersona.getCodiceFiscale());
-	            statement.setString(2, updatedPersona.getNome());
-	            statement.setString(3, updatedPersona.getCognome());
-	            statement.setString(4, updatedPersona.getTelefono());
-	            statement.setString(5, updatedPersona.getIndirizzo());
-	            statement.setString(6, updatedPersona.getCittà());
-	            statement.setString(7, updatedPersona.getRegione());
-	            statement.setString(8, updatedPersona.getCodicePostale());
-	            statement.setString(9, updatedPersona.getTipo());
+	        	statement.setString(1, updatedPersona.getNome());
+	            statement.setString(2, updatedPersona.getCognome());
+	            statement.setString(3, updatedPersona.getTelefono());
+	            statement.setString(4, updatedPersona.getIndirizzo());
+	            statement.setString(5, updatedPersona.getCittà());
+	            statement.setString(6, updatedPersona.getRegione());
+	            statement.setString(7, updatedPersona.getCodicePostale());
+	            statement.setString(8, updatedPersona.getTipo());
+	            statement.setString(9, updatedPersona.getCodiceFiscale());
 	            return statement.executeUpdate() > 0;
 	        } catch (final SQLException e) {
 	        	System.out.println(e.toString());

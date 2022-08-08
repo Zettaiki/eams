@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,11 +30,6 @@ class PersonaTableTests {
         personaTable.dropTable();
         personaTable.createTable();
     }
-
-    /*@AfterEach
-    void tearDown() throws Exception {
-        personaTable.dropTable();
-    }*/
 
     @Test
     void creationAndDropTest() {

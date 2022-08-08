@@ -37,6 +37,7 @@ public class PersonaTable implements Table<Persona, String> {
             			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
             			"nome VARCHAR(25)," +
             			"cognome VARCHAR(25)," +
+            			"mail VARCHAR(45)," +
             			"telefono VARCHAR(24)," +
             			"indirizzo VARCHAR(60)," +
             			"città VARCHAR(15)," +
@@ -90,14 +91,15 @@ public class PersonaTable implements Table<Persona, String> {
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final String nome = resultSet.getString("nome");
 				final String cognome = resultSet.getString("cognome");
-				final String telefono = resultSet.getString("telefono");
+				final String mail = resultSet.getString("mail");
+				final Optional<String> telefono = Optional.ofNullable(resultSet.getString("telefono"));
 				final String indirizzo = resultSet.getString("indirizzo");
 				final String città = resultSet.getString("città");
 				final String regione = resultSet.getString("regione");
 				final String codicePostale = resultSet.getString("codicePostale");
-				final String tipo = resultSet.getString("tipo");
+				final Optional<String> tipo = Optional.ofNullable(resultSet.getString("tipo"));
 				
-				final Persona persona = new Persona(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo);
+				final Persona persona = new Persona(codiceFiscale, nome, cognome, mail, telefono, indirizzo, città, regione, codicePostale, tipo);
 				persone.add(persona);
 			}
 		} catch (final SQLException e) {}
@@ -107,18 +109,19 @@ public class PersonaTable implements Table<Persona, String> {
 	@Override
 	public boolean save(Persona persona) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo)"
-				+ " VALUES (?,?,?,?,?,?,?,?,?)";
+				"(codiceFiscale, nome, cognome, mail, telefono, indirizzo, città, regione, codicePostale, tipo)"
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, persona.getCodiceFiscale());
             statement.setString(2, persona.getNome());
             statement.setString(3, persona.getCognome());
-            statement.setString(4, persona.getTelefono());
-            statement.setString(5, persona.getIndirizzo());
-            statement.setString(6, persona.getCittà());
-            statement.setString(7, persona.getRegione());
-            statement.setString(8, persona.getCodicePostale());
-            statement.setString(9, persona.getTipo());
+            statement.setString(4, persona.getMail());
+            statement.setString(5, persona.getTelefono().orElse(null));
+            statement.setString(6, persona.getIndirizzo());
+            statement.setString(7, persona.getCittà());
+            statement.setString(8, persona.getRegione());
+            statement.setString(9, persona.getCodicePostale());
+            statement.setString(10, persona.getTipo().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -134,6 +137,7 @@ public class PersonaTable implements Table<Persona, String> {
 	            "UPDATE " + TABLE_NAME + " SET " +
 	                "nome = ?," +
 	                "cognome = ?," + 
+	                "mail = ?," + 
 	                "telefono = ?," + 
 	                "indirizzo = ?," + 
 	                "città = ?," + 
@@ -144,13 +148,14 @@ public class PersonaTable implements Table<Persona, String> {
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 	        	statement.setString(1, updatedPersona.getNome());
 	            statement.setString(2, updatedPersona.getCognome());
-	            statement.setString(3, updatedPersona.getTelefono());
-	            statement.setString(4, updatedPersona.getIndirizzo());
-	            statement.setString(5, updatedPersona.getCittà());
-	            statement.setString(6, updatedPersona.getRegione());
-	            statement.setString(7, updatedPersona.getCodicePostale());
-	            statement.setString(8, updatedPersona.getTipo());
-	            statement.setString(9, updatedPersona.getCodiceFiscale());
+	            statement.setString(3, updatedPersona.getMail());
+	            statement.setString(4, updatedPersona.getTelefono().orElse(null));
+	            statement.setString(5, updatedPersona.getIndirizzo());
+	            statement.setString(6, updatedPersona.getCittà());
+	            statement.setString(7, updatedPersona.getRegione());
+	            statement.setString(8, updatedPersona.getCodicePostale());
+	            statement.setString(9, updatedPersona.getTipo().orElse(null));
+	            statement.setString(10, updatedPersona.getCodiceFiscale());
 	            return statement.executeUpdate() > 0;
 	        } catch (final SQLException e) {
 	        	System.out.println(e.toString());

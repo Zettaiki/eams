@@ -1,36 +1,43 @@
 package model;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Persona {
 	private final String codiceFiscale;
     private final String nome;
     private final String cognome;
-    private final String telefono;
+    private final String mail;
+    private final Optional<String> telefono;
     private final String indirizzo;
     private final String città;
     private final String regione;
     private final String codicePostale;
-    private final String tipo;
+    private final Optional<String> tipo;
     
-    public Persona(final String codiceFiscale, final String nome, final String cognome, final String telefono,
-    		final String indirizzo, final String città, final String regione, final String codicePostale, final String tipo) {
+    public Persona(final String codiceFiscale, final String nome, final String cognome, final String mail, final Optional<String> telefono,
+    		final String indirizzo, final String città, final String regione, final String codicePostale, final Optional<String> tipo) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
         this.cognome = cognome;
-        this.telefono = telefono;
+        this.mail = mail;
+        this.telefono = Objects.requireNonNull(telefono);
         this.indirizzo = indirizzo;
         this.città = città;
         this.regione = regione;
         this.codicePostale = codicePostale;
-		this.tipo = tipo;
+		this.tipo = Objects.requireNonNull(tipo);
     }
     
-    //DECIDERE QUALI CAMPI NULLABLE
-    /*public Persona(final String codiceFiscale, final String nome, final String cognome, final String telefono,
-    		final String indirizzo, final String città, final String regione, final String codicePostale, final String tipo) {
-        this(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo);
-    }*/
+    public Persona(final String codiceFiscale, final String nome, final String cognome, final String mail,
+    		final String indirizzo, final String città, final String regione, final String codicePostale, final Optional<String> tipo) {
+        this(codiceFiscale, nome, cognome, mail, Optional.empty(), indirizzo, città, regione, codicePostale, Objects.requireNonNull(tipo));
+    }
+    
+    public Persona(final String codiceFiscale, final String nome, final String cognome, final String mail,
+    		final String indirizzo, final String città, final String regione, final String codicePostale) {
+        this(codiceFiscale, nome, cognome, mail, Optional.empty(), indirizzo, città, regione, codicePostale, Optional.empty());
+    }
     
     public String getCodiceFiscale() {
 		return codiceFiscale;
@@ -43,8 +50,12 @@ public class Persona {
 	public String getCognome() {
 		return cognome;
 	}
+	
+	public String getMail() {
+		return mail;
+	}
 
-	public String getTelefono() {
+	public Optional<String> getTelefono() {
 		return telefono;
 	}
 
@@ -64,7 +75,7 @@ public class Persona {
 		return codicePostale;
 	}
 
-	public String getTipo() {
+	public Optional<String> getTipo() {
 		return tipo;
 	}
 	
@@ -74,6 +85,7 @@ public class Persona {
 				.append("(").append(codiceFiscale).append(") ")
 				.append(nome).append(" ")
 				.append(cognome).append(" ")
+				.append(mail).append(" ")
 				.append(indirizzo).append(" ")
 				.append(città).append(" ")
 				.append(regione).append(" ")
@@ -87,6 +99,7 @@ public class Persona {
                 && ((Persona) other).getCodiceFiscale().equals(this.getCodiceFiscale())
                 && ((Persona) other).getNome().equals(this.getNome())
                 && ((Persona) other).getCognome().equals(this.getCognome())
+                && ((Persona) other).getMail().equals(this.getMail())
                 && ((Persona) other).getTelefono().equals(this.getTelefono())
                 && ((Persona) other).getIndirizzo().equals(this.getIndirizzo())
                 && ((Persona) other).getCittà().equals(this.getCittà())
@@ -96,8 +109,4 @@ public class Persona {
     }
 
     // no hashcode method?
-	@Override
-    public int hashCode() {
-        return Objects.hash(codiceFiscale, nome, cognome, telefono, indirizzo, città, regione, codicePostale, tipo);
-    }
 }

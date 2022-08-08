@@ -22,12 +22,6 @@ public interface Table<V,K> {
     boolean createTable();
     
     /**
-     * Drops the database table
-     * @return false if the table could not be dropped
-     */
-    boolean dropTable();
-    
-    /**
      * Finds an object in the table with the given primary key
      * @param primaryKey the primary key used to search the object in the underlying database
      * @return an empty optional if there is no object with the given ID in the database

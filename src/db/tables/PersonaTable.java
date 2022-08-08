@@ -50,7 +50,6 @@ public class PersonaTable implements Table<Persona, String> {
         }
 	}
 
-	@Override
 	public boolean dropTable() {
 		try (final Statement statement = this.connection.createStatement()) {			
 			statement.executeUpdate("SET foreign_key_checks = 0;");

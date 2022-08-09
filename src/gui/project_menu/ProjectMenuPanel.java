@@ -2,22 +2,23 @@ package gui.project_menu;
 
 import javax.swing.*;
 import java.awt.*;
-import gui.AbstractGridBagLayoutJPanel;
 import gui.GUI;
 import gui.MenuPanel;
 import utils.JComponentLoader;
 
-public class ProjectMenuPanel extends AbstractGridBagLayoutJPanel {
+public class ProjectMenuPanel extends JPanel{
     private static final long serialVersionUID = 8475751505006519027L;
 
     public ProjectMenuPanel() {
-        super("EAMS - Proyects and donations", new Dimension(GUI.getMinScreenSize()*14/16, GUI.getMinScreenSize()*12/16));
+        this.setName("EAMS - Projects and donations");
+    	this.setPreferredSize(new Dimension(GUI.getMinScreenSize(), GUI.getMinScreenSize()*3/4));
+    	this.setLayout(new BorderLayout());
         
         // Titolo schermata
-        
-        c.gridx = 0;
-        c.gridy = 0;
-        this.add(new JLabel("Ecological Association Management System - Area progetti e donazioni"), c);
+    	var a0 = new JLabel("Ecological Association Management System - Area progetti e donazioni");
+    	a0.setHorizontalAlignment(SwingConstants.CENTER);
+    	a0.setFont(new Font("SansSerif", Font.BOLD, 20));
+        this.add(a0, BorderLayout.PAGE_START);
         
         JTabbedPane switchPane = new JTabbedPane();
         
@@ -31,19 +32,15 @@ public class ProjectMenuPanel extends AbstractGridBagLayoutJPanel {
         JComponent proyectPanel = new ProjectPanel();
         switchPane.addTab("Progetti", proyectPanel);
         
-        c.gridx = 0;
-        c.gridy = 1;
-        this.add(switchPane,c);
+        this.add(switchPane, BorderLayout.CENTER);
         
         // End panel
-        
-        c.gridx = 0;
-        c.gridy = 2;
-        var a0 = new JButton("Ritorna al menu");
-        a0.addActionListener(e -> {
+
+        var a1 = new JButton("Ritorna al menu");
+        a1.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new MenuPanel());
         });
-        this.add(a0, c);
+        this.add(a1, BorderLayout.PAGE_END);
     }
 }

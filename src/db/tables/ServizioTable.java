@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableDoublePk;
 import model.Servizio;
 
-public class ServizioTable implements Table<Servizio, String> {
+public class ServizioTable implements TableDoublePk<Servizio, String, Time> {
 
 	public static final String TABLE_NAME = "servizio";
 
@@ -53,10 +53,11 @@ public class ServizioTable implements Table<Servizio, String> {
 	}
 
 	@Override
-	public Optional<Servizio> findByPrimaryKey(String idEvento) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ?";
+	public Optional<Servizio> findByPrimaryKey(String idEvento, Time oraInizio) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ? AND oraInizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idEvento);
+            statement.setTime(2, oraInizio);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -85,7 +86,7 @@ public class ServizioTable implements Table<Servizio, String> {
 			    final Time oraFine = resultSet.getTime("oraFine");
 			    final Optional<String> idProgetto = Optional.ofNullable(resultSet.getString("idProgetto"));
 				
-				final Servizio servizio = new Servizio(idEvento, tipo, oraInizio, oraFine, idProgetto);
+				final Servizio servizio = new Servizio(idEvento, oraInizio, oraFine, tipo, idProgetto);
 				servizi.add(servizio);
 			}
 		} catch (final SQLException e) {}
@@ -95,7 +96,7 @@ public class ServizioTable implements Table<Servizio, String> {
 	@Override
 	public boolean save(Servizio servizio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idEvento, tipo, oraInizio, oraFine, idProgetto) VALUES (?,?,?,?,?)";
+				"(idEvento, oraInizio, oraFine, tipo, idProgetto) VALUES (?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, servizio.getIdEvento());
             statement.setString(2, servizio.getTipo());
@@ -113,14 +114,14 @@ public class ServizioTable implements Table<Servizio, String> {
 
 	@Override
 	public boolean update(Servizio updatedServizio) {
-		final String query = "UPDATE " + TABLE_NAME + " SET tipo = ?," + "oraInizio = ?," + "oraFine = ?,"
-				+ "idProgetto = ? WHERE idEvento = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET oraFine = ?, tipo = ?, idProgetto = ? "
+				+ "WHERE idEvento = ?, oraInizio = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedServizio.getTipo());
-			statement.setTime(2, updatedServizio.getOraInizio());
-            statement.setTime(3, updatedServizio.getOraFine());
-            statement.setString(4, updatedServizio.getIdProgetto().orElse(null));
-            statement.setString(5, updatedServizio.getIdEvento());
+			statement.setTime(1, updatedServizio.getOraFine());
+			statement.setString(2, updatedServizio.getTipo());
+            statement.setString(3, updatedServizio.getIdProgetto().orElse(null));
+            statement.setString(4, updatedServizio.getIdEvento());
+            statement.setTime(5, updatedServizio.getOraInizio());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -128,10 +129,11 @@ public class ServizioTable implements Table<Servizio, String> {
 	}
 
 	@Override
-	public boolean delete(String idEvento) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idEvento = ?";
+	public boolean delete(String idEvento, Time oraInizio) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idEvento = ? AND oraInizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idEvento);
+            statement.setTime(2, oraInizio);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

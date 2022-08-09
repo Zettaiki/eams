@@ -50,7 +50,7 @@ public class IscrizioneTable implements TableDoublePk<Iscrizione, String, Intege
 
 	@Override
 	public Optional<Iscrizione> findByPrimaryKey(String codiceFiscale, Integer idNewsletter) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?, idNewsletter = ?";
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ? AND idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
             statement.setInt(2, idNewsletter);
@@ -109,7 +109,7 @@ public class IscrizioneTable implements TableDoublePk<Iscrizione, String, Intege
 
 	@Override
 	public boolean delete(String codiceFiscale, Integer idNewsletter) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?, idNewsletter = ?";
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ? AND idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
             statement.setInt(2, idNewsletter);

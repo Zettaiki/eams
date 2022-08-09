@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableDoublePk;
 import model.Organizzazione;
 
-public class OrganizzazioneTable implements Table<Organizzazione, String> {
+public class OrganizzazioneTable implements TableDoublePk<Organizzazione, String, String> {
 
 	public static final String TABLE_NAME = "organizzazione";
 
@@ -49,10 +49,11 @@ public class OrganizzazioneTable implements Table<Organizzazione, String> {
 	}
 
 	@Override
-	public Optional<Organizzazione> findByPrimaryKey(String codiceFiscaleDipendente) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ?";
+	public Optional<Organizzazione> findByPrimaryKey(String codiceFiscaleDipendente, String idEvento) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ? AND idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleDipendente);
+            statement.setString(2, idEvento);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -103,22 +104,15 @@ public class OrganizzazioneTable implements Table<Organizzazione, String> {
 
 	@Override
 	public boolean update(Organizzazione updatedOrganizzazione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET idEvento = ? "
-				+ "WHERE codiceFiscaleDipendente = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedOrganizzazione.getIdEvento());
-			statement.setString(2, updatedOrganizzazione.getCodiceFiscaleDipendente());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
+		throw new IllegalStateException();
 	}
 
 	@Override
-	public boolean delete(String codiceFiscaleDipendente) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ?";
+	public boolean delete(String codiceFiscaleDipendente, String idEvento) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ? AND idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleDipendente);
+            statement.setString(2, idEvento);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

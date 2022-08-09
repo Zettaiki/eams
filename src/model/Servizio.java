@@ -6,29 +6,25 @@ import java.util.Optional;
 
 public class Servizio {
 	private final String idEvento;
-    private final String tipo;
     private final Time oraInizio;
     private final Time oraFine;
+    private final String tipo;
     private final Optional<String> idProgetto;
     
-	public Servizio(String idEvento, String tipo, Time oraInizio, Time oraFine, Optional<String> idProgetto) {
+	public Servizio(String idEvento, Time oraInizio, Time oraFine, String tipo, Optional<String> idProgetto) {
 		this.idEvento = idEvento;
-		this.tipo = tipo;
 		this.oraInizio = oraInizio;
 		this.oraFine = oraFine;
+		this.tipo = tipo;
 		this.idProgetto = Objects.requireNonNull(idProgetto);
 	}
     
-	public Servizio(String idEvento, String tipo, Time oraInizio, Time oraFine) {
-		this(idEvento, tipo, oraInizio, oraFine, Optional.empty());
+	public Servizio(String idEvento, Time oraInizio, Time oraFine, String tipo) {
+		this(idEvento, oraInizio, oraFine, tipo, Optional.empty());
 	}
 
 	public String getIdEvento() {
 		return this.idEvento;
-	}
-	
-	public String getTipo() {
-		return tipo;
 	}
 
 	public Time getOraInizio() {
@@ -37,6 +33,10 @@ public class Servizio {
 
 	public Time getOraFine() {
 		return oraFine;
+	}
+	
+	public String getTipo() {
+		return tipo;
 	}
 
 	public Optional<String> getIdProgetto() {
@@ -47,9 +47,9 @@ public class Servizio {
     public String toString() {
         return new StringBuilder()
             .append("(").append(idEvento).append(") ")
-			.append(tipo).append(" ")
 			.append(oraInizio).append(" ")
 			.append(oraFine).append(" ")
+			.append(tipo).append(" ")
 			.append(idProgetto).toString();
     }
 
@@ -57,14 +57,14 @@ public class Servizio {
     public boolean equals(final Object other) {
         return (other instanceof Servizio)
         		&& ((Servizio) other).getIdEvento().equals(this.getIdEvento())
-                && ((Servizio) other).getTipo().equals(this.getTipo())
                 && ((Servizio) other).getOraInizio().equals(this.getOraInizio())
                 && ((Servizio) other).getOraFine().equals(this.getOraFine())
+                && ((Servizio) other).getTipo().equals(this.getTipo())
                 && ((Servizio) other).getIdProgetto().equals(this.getIdProgetto());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.idEvento, this.tipo, this.oraInizio, this.oraFine, this.idProgetto);
+        return Objects.hash(this.idEvento, this.oraInizio, this.oraFine, this.tipo, this.idProgetto);
     }
 }

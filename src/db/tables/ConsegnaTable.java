@@ -14,16 +14,16 @@ import java.util.Objects;
 import java.util.Optional;
 
 import db.Table;
-import model.Fornitura;
+import model.Consegna;
 import utils.Utils;
 
-public class FornituraTable implements Table<Fornitura, Integer> {
+public class ConsegnaTable implements Table<Consegna, String> {
 
 	public static final String TABLE_NAME = "fornitura";
 
 	private final Connection connection;
 
-	public FornituraTable(final Connection connection) {
+	public ConsegnaTable(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
     }
 
@@ -37,14 +37,14 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idProdotto INT NOT NULL," +
+            			"materiale VARCHAR(30) NOT NULL," +
             			"partitaIVA DECIMAL(11) NOT NULL," +
             			"data DATETIME NOT NULL," +
-            			"quantit‡Fornita INT NOT NULL," +
-            			"PRIMARY KEY (idProdotto, partitaIVA, data)," +
+            			"kgConsegnati` DECIMAL(11,2) NOT NULL," +
+            			"PRIMARY KEY (materiale, partitaIVA, data)," +
             			"FOREIGN KEY (partitaIVA) REFERENCES azienda (partitaIVA) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
+            			"FOREIGN KEY (materiale) REFERENCES rifiuto (materiale) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
@@ -54,10 +54,10 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public Optional<Fornitura> findByPrimaryKey(Integer idProdotto) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ?";
+	public Optional<Consegna> findByPrimaryKey(String materiale) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idProdotto);
+            statement.setString(1, materiale);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -66,7 +66,7 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public List<Fornitura> findAll() {
+	public List<Consegna> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
             return readFromResultSet(resultSet);
@@ -76,16 +76,16 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public List<Fornitura> readFromResultSet(ResultSet resultSet) {
-		final List<Fornitura> forniture = new ArrayList<>();
+	public List<Consegna> readFromResultSet(ResultSet resultSet) {
+		final List<Consegna> forniture = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Integer idProdotto = resultSet.getInt("idProdotto");
+				final String materiale = resultSet.getString("materiale");
 				final BigDecimal partitaIVA = resultSet.getBigDecimal("partitaIVA");
 				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
-				final Integer quantit‡Fornita = resultSet.getInt("quantit‡Fornita");
+				final BigDecimal kgConsegnati = resultSet.getBigDecimal("kgConsegnati");
 				
-				final Fornitura fornitura = new Fornitura(idProdotto, partitaIVA, data, quantit‡Fornita);
+				final Consegna fornitura = new Consegna(materiale, partitaIVA, data, kgConsegnati);
 				forniture.add(fornitura);
 			}
 		} catch (final SQLException e) {}
@@ -93,14 +93,14 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public boolean save(Fornitura fornitura) {
+	public boolean save(Consegna consegna) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idProdotto, partitaIVA, data, quantit‡Fornita) VALUES (?,?,?,?)";
+				"(materiale, partitaIVA, data, kgConsegnati) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, fornitura.getIdProdotto());
-            statement.setBigDecimal(2, fornitura.getPartitaIVA());
-            statement.setDate(3, Utils.dateToSqlDate(fornitura.getData()));
-            statement.setInt(4, fornitura.getQuantit‡Fornita());
+        	statement.setString(1, consegna.getMateriale());
+            statement.setBigDecimal(2, consegna.getPartitaIVA());
+            statement.setDate(3, Utils.dateToSqlDate(consegna.getData()));
+            statement.setBigDecimal(4, consegna.getKgConsegnati());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -111,14 +111,14 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public boolean update(Fornitura updatedFornitura) {
-		final String query = "UPDATE " + TABLE_NAME + " SET partitaIVA = ?," + "data = ?," + "quantit‡Fornita = ? "
-				+ "WHERE idProdotto = ?";
+	public boolean update(Consegna updatedConsegna) {
+		final String query = "UPDATE " + TABLE_NAME + " SET partitaIVA = ?," + "data = ?," + "kgConsegnati = ? "
+				+ "WHERE materiale = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setBigDecimal(1, updatedFornitura.getPartitaIVA());
-			statement.setDate(2, Utils.dateToSqlDate(updatedFornitura.getData()));
-			statement.setInt(3, updatedFornitura.getQuantit‡Fornita());
-			statement.setInt(4, updatedFornitura.getIdProdotto());
+			statement.setBigDecimal(1, updatedConsegna.getPartitaIVA());
+			statement.setDate(2, Utils.dateToSqlDate(updatedConsegna.getData()));
+			statement.setBigDecimal(3, updatedConsegna.getKgConsegnati());
+			statement.setString(4, updatedConsegna.getMateriale());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -126,10 +126,10 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public boolean delete(Integer idProdotto) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProdotto = ?";
+	public boolean delete(String materiale) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idProdotto);
+            statement.setString(1, materiale);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

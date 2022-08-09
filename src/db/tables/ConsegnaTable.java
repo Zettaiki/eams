@@ -19,7 +19,7 @@ import utils.Utils;
 
 public class ConsegnaTable implements Table<Consegna, String> {
 
-	public static final String TABLE_NAME = "fornitura";
+	public static final String TABLE_NAME = "consegna";
 
 	private final Connection connection;
 

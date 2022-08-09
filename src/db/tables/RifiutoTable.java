@@ -29,6 +29,7 @@ public class RifiutoTable implements Table<Rifiuto, String> {
 	public String getTableName() {
 		return TABLE_NAME;
 	}
+	
 	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
@@ -110,7 +111,7 @@ public class RifiutoTable implements Table<Rifiuto, String> {
 			statement.setString(1, updatedRifiuto.getTipo());
 			statement.setBigDecimal(2, updatedRifiuto.getKgImagazzinati());
 			statement.setString(3, updatedRifiuto.getNote().orElse(null));
-			statement.setString(3, updatedRifiuto.getMateriale());
+			statement.setString(4, updatedRifiuto.getMateriale());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);

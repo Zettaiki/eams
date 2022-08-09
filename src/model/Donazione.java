@@ -12,16 +12,16 @@ public class Donazione {
     private final Date dataDonazione;
     private final Optional<Integer> idProgetto;
     
-	public Donazione(Integer idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione, Optional<Integer> idProgetto) {
-		this.idDonazione = idDonazione;
+	public Donazione(BigDecimal importo, String codiceFiscale, Date dataDonazione, Optional<Integer> idProgetto) {
+		this.idDonazione = 0;
 		this.importo = importo;
 		this.codiceFiscale = codiceFiscale;
 		this.dataDonazione = dataDonazione;
 		this.idProgetto = Objects.requireNonNull(idProgetto);
 	}
 	
-	public Donazione(Integer idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione) {
-		this(idDonazione, importo, codiceFiscale, dataDonazione, Optional.empty());
+	public Donazione(BigDecimal importo, String codiceFiscale, Date dataDonazione) {
+		this(importo, codiceFiscale, dataDonazione, Optional.empty());
 	}
     
 	public Integer getIdDonazione() {

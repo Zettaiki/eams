@@ -9,8 +9,8 @@ public class Progetto {
     private final Date dataInizio;
     private final Integer durataMesi;
     
-	public Progetto(Integer idProgetto, String obbiettivo, Date dataInizio, Integer durataMesi) {
-		this.idProgetto = idProgetto;
+	public Progetto(String obbiettivo, Date dataInizio, Integer durataMesi) {
+		this.idProgetto = 0;
 		this.obbiettivo = obbiettivo;
 		this.dataInizio = dataInizio;
 		this.durataMesi = durataMesi;

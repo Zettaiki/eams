@@ -23,9 +23,9 @@ public class DonazioneTableTests {
 			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
 	final static DonazioneTable DonazioneTable = new DonazioneTable(connectionProvider.getMySQLConnection());
 
-	final Donazione donazione1 = new Donazione(1, new BigDecimal("22.20"), "AAAAAAAAAAAAAAAA",
+	final Donazione donazione1 = new Donazione(new BigDecimal("22.20"), "AAAAAAAAAAAAAAAA",
 			Utils.buildDate(11, 10, 2022).get(), Optional.of(1));
-	final Donazione donazione2 = new Donazione(2, new BigDecimal("3333.33"), "BBBBBBBBBBBBBBBB",
+	final Donazione donazione2 = new Donazione(new BigDecimal("3333.33"), "BBBBBBBBBBBBBBBB",
 			Utils.buildDate(11, 12, 2021).get(), Optional.of(2));
 
     @BeforeEach
@@ -51,7 +51,7 @@ public class DonazioneTableTests {
     void updateTest() {
         assertFalse(DonazioneTable.update(this.donazione1));
         DonazioneTable.save(this.donazione2);
-        final Donazione updatedDonazione2 = new Donazione(2, new BigDecimal("7777.77"), "BBBBBBBBBBBBBBBB",
+        final Donazione updatedDonazione2 = new Donazione(new BigDecimal("7777.77"), "BBBBBBBBBBBBBBBB",
     			Utils.buildDate(11, 12, 2021).get(), Optional.of(2));
         assertTrue(DonazioneTable.update(updatedDonazione2));
         final Optional<Donazione> foundDonazione = DonazioneTable.findByPrimaryKey(updatedDonazione2.getIdDonazione());

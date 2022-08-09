@@ -78,13 +78,12 @@ public class DonazioneTable implements Table<Donazione, Integer> {
 		final List<Donazione> donazioni = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Integer idDonazione = resultSet.getInt("idDonazione");
 				final BigDecimal importo = resultSet.getBigDecimal("importo");
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final Date dataDonazione = Utils.sqlDateToDate(resultSet.getDate("dataDonazione"));
 				final Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
 
-				final Donazione donazione = new Donazione(idDonazione, importo, codiceFiscale, dataDonazione,
+				final Donazione donazione = new Donazione(importo, codiceFiscale, dataDonazione,
 						idProgetto);
 				donazioni.add(donazione);
 			}
@@ -96,13 +95,12 @@ public class DonazioneTable implements Table<Donazione, Integer> {
 	@Override
 	public boolean save(Donazione donazione) {
 		final String query = "INSERT INTO " + TABLE_NAME
-				+ "(idDonazione, importo, codiceFiscale, dataDonazione, idProgetto) VALUES (?,?,?,?,?)";
+				+ "(importo, codiceFiscale, dataDonazione, idProgetto) VALUES (?,?,?,?)";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setInt(1, donazione.getIdDonazione());
-			statement.setBigDecimal(2, donazione.getImporto());
-			statement.setString(3, donazione.getCodiceFiscale());
-			statement.setDate(4, Utils.dateToSqlDate(donazione.getDataDonazione()));
-			statement.setInt(5, donazione.getIdProgetto().orElse(null));
+			statement.setBigDecimal(1, donazione.getImporto());
+			statement.setString(2, donazione.getCodiceFiscale());
+			statement.setDate(3, Utils.dateToSqlDate(donazione.getDataDonazione()));
+			statement.setInt(4, donazione.getIdProgetto().orElse(null));
 			statement.executeUpdate();
 			return true;
 		} catch (final SQLIntegrityConstraintViolationException e) {

@@ -74,12 +74,11 @@ public class ProgettoTable implements Table<Progetto, Integer> {
 		final List<Progetto> progetti = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Integer idProgetto = resultSet.getInt("idProgetto");
 			    final String obbiettivo = resultSet.getString("obbiettivo");
 			    final Date dataInizio = Utils.sqlDateToDate(resultSet.getDate("dataInizio"));
 			    final Integer durataMesi = resultSet.getInt("durataMesi");
 				
-				final Progetto progetto = new Progetto(idProgetto, obbiettivo, dataInizio, durataMesi);
+				final Progetto progetto = new Progetto(obbiettivo, dataInizio, durataMesi);
 				progetti.add(progetto);
 			}
 		} catch (final SQLException e) {}
@@ -89,7 +88,7 @@ public class ProgettoTable implements Table<Progetto, Integer> {
 	@Override
 	public boolean save(Progetto progetto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idProgetto, obbiettivo, dataInizio, durataMesi) VALUES (?,?,?,?)";
+				"(obbiettivo, dataInizio, durataMesi) VALUES (?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setInt(1, progetto.getIdProgetto());
         	statement.setString(2, progetto.getObbiettivo());

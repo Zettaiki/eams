@@ -22,8 +22,8 @@ public class ProgettoTableTests {
 			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
 	final static ProgettoTable ProgettoTable = new ProgettoTable(connectionProvider.getMySQLConnection());
 
-	final Progetto progetto1 = new Progetto(1, "m",	Utils.buildDate(11, 10, 2022).get(), 4);
-	final Progetto progetto2 = new Progetto(2, "a",	Utils.buildDate(11, 12, 2021).get(), 5);
+	final Progetto progetto1 = new Progetto("m", Utils.buildDate(11, 10, 2022).get(), 4);
+	final Progetto progetto2 = new Progetto("a", Utils.buildDate(11, 12, 2021).get(), 5);
 
     @BeforeEach
     void setUp() throws Exception {
@@ -48,7 +48,7 @@ public class ProgettoTableTests {
     void updateTest() {
         assertFalse(ProgettoTable.update(this.progetto1));
         ProgettoTable.save(this.progetto2);
-        final Progetto updatedProgetto2 = new Progetto(2, "a",	Utils.buildDate(11, 12, 2011).get(), 5);
+        final Progetto updatedProgetto2 = new Progetto("a",	Utils.buildDate(11, 12, 2011).get(), 5);
         assertTrue(ProgettoTable.update(updatedProgetto2));
         final Optional<Progetto> foundProgetto = ProgettoTable.findByPrimaryKey(updatedProgetto2.getIdProgetto());
         assertFalse(foundProgetto.isEmpty());

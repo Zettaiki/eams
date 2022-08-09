@@ -55,7 +55,8 @@ public class ConsegnaTable implements TableTriplePk<Consegna, String, BigDecimal
 
 	@Override
 	public Optional<Consegna> findByPrimaryKey(String materiale, BigDecimal partitaIVA, Date data) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ?, partitaIVA = ?, data = ?";
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ? AND partitaIVA = ? "
+				+ "AND data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, materiale);
             statement.setBigDecimal(2, partitaIVA);
@@ -115,7 +116,7 @@ public class ConsegnaTable implements TableTriplePk<Consegna, String, BigDecimal
 	@Override
 	public boolean update(Consegna updatedConsegna) {
 		final String query = "UPDATE " + TABLE_NAME + " SET kgConsegnati = ? "
-				+ "WHERE materiale = ?, partitaIVA = ?, data = ?";
+				+ "WHERE materiale = ? AND partitaIVA = ? AND data = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setBigDecimal(1, updatedConsegna.getKgConsegnati());
 			statement.setString(2, updatedConsegna.getMateriale());
@@ -129,7 +130,8 @@ public class ConsegnaTable implements TableTriplePk<Consegna, String, BigDecimal
 
 	@Override
 	public boolean delete(String materiale, BigDecimal partitaIVA, Date data) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ?, partitaIVA = ?, data = ?";
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ? AND partitaIVA = ? " +
+				"AND data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, materiale);
             statement.setBigDecimal(2, partitaIVA);

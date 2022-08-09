@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableTriplePk;
 import model.Consegna;
 import utils.Utils;
 
-public class ConsegnaTable implements Table<Consegna, String> {
+public class ConsegnaTable implements TableTriplePk<Consegna, String, BigDecimal, Date> {
 
 	public static final String TABLE_NAME = "consegna";
 
@@ -54,10 +54,12 @@ public class ConsegnaTable implements Table<Consegna, String> {
 	}
 
 	@Override
-	public Optional<Consegna> findByPrimaryKey(String materiale) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ?";
+	public Optional<Consegna> findByPrimaryKey(String materiale, BigDecimal partitaIVA, Date data) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ?, partitaIVA = ?, data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, materiale);
+            statement.setBigDecimal(2, partitaIVA);
+            statement.setDate(3, Utils.dateToSqlDate(data));
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -112,13 +114,13 @@ public class ConsegnaTable implements Table<Consegna, String> {
 
 	@Override
 	public boolean update(Consegna updatedConsegna) {
-		final String query = "UPDATE " + TABLE_NAME + " SET partitaIVA = ?," + "data = ?," + "kgConsegnati = ? "
-				+ "WHERE materiale = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET kgConsegnati = ? "
+				+ "WHERE materiale = ?, partitaIVA = ?, data = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setBigDecimal(1, updatedConsegna.getPartitaIVA());
-			statement.setDate(2, Utils.dateToSqlDate(updatedConsegna.getData()));
-			statement.setBigDecimal(3, updatedConsegna.getKgConsegnati());
-			statement.setString(4, updatedConsegna.getMateriale());
+			statement.setBigDecimal(1, updatedConsegna.getKgConsegnati());
+			statement.setString(2, updatedConsegna.getMateriale());
+			statement.setBigDecimal(3, updatedConsegna.getPartitaIVA());
+			statement.setDate(4, Utils.dateToSqlDate(updatedConsegna.getData()));
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -126,10 +128,12 @@ public class ConsegnaTable implements Table<Consegna, String> {
 	}
 
 	@Override
-	public boolean delete(String materiale) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ?";
+	public boolean delete(String materiale, BigDecimal partitaIVA, Date data) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ?, partitaIVA = ?, data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, materiale);
+            statement.setBigDecimal(2, partitaIVA);
+            statement.setDate(3, Utils.dateToSqlDate(data));
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

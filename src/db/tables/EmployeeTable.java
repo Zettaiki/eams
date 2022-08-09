@@ -39,7 +39,7 @@ public class EmployeeTable implements Table<Employee, String> {
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
             			"sedeCittà VARCHAR(25) NOT NULL," +
-            			"dataAssunzione DATETIME NOT NULL," +
+            			"dataAssunzione DATE NOT NULL," +
             			"salario DECIMAL(8,2) NOT NULL," +
             			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (sedeCittà) REFERENCES sede (città) ON DELETE CASCADE ON UPDATE CASCADE" +

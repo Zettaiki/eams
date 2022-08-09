@@ -38,7 +38,7 @@ public class ProjectTable implements Table<Project, Integer> {
 					"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
 					+ "idProgetto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 					+ "obbiettivo VARCHAR(45) NOT NULL,"
-					+ "dataInizio DATETIME NOT NULL,"
+					+ "dataInizio DATE NOT NULL,"
 					+ "durataMesi INT NOT NULL"	+
 					")");
 			return true;
@@ -90,10 +90,9 @@ public class ProjectTable implements Table<Project, Integer> {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(obbiettivo, dataInizio, durataMesi) VALUES (?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-        	statement.setInt(1, progetto.getIdProgetto());
-        	statement.setString(2, progetto.getObbiettivo());
-			statement.setDate(3, Utils.dateToSqlDate(progetto.getDataInizio()));
-			statement.setInt(4, progetto.getDurataMesi());
+        	statement.setString(1, progetto.getObbiettivo());
+			statement.setDate(2, Utils.dateToSqlDate(progetto.getDataInizio()));
+			statement.setInt(3, progetto.getDurataMesi());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -105,7 +104,7 @@ public class ProjectTable implements Table<Project, Integer> {
 
 	@Override
 	public boolean update(Project updatedProgetto) {
-		final String query = "UPDATE " + TABLE_NAME + " SET " + "obbiettivo = ?," + "dataInizio = ?, " + "durataMesi = ? "
+		final String query = "UPDATE " + TABLE_NAME + " SET obbiettivo = ?, dataInizio = ?, durataMesi = ? "
 				+ "WHERE idProgetto = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setString(1, updatedProgetto.getObbiettivo());

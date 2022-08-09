@@ -38,7 +38,7 @@ public class VolunteerTable implements Table<Volunteer, String> {
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
             			"sedeCittà VARCHAR(25) NOT NULL," +
-            			"dataIscrizione DATETIME NOT NULL," +
+            			"dataIscrizione DATE NOT NULL," +
             			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (sedeCittà) REFERENCES sede (città) ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");

@@ -39,7 +39,7 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscaleCliente CHAR(16) NOT NULL," +
             			"idProdotto INT NOT NULL," +
-            			"data DATETIME NOT NULL," +
+            			"data DATE NOT NULL," +
             			"quantità INT NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
             			"oraInizioServizio TIME NOT NULL," +

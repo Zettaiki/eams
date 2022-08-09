@@ -38,7 +38,7 @@ public class MemberCardTable implements Table<MemberCard, String> {
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"idSocio VARCHAR(15) NOT NULL PRIMARY KEY," +
             			"codiceFiscale CHAR(16) NOT NULL," +
-            			"dataAssociazione DATETIME NOT NULL," +
+            			"dataAssociazione DATE NOT NULL," +
             			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;

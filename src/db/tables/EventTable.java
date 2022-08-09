@@ -38,7 +38,7 @@ public class EventTable implements Table<Event, String> {
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"idEvento CHAR(20) NOT NULL PRIMARY KEY," +
             			"nome VARCHAR(30) NOT NULL," +
-            			"data DATETIME NOT NULL," +
+            			"data DATE NOT NULL," +
             			"descrizione VARCHAR(60) NULL DEFAULT NULL" +
             		")");
             return true;

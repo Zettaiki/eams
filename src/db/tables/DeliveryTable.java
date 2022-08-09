@@ -39,7 +39,7 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"materiale VARCHAR(30) NOT NULL," +
             			"partitaIVA DECIMAL(11) NOT NULL," +
-            			"data DATETIME NOT NULL," +
+            			"data DATE NOT NULL," +
             			"kgConsegnati` DECIMAL(11,2) NOT NULL," +
             			"PRIMARY KEY (materiale, partitaIVA, data)," +
             			"FOREIGN KEY (partitaIVA) REFERENCES azienda (partitaIVA) " +

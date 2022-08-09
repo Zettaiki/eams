@@ -39,7 +39,7 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"idProdotto INT NOT NULL," +
             			"partitaIVA DECIMAL(11) NOT NULL," +
-            			"data DATETIME NOT NULL," +
+            			"data DATE NOT NULL," +
             			"quantitàFornita INT NOT NULL," +
             			"PRIMARY KEY (idProdotto, partitaIVA, data)," +
             			"FOREIGN KEY (partitaIVA) REFERENCES azienda (partitaIVA) " +

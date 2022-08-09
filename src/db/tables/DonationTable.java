@@ -38,7 +38,7 @@ public class DonationTable implements Table<Donation, Integer> {
 			statement.executeUpdate(
 					"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
 					+ "idDonazione INT NOT NULL AUTO_INCREMENT PRIMARY KEY," + "importo DECIMAL(11,2) NOT NULL,"
-					+ "codiceFiscale CHAR(16) NOT NULL," + "dataDonazione DATETIME NOT NULL,"
+					+ "codiceFiscale CHAR(16) NOT NULL," + "dataDonazione DATE NOT NULL,"
 					+ "idProgetto INT NULL,"					
 					+ "FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) "
 					+ "ON DELETE CASCADE ON UPDATE CASCADE,"

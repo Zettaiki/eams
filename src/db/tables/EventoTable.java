@@ -77,7 +77,7 @@ public class EventoTable implements Table<Evento, String> {
 				final String idEvento = resultSet.getString("idEvento");
 				final String nome = resultSet.getString("nome");
 				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
-				final Optional<String> descrizione =  Optional.ofNullable(resultSet.getString("descrizione"));
+				final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
 				
 				final Evento evento = new Evento(idEvento, nome, data, descrizione);
 				eventi.add(evento);

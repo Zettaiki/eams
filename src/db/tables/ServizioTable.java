@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +38,16 @@ public class ServizioTable implements Table<Servizio, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idEvento CHAR(20) NOT NULL PRIMARY KEY," +
-            			"nome VARCHAR(30) NOT NULL," +
-            			"data DATETIME NOT NULL," +
-            			"descrizione VARCHAR(60) NULL DEFAULT NULL" +
+            			"idEvento CHAR(20) NOT NULL," +
+            			"oraInizio TIME NOT NULL," +
+            			"oraFine TIME NOT NULL," +
+            			"tipo VARCHAR(45) NOT NULL," +
+            			"idProgetto INT NULL DEFAULT NULL," +
+            			"PRIMARY KEY (idEvento, oraInizio)," +
+            			"FOREIGN KEY (idEvento) REFERENCES evento (idEvento)" +
+            			"ON DELETE CASCADE ON UPDATE CASCADE," +
+            			"FOREIGN KEY (idProgetto) REFERENCES progetto (idProgetto) " +
+            			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
         } catch (final SQLException e) {        	
@@ -49,7 +56,7 @@ public class ServizioTable implements Table<Servizio, String> {
 	}
 
 	@Override
-	public Optional<Servizio> findByPrimaryKey(String primaryKey) {
+	public Optional<Servizio> findByPrimaryKey(String idEvento) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idEvento);
@@ -72,30 +79,32 @@ public class ServizioTable implements Table<Servizio, String> {
 
 	@Override
 	public List<Servizio> readFromResultSet(ResultSet resultSet) {
-		final List<Evento> eventi = new ArrayList<>();
+		final List<Servizio> servizi = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
 				final String idEvento = resultSet.getString("idEvento");
-				final String nome = resultSet.getString("nome");
-				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
-				final Optional<String> descrizione =  Optional.ofNullable(resultSet.getString("descrizione"));
+				final String tipo = resultSet.getString("tipo");
+				final Time oraInizio = resultSet.getTime("oraInizio");
+			    final Time oraFine = resultSet.getTime("oraFine");
+			    final Optional<String> idProgetto = Optional.ofNullable(resultSet.getString("idProgetto"));
 				
-				final Evento evento = new Evento(idEvento, nome, data, descrizione);
-				eventi.add(evento);
+				final Servizio servizio = new Servizio(idEvento, tipo, oraInizio, oraFine, idProgetto);
+				servizi.add(servizio);
 			}
 		} catch (final SQLException e) {}
-		return eventi;
+		return servizi;
 	}
 
 	@Override
-	public boolean save(Servizio value) {
+	public boolean save(Servizio servizio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idEvento, nome, data, descrizione) VALUES (?,?,?,?)";
+				"(idEvento, tipo, oraInizio, oraFine, idProgetto) VALUES (?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, evento.getIdEvento());
-            statement.setString(2, evento.getNome());
-            statement.setDate(3, Utils.dateToSqlDate(evento.getData()));
-            statement.setString(4, evento.getDescrizione().orElse(null));
+            statement.setString(1, servizio.getIdEvento());
+            statement.setString(2, servizio.getTipo());
+            statement.setTime(3, servizio.getOraInizio());
+            statement.setTime(4, servizio.getOraFine());
+            statement.setString(5, servizio.getIdProgetto().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -106,14 +115,15 @@ public class ServizioTable implements Table<Servizio, String> {
 	}
 
 	@Override
-	public boolean update(Servizio updatedValue) {
-		final String query = "UPDATE " + TABLE_NAME + " SET nome = ?," + "data = ?," + "descrizione = ? "
-				+ "WHERE idEvento = ?";
+	public boolean update(Servizio updatedServizio) {
+		final String query = "UPDATE " + TABLE_NAME + " SET tipo = ?," + "oraInizio = ?," + "oraFine = ?,"
+				+ "idProgetto = ? WHERE idEvento = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedEvento.getIdEvento());
-			statement.setString(2, updatedEvento.getNome());
-			statement.setDate(3, Utils.dateToSqlDate(updatedEvento.getData()));
-			statement.setString(4, updatedEvento.getDescrizione().orElse(null));
+			statement.setString(1, updatedServizio.getTipo());
+			statement.setTime(2, updatedServizio.getOraInizio());
+            statement.setTime(3, updatedServizio.getOraFine());
+            statement.setString(4, updatedServizio.getIdProgetto().orElse(null));
+            statement.setString(5, updatedServizio.getIdEvento());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);

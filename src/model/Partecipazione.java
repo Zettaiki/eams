@@ -1,14 +1,14 @@
 package model;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 import java.util.Objects;
 
 public class Partecipazione {
 	private final String codiceFiscaleVolontario;
-    private final Timestamp oraInizioServizio;
+    private final Time oraInizioServizio;
     private final String idEvento;
     
-	public Partecipazione(String codiceFiscaleVolontario, Timestamp oraInizioServizio, String idEvento) {
+	public Partecipazione(String codiceFiscaleVolontario, Time oraInizioServizio, String idEvento) {
 		this.codiceFiscaleVolontario = codiceFiscaleVolontario;
 		this.oraInizioServizio = oraInizioServizio;
 		this.idEvento = idEvento;
@@ -18,7 +18,7 @@ public class Partecipazione {
 		return this.codiceFiscaleVolontario;
 	}
 
-	public Timestamp getOraInizioServizio() {
+	public Time getOraInizioServizio() {
 		return this.oraInizioServizio;
 	}
 

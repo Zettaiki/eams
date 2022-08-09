@@ -4,12 +4,16 @@ import utils.JComponentLoader;
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginPanel extends AbstractGridBagLayoutJPanel {
+public class LoginPanel extends JPanel {
     private static final long serialVersionUID = 8475751505006519027L;
+    public final GridBagConstraints c;
 
     public LoginPanel() {
-        super("EAMS - Login", new Dimension(GUI.getMinScreenSize()*12/16, GUI.getMinScreenSize()*9/16));
-        
+        this.c = new GridBagConstraints();
+        this.setName("EAMS - Login");
+        this.setPreferredSize(new Dimension(GUI.getMinScreenSize(), GUI.getMinScreenSize()*3/4));
+        this.setLayout(new GridBagLayout());
+
         JPanel p0 = new JPanel(new FlowLayout());
         
         c.gridx = 0;

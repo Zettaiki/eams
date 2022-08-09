@@ -8,15 +8,12 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import db.Table;
-import model.Evento;
 import model.Servizio;
-import utils.Utils;
 
 public class ServizioTable implements Table<Servizio, String> {
 

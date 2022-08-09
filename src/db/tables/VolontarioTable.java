@@ -18,7 +18,7 @@ import utils.Utils;
 
 public class VolontarioTable implements Table<Volontario, String> {
 
-	public static final String TABLE_NAME = "tesserasocio";
+	public static final String TABLE_NAME = "volontario";
 
 	private final Connection connection;
 

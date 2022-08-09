@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableTriplePk;
 import model.Fornitura;
 import utils.Utils;
 
-public class FornituraTable implements Table<Fornitura, Integer> {
+public class FornituraTable implements TableTriplePk<Fornitura, Integer, BigDecimal, Date> {
 
 	public static final String TABLE_NAME = "fornitura";
 
@@ -54,10 +54,12 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public Optional<Fornitura> findByPrimaryKey(Integer idProdotto) {
+	public Optional<Fornitura> findByPrimaryKey(Integer idProdotto, BigDecimal partitaIVA, Date data) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, idProdotto);
+            statement.setBigDecimal(2, partitaIVA);
+            statement.setDate(3, Utils.dateToSqlDate(data));
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -112,13 +114,13 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 
 	@Override
 	public boolean update(Fornitura updatedFornitura) {
-		final String query = "UPDATE " + TABLE_NAME + " SET partitaIVA = ?," + "data = ?," + "quantitàFornita = ? "
-				+ "WHERE idProdotto = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET quantitàFornita = ? "
+				+ "WHERE idProdotto = ?, partitaIVA = ?, data = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setBigDecimal(1, updatedFornitura.getPartitaIVA());
-			statement.setDate(2, Utils.dateToSqlDate(updatedFornitura.getData()));
-			statement.setInt(3, updatedFornitura.getQuantitàFornita());
-			statement.setInt(4, updatedFornitura.getIdProdotto());
+			statement.setInt(1, updatedFornitura.getQuantitàFornita());
+			statement.setInt(2, updatedFornitura.getIdProdotto());
+			statement.setBigDecimal(3, updatedFornitura.getPartitaIVA());
+			statement.setDate(4, Utils.dateToSqlDate(updatedFornitura.getData()));
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -126,10 +128,12 @@ public class FornituraTable implements Table<Fornitura, Integer> {
 	}
 
 	@Override
-	public boolean delete(Integer idProdotto) {
+	public boolean delete(Integer idProdotto, BigDecimal partitaIVA, Date data) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, idProdotto);
+            statement.setBigDecimal(2, partitaIVA);
+            statement.setDate(3, Utils.dateToSqlDate(data));
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

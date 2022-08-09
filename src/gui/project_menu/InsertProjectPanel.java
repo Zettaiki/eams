@@ -11,7 +11,7 @@ public class InsertProjectPanel extends JPanel {
 
     public InsertProjectPanel() {        
         this.c = new GridBagConstraints();
-        this.setName("EAMS - Volunteering");
+        this.setName("EAMS - New project");
         this.setPreferredSize(new Dimension(GUI.getMinScreenSize(), GUI.getMinScreenSize()*3/4));
         this.setLayout(new GridBagLayout());
         
@@ -82,12 +82,14 @@ public class InsertProjectPanel extends JPanel {
         }
         c.gridx = 0;
         c.gridy = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
         a2.setBorder(BorderFactory.createTitledBorder(""));
         this.add(a2, c);
         
         c.gridx = 1;
         c.gridy = 1;
         c.gridheight = 2;
+        c.fill = GridBagConstraints.NONE;
         var a3 = new JTextArea(5, 25);
         a3.setBorder(BorderFactory.createTitledBorder("Obiettivo progetto:"));
         this.add(a3, c);
@@ -98,6 +100,8 @@ public class InsertProjectPanel extends JPanel {
         c.gridy = 3;
         c.gridwidth = 2;
         c.gridheight = 1;
+	    c.insets = new Insets(10, 0, 0, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
         var b0 = new JButton("Crea progetto");
         b0.addActionListener(e -> {
 	        // TODO
@@ -106,6 +110,10 @@ public class InsertProjectPanel extends JPanel {
         
         c.gridx = 0;
         c.gridy = 4;
+        c.gridwidth = 2;
+        c.gridheight = 1;
+	    c.insets = new Insets(10, 0, 0, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
         var b1 = new JButton("Ritorna");
         b1.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);

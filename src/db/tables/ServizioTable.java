@@ -6,22 +6,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import db.Table;
-import model.Partecipazione;
+import model.Evento;
+import model.Servizio;
+import utils.Utils;
 
-public class PartecipazioneTable implements Table<Partecipazione, String> {
+public class ServizioTable implements Table<Servizio, String> {
 
-	public static final String TABLE_NAME = "partecipazione";
+	public static final String TABLE_NAME = "servizio";
 
 	private final Connection connection;
 
-	public PartecipazioneTable(final Connection connection) {
+	public ServizioTable(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
     }
 
@@ -35,14 +37,10 @@ public class PartecipazioneTable implements Table<Partecipazione, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscaleVolontario CHAR(16) NOT NULL," +
-            			"oraInizioServizio TIME NOT NULL," +
-            			"idEvento CHAR(20) NOT NULL," +
-            			"PRIMARY KEY (codiceFiscaleVolontario, oraInizioServizio, idEvento)," +
-            			"FOREIGN KEY (oraInizioServizio, idEvento) REFERENCES servizio (oraInizio, idEvento) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (codiceFiscaleVolontario) REFERENCES volontario (codiceFiscale)" +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
+            			"idEvento CHAR(20) NOT NULL PRIMARY KEY," +
+            			"nome VARCHAR(30) NOT NULL," +
+            			"data DATETIME NOT NULL," +
+            			"descrizione VARCHAR(60) NULL DEFAULT NULL" +
             		")");
             return true;
         } catch (final SQLException e) {        	
@@ -51,10 +49,10 @@ public class PartecipazioneTable implements Table<Partecipazione, String> {
 	}
 
 	@Override
-	public Optional<Partecipazione> findByPrimaryKey(String codiceFiscaleVolontario) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ?";
+	public Optional<Servizio> findByPrimaryKey(String primaryKey) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscaleVolontario);
+            statement.setString(1, idEvento);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -63,7 +61,7 @@ public class PartecipazioneTable implements Table<Partecipazione, String> {
 	}
 
 	@Override
-	public List<Partecipazione> findAll() {
+	public List<Servizio> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
             return readFromResultSet(resultSet);
@@ -73,29 +71,31 @@ public class PartecipazioneTable implements Table<Partecipazione, String> {
 	}
 
 	@Override
-	public List<Partecipazione> readFromResultSet(ResultSet resultSet) {
-		final List<Partecipazione> partecipazioni = new ArrayList<>();
+	public List<Servizio> readFromResultSet(ResultSet resultSet) {
+		final List<Evento> eventi = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final String codiceFiscaleVolontario = resultSet.getString("codiceFiscaleVolontario");
-				final Time oraInizioServizio = resultSet.getTime("oraInizioServizio");
 				final String idEvento = resultSet.getString("idEvento");
+				final String nome = resultSet.getString("nome");
+				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
+				final Optional<String> descrizione =  Optional.ofNullable(resultSet.getString("descrizione"));
 				
-				final Partecipazione partecipazione = new Partecipazione(codiceFiscaleVolontario, oraInizioServizio, idEvento);
-				partecipazioni.add(partecipazione);
+				final Evento evento = new Evento(idEvento, nome, data, descrizione);
+				eventi.add(evento);
 			}
 		} catch (final SQLException e) {}
-		return partecipazioni;
+		return eventi;
 	}
 
 	@Override
-	public boolean save(Partecipazione partecipazione) {
+	public boolean save(Servizio value) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleVolontario, oraInizioServizio, idEvento) VALUES (?,?,?)";
+				"(idEvento, nome, data, descrizione) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, partecipazione.getCodiceFiscaleVolontario());
-            statement.setTime(2, partecipazione.getOraInizioServizio());
-            statement.setString(3, partecipazione.getIdEvento());
+            statement.setString(1, evento.getIdEvento());
+            statement.setString(2, evento.getNome());
+            statement.setDate(3, Utils.dateToSqlDate(evento.getData()));
+            statement.setString(4, evento.getDescrizione().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -106,13 +106,14 @@ public class PartecipazioneTable implements Table<Partecipazione, String> {
 	}
 
 	@Override
-	public boolean update(Partecipazione updatedPartecipazione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET oraInizioServizio = ?," + "idEvento = ? "
-				+ "WHERE codiceFiscaleVolontario = ?";
+	public boolean update(Servizio updatedValue) {
+		final String query = "UPDATE " + TABLE_NAME + " SET nome = ?," + "data = ?," + "descrizione = ? "
+				+ "WHERE idEvento = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedPartecipazione.getCodiceFiscaleVolontario());
-			statement.setTime(2, updatedPartecipazione.getOraInizioServizio());
-			statement.setString(3, updatedPartecipazione.getCodiceFiscaleVolontario());
+			statement.setString(1, updatedEvento.getIdEvento());
+			statement.setString(2, updatedEvento.getNome());
+			statement.setDate(3, Utils.dateToSqlDate(updatedEvento.getData()));
+			statement.setString(4, updatedEvento.getDescrizione().orElse(null));
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -120,10 +121,10 @@ public class PartecipazioneTable implements Table<Partecipazione, String> {
 	}
 
 	@Override
-	public boolean delete(String codiceFiscaleVolontario) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ?";
+	public boolean delete(String idEvento) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscaleVolontario);
+            statement.setString(1, idEvento);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

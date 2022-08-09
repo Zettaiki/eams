@@ -124,25 +124,25 @@ public class PersonaTable implements Table<Persona, String> {
 	@Override
 	public boolean update(final Persona updatedPersona) {
 		final String query =
-				"UPDATE " + TABLE_NAME + " SET " + "nome = ?," + "cognome = ?," + "mail = ?," + "telefono = ?,"
-						+ "indirizzo = ?," + "città = ?," + "regione = ?," + "codicePostale = ?," + "tipo = ? "
-						+ "WHERE codiceFiscale = ?";
-	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-	        	statement.setString(1, updatedPersona.getNome());
-	            statement.setString(2, updatedPersona.getCognome());
-	            statement.setString(3, updatedPersona.getMail());
-	            statement.setString(4, updatedPersona.getTelefono().orElse(null));
-	            statement.setString(5, updatedPersona.getIndirizzo());
-	            statement.setString(6, updatedPersona.getCittà());
-	            statement.setString(7, updatedPersona.getRegione());
-	            statement.setString(8, updatedPersona.getCodicePostale());
-	            statement.setString(9, updatedPersona.getTipo().orElse(null));
-	            statement.setString(10, updatedPersona.getCodiceFiscale());
-	            return statement.executeUpdate() > 0;
-	        } catch (final SQLException e) {
-	        	System.out.println(e.toString());
-	            throw new IllegalStateException(e);
-	        }
+			"UPDATE " + TABLE_NAME + " SET " + "nome = ?," + "cognome = ?," + "mail = ?," + "telefono = ?,"
+					+ "indirizzo = ?," + "città = ?," + "regione = ?," + "codicePostale = ?," + "tipo = ? "
+					+ "WHERE codiceFiscale = ?";
+        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+        	statement.setString(1, updatedPersona.getNome());
+            statement.setString(2, updatedPersona.getCognome());
+            statement.setString(3, updatedPersona.getMail());
+            statement.setString(4, updatedPersona.getTelefono().orElse(null));
+            statement.setString(5, updatedPersona.getIndirizzo());
+            statement.setString(6, updatedPersona.getCittà());
+            statement.setString(7, updatedPersona.getRegione());
+            statement.setString(8, updatedPersona.getCodicePostale());
+            statement.setString(9, updatedPersona.getTipo().orElse(null));
+            statement.setString(10, updatedPersona.getCodiceFiscale());
+            return statement.executeUpdate() > 0;
+        } catch (final SQLException e) {
+        	System.out.println(e.toString());
+            throw new IllegalStateException(e);
+        }
 	}
 
 	@Override

@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableTriplePk;
 import model.Vendita;
 import utils.Utils;
 
-public class VenditaTable implements Table<Vendita, String> {
+public class VenditaTable implements TableTriplePk<Vendita, String, Integer, Date> {
 
 	public static final String TABLE_NAME = "fornitura";
 
@@ -56,10 +56,13 @@ public class VenditaTable implements Table<Vendita, String> {
 	}
 
 	@Override
-	public Optional<Vendita> findByPrimaryKey(String codiceFiscaleCliente) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleCliente = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+	public Optional<Vendita> findByPrimaryKey(String codiceFiscaleCliente, Integer idProdotto, Date data) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleCliente = ? AND idProdotto = ? "
+				+ "AND data = ?";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleCliente);
+            statement.setInt(2, idProdotto);
+            statement.setDate(3, Utils.dateToSqlDate(data));
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -135,10 +138,13 @@ public class VenditaTable implements Table<Vendita, String> {
 	}
 
 	@Override
-	public boolean delete(String codiceFiscaleCliente) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleCliente = ?";
+	public boolean delete(String codiceFiscaleCliente, Integer idProdotto, Date data) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleCliente = ? AND idProdotto = ? "
+				+ "AND data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleCliente);
+            statement.setInt(2, idProdotto);
+            statement.setDate(3, Utils.dateToSqlDate(data));
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableTriplePk;
 import model.Produzione;
 
-public class ProduzioneTable implements Table<Produzione, Time> {
+public class ProduzioneTable implements TableTriplePk<Produzione, Time, String, Integer> {
 
 	public static final String TABLE_NAME = "produzione";
 
@@ -57,10 +57,13 @@ public class ProduzioneTable implements Table<Produzione, Time> {
 	}
 
 	@Override
-	public Optional<Produzione> findByPrimaryKey(Time oraInizioServizio) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE oraInizioServizio = ?";
+	public Optional<Produzione> findByPrimaryKey(Time oraInizioServizio, String idEvento, Integer idProdotto) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE oraInizioServizio = ? AND idEvento = ? " +
+				"AND idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setTime(1, oraInizioServizio);
+            statement.setString(2, idEvento);
+            statement.setInt(3, idProdotto);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -121,16 +124,15 @@ public class ProduzioneTable implements Table<Produzione, Time> {
 
 	@Override
 	public boolean update(Produzione updatedProduzione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET idEvento = ?, idProdotto = ?,"
-				 + "quantitàProdotta = ?," + "materialeUsato = ?,"+ "kgRifiutiUsati = ? "
-				+ "WHERE oraInizioServizio = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET quantitàProdotta = ?," + "materialeUsato = ?," +
+				"kgRifiutiUsati = ? WHERE oraInizioServizio = ? AND idEvento = ? AND idProdotto = ?,";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedProduzione.getIdEvento());
-			statement.setInt(2, updatedProduzione.getIdProdotto());
-			statement.setInt(3, updatedProduzione.getQuantitàProdotta());
-			statement.setString(4, updatedProduzione.getMaterialeUsato());
-			statement.setBigDecimal(5, updatedProduzione.getKgRifiutiUsati());
-			statement.setTime(6, updatedProduzione.getOraInizioServizio());
+			statement.setInt(1, updatedProduzione.getQuantitàProdotta());
+			statement.setString(2, updatedProduzione.getMaterialeUsato());
+			statement.setBigDecimal(3, updatedProduzione.getKgRifiutiUsati());
+			statement.setTime(4, updatedProduzione.getOraInizioServizio());
+			statement.setString(5, updatedProduzione.getIdEvento());
+			statement.setInt(6, updatedProduzione.getIdProdotto());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -138,10 +140,13 @@ public class ProduzioneTable implements Table<Produzione, Time> {
 	}
 
 	@Override
-	public boolean delete(Time oraInizioServizio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE oraInizioServizio = ?";
+	public boolean delete(Time oraInizioServizio, String idEvento, Integer idProdotto) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE oraInizioServizio = ? AND idEvento = ? " +
+				"AND idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setTime(1, oraInizioServizio);
+            statement.setString(2, idEvento);
+            statement.setInt(3, idProdotto);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

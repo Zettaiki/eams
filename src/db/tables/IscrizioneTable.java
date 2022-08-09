@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableDoublePk;
 import model.Iscrizione;
 
-public class IscrizioneTable implements Table<Iscrizione, String> {
+public class IscrizioneTable implements TableDoublePk<Iscrizione, String, Integer> {
 	
 	public static final String TABLE_NAME = "iscrizione";
 
@@ -49,10 +49,11 @@ public class IscrizioneTable implements Table<Iscrizione, String> {
 	}
 
 	@Override
-	public Optional<Iscrizione> findByPrimaryKey(String codiceFiscale) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
+	public Optional<Iscrizione> findByPrimaryKey(String codiceFiscale, Integer idNewsletter) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?, idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
+            statement.setInt(2, idNewsletter);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -103,21 +104,15 @@ public class IscrizioneTable implements Table<Iscrizione, String> {
 
 	@Override
 	public boolean update(Iscrizione updatedIscrizione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET idNewsletter = ?, WHERE codiceFiscale = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setInt(1, updatedIscrizione.getIdNewsletter());
-			statement.setString(2, updatedIscrizione.getCodiceFiscale());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
+		throw new IllegalStateException();
 	}
 
 	@Override
-	public boolean delete(String codiceFiscale) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
+	public boolean delete(String codiceFiscale, Integer idNewsletter) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?, idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
+            statement.setInt(2, idNewsletter);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

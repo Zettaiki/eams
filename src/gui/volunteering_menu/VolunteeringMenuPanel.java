@@ -35,14 +35,16 @@ public class VolunteeringMenuPanel extends JPanel {
                 var registerButton = new JButton("Registro volontario");
                 registerButton.setLayout(null);
                 registerButton.addActionListener(e -> {
-                	// TODO
+                	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        	        JComponentLoader.load(parentFrame, new VolunteerRegisterPanel());
                 });
                 b1.add(registerButton);
                 
                 var officeFilter = new JButton("Controllo per sedi");
                 officeFilter.setLayout(null);
                 officeFilter.addActionListener(e -> {
-                	// TODO
+                	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        	        JComponentLoader.load(parentFrame, new VolunteeringOfficePanel());
                 });
                 b1.add(officeFilter);
 

@@ -49,9 +49,9 @@ public class Production {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(oraInizioServizio).append(") ")
+            .append("(").append(oraInizioServizio).append(" ")
 			.append(idEvento).append(" ")
-			.append(idProdotto).append(" ")
+			.append(idProdotto).append(") ")
 			.append(quantit‡Prodotta).append(" ")
 			.append(materialeUsato).append(" ")
 			.append(kgRifiutiUsati).toString();

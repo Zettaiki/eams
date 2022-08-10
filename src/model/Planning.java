@@ -22,8 +22,8 @@ public class Planning {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(codiceFiscaleDipendente).append(") ")
-			.append(idEvento).toString();
+            .append("(").append(codiceFiscaleDipendente).append(" ")
+			.append(idEvento).append(")").toString();
     }
 
     @Override

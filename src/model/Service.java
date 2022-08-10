@@ -46,8 +46,8 @@ public class Service {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(idEvento).append(") ")
-			.append(oraInizio).append(" ")
+            .append("(").append(idEvento).append(" ")
+			.append(oraInizio).append(") ")
 			.append(oraFine).append(" ")
 			.append(tipo).append(" ")
 			.append(idProgetto).toString();

@@ -29,9 +29,9 @@ public class Participation {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(codiceFiscaleVolontario).append(") ")
+            .append("(").append(codiceFiscaleVolontario).append(" ")
 			.append(oraInizioServizio).append(" ")
-			.append(idEvento).toString();
+			.append(idEvento).append(")").toString();
     }
 
     @Override

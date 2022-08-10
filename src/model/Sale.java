@@ -49,9 +49,9 @@ public class Sale {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(codiceFiscaleCliente).append(") ")
+            .append("(").append(codiceFiscaleCliente).append(" ")
 			.append(idProdotto).append(" ")
-			.append(data).append(" ")
+			.append(data).append(") ")
 			.append(quantità).append(" ")
 			.append(idEvento).append(" ")
 			.append(oraInizioServizio).toString();

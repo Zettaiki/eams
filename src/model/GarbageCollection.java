@@ -36,9 +36,9 @@ public class GarbageCollection {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(oraInizioServizio).append(") ")
+            .append("(").append(oraInizioServizio).append(" ")
 			.append(idEvento).append(" ")
-			.append(materiale).append(" ")
+			.append(materiale).append(") ")
 			.append(kg).toString();
     }
 

@@ -36,9 +36,9 @@ public class Supply {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(idProdotto).append(") ")
+            .append("(").append(idProdotto).append(" ")
 			.append(partitaIVA).append(" ")
-			.append(data).append(" ")
+			.append(data).append(") ")
 			.append(quantit‡Fornita).toString();
     }
 

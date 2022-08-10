@@ -22,8 +22,8 @@ public class Subscription {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(codiceFiscale).append(") ")
-            .append("(").append(idNewsletter).append(")").toString();
+            .append("(").append(codiceFiscale).append(" ")
+            .append(idNewsletter).append(")").toString();
     }
 
     @Override

@@ -36,9 +36,9 @@ public class Delivery {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(materiale).append(") ")
+            .append("(").append(materiale).append(" ")
 			.append(partitaIVA).append(" ")
-			.append(data).append(" ")
+			.append(data).append(") ")
 			.append(kgConsegnati).toString();
     }
 

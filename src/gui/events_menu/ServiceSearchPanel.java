@@ -7,10 +7,14 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import utils.JComponentLoader;
 
 public class ServiceSearchPanel extends JPanel {
 	private static final long serialVersionUID = 543534484180509595L;
@@ -89,7 +93,8 @@ public class ServiceSearchPanel extends JPanel {
 	        c.fill = GridBagConstraints.HORIZONTAL;
 			var a2 = new JButton("Iscrivere volontario ad un servizio");
 			a2.addActionListener(e -> {
-				// TODO
+				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		        JComponentLoader.load(parentFrame, new VolunteerRegisterServicePanel());
 		    });
 			this.add(a2, c);
 	    }

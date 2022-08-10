@@ -31,7 +31,8 @@ public class ProjectPanel extends JPanel {
             var donatorlistButton = new JButton("Lista donatori progetto");
             donatorlistButton.setLayout(null);
             donatorlistButton.addActionListener(e -> {
-            	// TODO
+            	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    	        JComponentLoader.load(parentFrame, new ProjectDonatorsPanel());
             });
             a0.add(donatorlistButton);
             

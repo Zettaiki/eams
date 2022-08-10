@@ -25,7 +25,7 @@ public class DeliveryTableTest {
     final static DeliveryTable deliveryTable = new DeliveryTable(connectionProvider.getMySQLConnection());
 
     final Delivery delivery1 = new Delivery("carta", new BigDecimal("12345678911"), Utils.buildDate(11, 12, 2021).get(), new BigDecimal("420.50"));
-    final Delivery delivery2 = new Delivery("plastica", new BigDecimal("25369874102"), Utils.buildDate(11, 12, 2022).get(), new BigDecimal("200"));
+    final Delivery delivery2 = new Delivery("plastica", new BigDecimal("25369874102"), Utils.buildDate(11, 12, 2022).get(), new BigDecimal("200.00"));
 
     @BeforeEach
 	public void setUp() throws Exception {
@@ -50,7 +50,7 @@ public class DeliveryTableTest {
     public void updateTest() {
         assertFalse(deliveryTable.update(this.delivery1));
         deliveryTable.save(this.delivery2);
-		final Delivery updatedDelivery2 = new Delivery("plastica", new BigDecimal("25369874102"), Utils.buildDate(11, 12, 2022).get(), new BigDecimal("200,30"));
+		final Delivery updatedDelivery2 = new Delivery("plastica", new BigDecimal("25369874102"), Utils.buildDate(11, 12, 2022).get(), new BigDecimal("200.30"));
 		assertTrue(deliveryTable.update(updatedDelivery2));
 		final Optional<Delivery> foundDelivery = deliveryTable.findByPrimaryKey(updatedDelivery2.getMateriale(),
 				updatedDelivery2.getPartitaIVA(), updatedDelivery2.getData());

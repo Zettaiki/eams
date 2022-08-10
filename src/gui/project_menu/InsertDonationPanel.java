@@ -76,7 +76,7 @@ public class InsertDonationPanel extends JPanel {
         var b1 = new JButton("Ritorna");
         b1.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-	        JComponentLoader.load(parentFrame, new ProjectMenuPanel());
+	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
         });
         this.add(b1, c);
     }

@@ -16,72 +16,73 @@ import db.ConnectionProvider;
 import db.tables.DonationTable;
 import model.Donation;
 import utils.ServerCredentials;
+import utils.TableTestUtils;
 import utils.Utils;
 
 public class DonationTableTests {
 	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(),
 			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-	final static DonationTable DonazioneTable = new DonationTable(connectionProvider.getMySQLConnection());
+	final static DonationTable donationTable = new DonationTable(connectionProvider.getMySQLConnection());
 
-	final Donation donazione1 = new Donation(new BigDecimal("22.20"), "AAAAAAAAAAAAAAAA",
+	final Donation donation1 = new Donation(new BigDecimal("22.20"), "AAAAAAAAAAAAAAAA",
 			Utils.buildDate(11, 10, 2022).get(), Optional.of(1));
-	final Donation donazione2 = new Donation(new BigDecimal("3333.33"), "BBBBBBBBBBBBBBBB",
+	final Donation donation2 = new Donation(new BigDecimal("3333.33"), "BBBBBBBBBBBBBBBB",
 			Utils.buildDate(11, 12, 2021).get(), Optional.of(2));
 
     @BeforeEach
     void setUp() throws Exception {
-        DonazioneTable.dropTable();
-        DonazioneTable.createTable();
+    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), donationTable.getTableName());
+        donationTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-        assertTrue(DonazioneTable.dropTable());
-        assertTrue(DonazioneTable.createTable());
+    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), donationTable.getTableName()));
+        assertTrue(donationTable.createTable());
     }
     
     @Test
     void saveTest() {
-        assertTrue(DonazioneTable.save(this.donazione1));
-        assertFalse(DonazioneTable.save(this.donazione1));
-        assertTrue(DonazioneTable.save(this.donazione2));
+        assertTrue(donationTable.save(this.donation1));
+        //assertFalse(donationTable.save(this.donation1)); non serve perché non inserisco pk
+        assertTrue(donationTable.save(this.donation2));
     }
     
     @Test
     void updateTest() {
-        assertFalse(DonazioneTable.update(this.donazione1));
-        DonazioneTable.save(this.donazione2);
-        final Donation updatedDonazione2 = new Donation(new BigDecimal("7777.77"), "BBBBBBBBBBBBBBBB",
+        assertFalse(donationTable.update(this.donation1));
+        donationTable.save(this.donation2);
+        final Donation updatedDonation2 = new Donation(new BigDecimal("7777.77"), "BBBBBBBBBBBBBBBB",
     			Utils.buildDate(11, 12, 2021).get(), Optional.of(2));
-        assertTrue(DonazioneTable.update(updatedDonazione2));
-        final Optional<Donation> foundDonazione = DonazioneTable.findByPrimaryKey(updatedDonazione2.getIdDonazione());
+        assertTrue(donationTable.update(updatedDonation2));
+        final Optional<Donation> foundDonazione = donationTable.findByPrimaryKey(updatedDonation2.getIdDonazione());
         assertFalse(foundDonazione.isEmpty());
-        assertEquals(updatedDonazione2.getImporto(), foundDonazione.get().getImporto());
+        assertEquals(updatedDonation2.getImporto(), foundDonazione.get().getImporto());
     }
 
     @Test
     void deleteTest() {
-        DonazioneTable.save(this.donazione1);
-        assertTrue(DonazioneTable.delete(this.donazione1.getIdDonazione()));
-        assertFalse(DonazioneTable.delete(this.donazione1.getIdDonazione()));
-        assertTrue(DonazioneTable.findByPrimaryKey(this.donazione1.getIdDonazione()).isEmpty());
+        donationTable.save(this.donation1);
+        assertTrue(donationTable.delete(this.donation1.getIdDonazione()));
+        assertFalse(donationTable.delete(this.donation1.getIdDonazione()));
+        assertTrue(donationTable.findByPrimaryKey(this.donation1.getIdDonazione()).isEmpty());
     }
 
     @Test
     void findByPrimaryKeyTest() {
-        DonazioneTable.save(this.donazione1);
-        DonazioneTable.save(this.donazione2);
-        assertEquals(this.donazione1, DonazioneTable.findByPrimaryKey(this.donazione1.getIdDonazione()).orElse(null));
-        assertEquals(this.donazione2, DonazioneTable.findByPrimaryKey(this.donazione2.getIdDonazione()).orElse(null));
+        donationTable.save(this.donation1);
+        donationTable.save(this.donation2);
+        assertEquals(this.donation1, donationTable.findByPrimaryKey(this.donation1.getIdDonazione()).orElse(null));
+        assertEquals(this.donation2, donationTable.findByPrimaryKey(this.donation2.getIdDonazione()).orElse(null));
     }
 
     @Test
     void findAllTest() {
-        DonazioneTable.save(this.donazione1);
-        DonazioneTable.save(this.donazione2);
+        donationTable.save(this.donation1);
+        donationTable.save(this.donation2);
         assertIterableEquals(
-            List.of(this.donazione1, this.donazione2),
-            DonazioneTable.findAll()
+            List.of(this.donation1, this.donation2),
+            donationTable.findAll()
         );
     }
 }

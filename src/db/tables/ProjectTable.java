@@ -96,8 +96,10 @@ public class ProjectTable implements Table<Project, Integer> {
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
+        	System.out.println(e.toString());
             return false;
         } catch (final SQLException e) {
+        	System.out.println(e.toString());
             throw new IllegalStateException(e);
         }
 	}
@@ -125,17 +127,6 @@ public class ProjectTable implements Table<Project, Integer> {
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
-        }
-	}
-	
-	public boolean dropTable() {
-		try (final Statement statement = this.connection.createStatement()) {			
-			statement.executeUpdate("SET foreign_key_checks = 0;");
-			statement.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);            
-            statement.executeUpdate("SET foreign_key_checks = 1;");
-            return true;
-        } catch (final SQLException e) {
-            return false;
         }
 	}
 

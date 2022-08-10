@@ -15,69 +15,71 @@ import db.ConnectionProvider;
 import db.tables.ProjectTable;
 import model.Project;
 import utils.ServerCredentials;
+import utils.TableTestUtils;
 import utils.Utils;
 
 public class ProjectTableTests {
 	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(),
 			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-	final static ProjectTable ProgettoTable = new ProjectTable(connectionProvider.getMySQLConnection());
+	final static ProjectTable projectTable = new ProjectTable(connectionProvider.getMySQLConnection());
 
-	final Project progetto1 = new Project("m", Utils.buildDate(11, 10, 2022).get(), 4);
-	final Project progetto2 = new Project("a", Utils.buildDate(11, 12, 2021).get(), 5);
+	final Project project1 = new Project("m", Utils.buildDate(11, 10, 2022).get(), 4);
+	final Project project2 = new Project("a", Utils.buildDate(11, 12, 2021).get(), 5);
 
     @BeforeEach
     void setUp() throws Exception {
-        ProgettoTable.dropTable();
-        ProgettoTable.createTable();
+    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), projectTable.getTableName());
+        projectTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-        assertTrue(ProgettoTable.dropTable());
-        assertTrue(ProgettoTable.createTable());
+        assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), projectTable.getTableName()));
+        assertTrue(projectTable.createTable());
     }
     
     @Test
     void saveTest() {
-        assertTrue(ProgettoTable.save(this.progetto1));
-        assertFalse(ProgettoTable.save(this.progetto1));
-        assertTrue(ProgettoTable.save(this.progetto2));
+        assertTrue(projectTable.save(this.project1));
+        //assertFalse(projectTable.save(this.project1)); non serve perché non inserisco pk
+        assertTrue(projectTable.save(this.project2));
     }
     
     @Test
     void updateTest() {
-        assertFalse(ProgettoTable.update(this.progetto1));
-        ProgettoTable.save(this.progetto2);
-        final Project updatedProgetto2 = new Project("a",	Utils.buildDate(11, 12, 2011).get(), 5);
-        assertTrue(ProgettoTable.update(updatedProgetto2));
-        final Optional<Project> foundProgetto = ProgettoTable.findByPrimaryKey(updatedProgetto2.getIdProgetto());
+        assertFalse(projectTable.update(this.project1));
+        projectTable.save(this.project2);
+        final Project updatedProject2 = new Project("a",	Utils.buildDate(11, 12, 2011).get(), 5);
+        assertTrue(projectTable.update(updatedProject2));
+        final Optional<Project> foundProgetto = projectTable.findByPrimaryKey(updatedProject2.getIdProgetto());
         assertFalse(foundProgetto.isEmpty());
-        assertEquals(updatedProgetto2.getDataInizio(), foundProgetto.get().getDataInizio());
+        assertEquals(updatedProject2.getDataInizio(), foundProgetto.get().getDataInizio());
     }
 
     @Test
     void deleteTest() {
-        ProgettoTable.save(this.progetto1);
-        assertTrue(ProgettoTable.delete(this.progetto1.getIdProgetto()));
-        assertFalse(ProgettoTable.delete(this.progetto1.getIdProgetto()));
-        assertTrue(ProgettoTable.findByPrimaryKey(this.progetto1.getIdProgetto()).isEmpty());
+        projectTable.save(this.project1);
+        assertTrue(projectTable.delete(this.project1.getIdProgetto()));
+        assertFalse(projectTable.delete(this.project1.getIdProgetto()));
+        assertTrue(projectTable.findByPrimaryKey(this.project1.getIdProgetto()).isEmpty());
     }
 
     @Test
     void findByPrimaryKeyTest() {
-        ProgettoTable.save(this.progetto1);
-        ProgettoTable.save(this.progetto2);
-        assertEquals(this.progetto1, ProgettoTable.findByPrimaryKey(this.progetto1.getIdProgetto()).orElse(null));
-        assertEquals(this.progetto2, ProgettoTable.findByPrimaryKey(this.progetto2.getIdProgetto()).orElse(null));
+        projectTable.save(this.project1);
+        projectTable.save(this.project2);
+        System.out.println("" + this.project2.getIdProgetto());
+        assertEquals(this.project1, projectTable.findByPrimaryKey(this.project1.getIdProgetto()).orElse(null));
+        assertEquals(this.project2, projectTable.findByPrimaryKey(this.project2.getIdProgetto()).orElse(null));
     }
 
     @Test
     void findAllTest() {
-        ProgettoTable.save(this.progetto1);
-        ProgettoTable.save(this.progetto2);
+        projectTable.save(this.project1);
+        projectTable.save(this.project2);
         assertIterableEquals(
-            List.of(this.progetto1, this.progetto2),
-            ProgettoTable.findAll()
+            List.of(this.project1, this.project2),
+            projectTable.findAll()
         );
     }
 }

@@ -21,7 +21,6 @@ public class ProjectPanel extends JPanel {
         a0.setLayout(new GridLayout(0,1));
         {
         	var registerButton = new JButton("Registrare progetto");
-        	registerButton.setLayout(null);
         	registerButton.addActionListener(e -> {
             	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
     	        JComponentLoader.load(parentFrame, new InsertProjectPanel());
@@ -29,7 +28,6 @@ public class ProjectPanel extends JPanel {
         	a0.add(registerButton);
             
             var donatorlistButton = new JButton("Lista donatori progetto");
-            donatorlistButton.setLayout(null);
             donatorlistButton.addActionListener(e -> {
             	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
     	        JComponentLoader.load(parentFrame, new ProjectDonatorsPanel());
@@ -37,7 +35,6 @@ public class ProjectPanel extends JPanel {
             a0.add(donatorlistButton);
             
             var filterActiveButton = new JButton("Filtra progetti attivi");
-            filterActiveButton.setLayout(null);
             filterActiveButton.addActionListener(e -> {
             	// TODO
             });

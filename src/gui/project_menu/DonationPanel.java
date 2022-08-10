@@ -21,7 +21,6 @@ public class DonationPanel extends JPanel {
 		a0.setLayout(new GridLayout(0,1));
 		{
 			var registerButton = new JButton("Registrare donazione");
-			registerButton.setLayout(null);
 			registerButton.addActionListener(e -> {
 				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		        JComponentLoader.load(parentFrame, new InsertDonationPanel());
@@ -29,14 +28,12 @@ public class DonationPanel extends JPanel {
 			a0.add(registerButton);
 		    
 		    var reportButton = new JButton("Rapporto donazione/progetto");
-		    reportButton.setLayout(null);
 		    reportButton.addActionListener(e -> {
 		    	// TODO
 		    });
 		    a0.add(reportButton);
 		    
 		    var maxDonatorButton = new JButton("Donatore maggior quantita");
-		    maxDonatorButton.setLayout(null);
 		    maxDonatorButton.addActionListener(e -> {
 		    	// TODO
 		    });

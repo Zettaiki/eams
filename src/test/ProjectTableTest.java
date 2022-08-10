@@ -18,7 +18,7 @@ import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
-public class ProjectTableTests {
+public class ProjectTableTest {
 	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(),
 			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
 	final static ProjectTable projectTable = new ProjectTable(connectionProvider.getMySQLConnection());
@@ -49,7 +49,7 @@ public class ProjectTableTests {
     void updateTest() {
         assertFalse(projectTable.update(this.project1));
         projectTable.save(this.project2);
-        final Project updatedProject2 = new Project("a",	Utils.buildDate(11, 12, 2011).get(), 5);
+        final Project updatedProject2 = new Project("a", Utils.buildDate(11, 12, 2011).get(), 5);
         assertTrue(projectTable.update(updatedProject2));
         final Optional<Project> foundProgetto = projectTable.findByPrimaryKey(updatedProject2.getIdProgetto());
         assertFalse(foundProgetto.isEmpty());

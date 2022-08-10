@@ -19,7 +19,7 @@ import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
-public class DonationTableTests {
+public class DonationTableTest {
 	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(),
 			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
 	final static DonationTable donationTable = new DonationTable(connectionProvider.getMySQLConnection());

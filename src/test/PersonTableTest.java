@@ -14,7 +14,7 @@ import model.Person;
 import utils.ServerCredentials;
 import utils.TableTestUtils;
 
-class PersonTableTests {    
+class PersonTableTest {    
     final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static PersonTable personTable = new PersonTable(connectionProvider.getMySQLConnection());

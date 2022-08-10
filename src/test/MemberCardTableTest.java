@@ -15,7 +15,7 @@ import model.MemberCard;
 import utils.ServerCredentials;
 import utils.TableTestUtils;
 
-class MemberCardTableTests {
+class MemberCardTableTest {
     final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static MemberCardTable memberCardTable = new MemberCardTable(connectionProvider.getMySQLConnection());

@@ -23,8 +23,10 @@ public class BusinessTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static BusinessTable businessTable = new BusinessTable(connectionProvider.getMySQLConnection());
 
-    final Business business1 = new Business(new BigDecimal("12345678911"), "az1", "415452", "via Giuseppe", "Ancona", "Marche", "320256", "mail1@nicemail.it", Optional.of("fax1"));
-    final Business business2 = new Business(new BigDecimal("25369874102"), "az2", "743873", "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", "mail2@nicemail.it", Optional.empty());
+	final Business business1 = new Business(new BigDecimal("12345678911"), "az1", "415452", "via Giuseppe", "Ancona",
+			"Marche", "320256", "mail1@nicemail.it", Optional.of("fax1"));
+	final Business business2 = new Business(new BigDecimal("25369874102"), "az2", "743873", "via Garibaldi", "Ferrara",
+			"Emilia-Romagna", "45678", "mail2@nicemail.it", Optional.empty());
 
     @BeforeEach
 	public void setUp() throws Exception {

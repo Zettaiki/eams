@@ -6,10 +6,10 @@ import gui.GUI;
 import gui.MenuPanel;
 import utils.JComponentLoader;
 
-public class ProjectMenuPanel extends JPanel{
+public class ProjectDonationMenuPanel extends JPanel{
     private static final long serialVersionUID = 8475751505006519027L;
 
-    public ProjectMenuPanel() {
+    public ProjectDonationMenuPanel() {
         this.setName("EAMS - Projects and donations");
     	this.setPreferredSize(new Dimension(GUI.getMinScreenSize(), GUI.getMinScreenSize()*3/4));
     	this.setLayout(new BorderLayout());

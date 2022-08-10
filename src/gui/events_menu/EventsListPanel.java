@@ -5,9 +5,13 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+
+import utils.JComponentLoader;
 
 public class EventsListPanel extends JPanel {
 	private static final long serialVersionUID = 8776421810569801974L;
@@ -27,13 +31,15 @@ public class EventsListPanel extends JPanel {
 		{
 			var registerEventButton = new JButton("Registrare evento");
 			registerEventButton.addActionListener(e -> {
-				// TODO
+				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		        JComponentLoader.load(parentFrame, new InsertEventPanel());
 		    });
 			a0.add(registerEventButton);
 		    
 		    var registerServiceButton = new JButton("Registrare servizio");
 		    registerServiceButton.addActionListener(e -> {
-		    	// TODO
+		    	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		        JComponentLoader.load(parentFrame, new InsertServicePanel());
 		    });
 		    a0.add(registerServiceButton);
 		}

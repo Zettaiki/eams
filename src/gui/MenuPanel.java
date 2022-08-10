@@ -2,7 +2,8 @@ package gui;
 
 import javax.swing.*;
 
-import gui.project_menu.ProjectMenuPanel;
+import gui.events_menu.EventsMenuPanel;
+import gui.project_menu.ProjectDonationMenuPanel;
 import gui.volunteering_menu.VolunteeringMenuPanel;
 import utils.JComponentLoader;
 
@@ -48,7 +49,7 @@ public class MenuPanel extends JPanel {
     		var projectButton = new JButton("Area progetti e donazioni");
     		projectButton.addActionListener(e -> {
             	JFrame parent = JComponentLoader.getParentFrame(this);
-                JComponentLoader.load(parent, new ProjectMenuPanel());
+                JComponentLoader.load(parent, new ProjectDonationMenuPanel());
             });
             b0.add(projectButton, c);
             
@@ -65,7 +66,8 @@ public class MenuPanel extends JPanel {
             c.gridy = 2;
             var eventButton = new JButton("Eventi e servizi");
             eventButton.addActionListener(e -> {
-            	// TODO
+            	JFrame parent = JComponentLoader.getParentFrame(this);
+                JComponentLoader.load(parent, new EventsMenuPanel());
             });
             b0.add(eventButton, c);
             

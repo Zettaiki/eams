@@ -41,7 +41,7 @@ public class MenuPanel extends JPanel {
     	b0.setLayout(new GridBagLayout());
     	{
     	    final GridBagConstraints c = new GridBagConstraints();
-    	    c.insets = new Insets(20, 50, 50, 20);
+    	    c.insets = new Insets(20, 50, 20, 50);
             c.fill = GridBagConstraints.HORIZONTAL;
     	    
     	    c.gridx = 0;
@@ -73,6 +73,14 @@ public class MenuPanel extends JPanel {
             
             c.gridx = 0;
             c.gridy = 3;
+            var commerceButton = new JButton("Area commercio");
+            commerceButton.addActionListener(e -> {
+            	// TODO
+            });
+            b0.add(commerceButton, c);
+            
+            c.gridx = 0;
+            c.gridy = 4;
             var newsletterButton = new JButton("Newsletter");
             newsletterButton.addActionListener(e -> {
             	// TODO

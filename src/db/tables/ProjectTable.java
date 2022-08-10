@@ -96,10 +96,8 @@ public class ProjectTable implements Table<Project, Integer> {
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
-        	System.out.println(e.toString());
             return false;
         } catch (final SQLException e) {
-        	System.out.println(e.toString());
             throw new IllegalStateException(e);
         }
 	}

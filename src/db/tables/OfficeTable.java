@@ -16,7 +16,7 @@ import model.Office;
 
 public class OfficeTable implements Table<Office, String> {
 
-	public static final String TABLE_NAME = "tesserasocio";
+	public static final String TABLE_NAME = "sede";
 
 	private final Connection connection;
 

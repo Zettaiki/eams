@@ -23,8 +23,8 @@ public class GarbageTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static GarbageTable garbageTable = new GarbageTable(connectionProvider.getMySQLConnection());
 
-    final Garbage garbage1 = new Garbage("plastica", "riciclabile", new BigDecimal("123.51"), Optional.of("note note"));
-    final Garbage garbage2 = new Garbage("carta", "riciclabile", new BigDecimal("56.02"), Optional.empty());
+    final Garbage garbage1 = new Garbage("carta", "riciclabile", new BigDecimal("123.51"), Optional.of("note note"));
+    final Garbage garbage2 = new Garbage("plastica", "riciclabile", new BigDecimal("56.02"), Optional.empty());
 
     @BeforeEach
 	public void setUp() throws Exception {
@@ -49,7 +49,7 @@ public class GarbageTableTest {
     public void updateTest() {
         assertFalse(garbageTable.update(this.garbage1));
         garbageTable.save(this.garbage2);
-		final Garbage updatedGarbage2 = new Garbage("carta", "riciclabile", new BigDecimal("56.02"), Optional.of("still note note"));
+		final Garbage updatedGarbage2 = new Garbage("plastica", "riciclabile", new BigDecimal("56.02"), Optional.of("still note note"));
 		assertTrue(garbageTable.update(updatedGarbage2));
         final Optional<Garbage> foundGarbage = garbageTable.findByPrimaryKey(updatedGarbage2.getMateriale());
         assertFalse(foundGarbage.isEmpty());

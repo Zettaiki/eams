@@ -48,9 +48,9 @@ class MemberCardTableTest {
         memberCardTable.save(this.memberCard2);
         final MemberCard updatedMemberCard2 = new MemberCard("2", "BBBBBBBBBBBBBBBB", Utils.buildDate(13, 12, 2021).get());
         assertTrue(memberCardTable.update(updatedMemberCard2));
-        final Optional<MemberCard> foundTesseraSocio = memberCardTable.findByPrimaryKey(updatedMemberCard2.getIdSocio());
-        assertFalse(foundTesseraSocio.isEmpty());
-        assertEquals(updatedMemberCard2.getDataAssociazione(), foundTesseraSocio.get().getDataAssociazione());
+        final Optional<MemberCard> foundMemberCard = memberCardTable.findByPrimaryKey(updatedMemberCard2.getIdSocio());
+        assertFalse(foundMemberCard.isEmpty());
+        assertEquals(updatedMemberCard2.getDataAssociazione(), foundMemberCard.get().getDataAssociazione());
     }
 
     @Test

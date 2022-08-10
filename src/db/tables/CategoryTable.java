@@ -98,7 +98,7 @@ public class CategoryTable implements Table<Category, String> {
 
 	@Override
 	public boolean update(Category updatedCategoria) {
-		final String query = "UPDATE " + TABLE_NAME + " SET descrizione = ?, WHERE nome = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET descrizione = ? WHERE nome = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setString(1, updatedCategoria.getDescrizione().orElse(null));
 			statement.setString(2, updatedCategoria.getNome());

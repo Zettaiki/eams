@@ -45,7 +45,7 @@ public class EventsMenuPanel extends JPanel {
         
         // Service search panel
         
-        JComponent garbagePanel = new EventsListPanel();
+        JComponent garbagePanel = new GarbageMenuPanel();
         switchPane.addTab("Gestione rifiuti", garbagePanel);
         
         this.add(switchPane, BorderLayout.CENTER);

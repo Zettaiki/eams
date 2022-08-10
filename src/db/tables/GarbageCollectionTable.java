@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,9 +15,9 @@ import java.util.Optional;
 import db.Table;
 import model.GarbageCollection;
 
-public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
+public class GarbageCollectionTable implements Table<GarbageCollection, String> {
 
-	public static final String TABLE_NAME = "fornitura";
+	public static final String TABLE_NAME = "raccolta";
 
 	private final Connection connection;
 
@@ -36,14 +35,14 @@ public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"oraInizioServizio` TIME NOT NULL," +
+            			"idServizio CHAR(20) NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
             			"materiale VARCHAR(30) NOT NULL," +
             			"kg FLOAT NOT NULL," +
-            			"PRIMARY KEY (`oraInizioServizio`, `idEvento`, `materiale`)," +
+            			"PRIMARY KEY (idServizio, idEvento, materiale)," +
             			"FOREIGN KEY (materiale) REFERENCES rifiuto (materiale) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (oraInizioServizio, idEvento) REFERENCES servizio (oraInizio, idEvento) " +
+            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (idServizio, idEvento) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
@@ -53,10 +52,10 @@ public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
 	}
 
 	@Override
-	public Optional<GarbageCollection> findByPrimaryKey(Time oraInizioServizio) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE oraInizioServizio = ?";
+	public Optional<GarbageCollection> findByPrimaryKey(String idServizio) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setTime(1, oraInizioServizio);
+            statement.setString(1, idServizio);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -79,12 +78,12 @@ public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
 		final List<GarbageCollection> raccolte = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Time oraInizioServizio = resultSet.getTime("oraInizioServizio");
+				final String idServizio = resultSet.getString("idServizio");
 				final String idEvento = resultSet.getString("idEvento");
 				final String materiale = resultSet.getString("materiale");
 				final BigDecimal kg = resultSet.getBigDecimal("kg");
 				
-				final GarbageCollection raccolta = new GarbageCollection(oraInizioServizio, idEvento, materiale, kg);
+				final GarbageCollection raccolta = new GarbageCollection(idServizio, idEvento, materiale, kg);
 				raccolte.add(raccolta);
 			}
 		} catch (final SQLException e) {}
@@ -94,9 +93,9 @@ public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
 	@Override
 	public boolean save(GarbageCollection raccolta) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(oraInizioServizio, idEvento, materiale, kg) VALUES (?,?,?,?)";
+				"(idServizio, idEvento, materiale, kg) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-        	statement.setTime(1, raccolta.getOraInizioServizio());
+        	statement.setString(1, raccolta.getIdServizio());
             statement.setString(2, raccolta.getIdEvento());
             statement.setString(3, raccolta.getMateriale());
             statement.setBigDecimal(4, raccolta.getKg());
@@ -117,7 +116,7 @@ public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
 			statement.setString(1, updatedRaccolta.getIdEvento());
 			statement.setString(2, updatedRaccolta.getMateriale());
 			statement.setBigDecimal(3, updatedRaccolta.getKg());
-			statement.setTime(4, updatedRaccolta.getOraInizioServizio());
+			statement.setString(4, updatedRaccolta.getIdServizio());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -125,10 +124,10 @@ public class GarbageCollectionTable implements Table<GarbageCollection, Time> {
 	}
 
 	@Override
-	public boolean delete(Time oraInizioServizio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE oraInizioServizio = ?";
+	public boolean delete(String idServizio) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setTime(1, oraInizioServizio);
+            statement.setString(1, idServizio);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

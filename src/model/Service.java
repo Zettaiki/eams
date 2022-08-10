@@ -9,9 +9,9 @@ public class Service {
     private final Time oraInizio;
     private final Time oraFine;
     private final String tipo;
-    private final Optional<String> idProgetto;
+    private final Optional<Integer> idProgetto;
     
-	public Service(String idEvento, Time oraInizio, Time oraFine, String tipo, Optional<String> idProgetto) {
+	public Service(String idEvento, Time oraInizio, Time oraFine, String tipo, Optional<Integer> idProgetto) {
 		this.idEvento = idEvento;
 		this.oraInizio = oraInizio;
 		this.oraFine = oraFine;
@@ -39,7 +39,7 @@ public class Service {
 		return tipo;
 	}
 
-	public Optional<String> getIdProgetto() {
+	public Optional<Integer> getIdProgetto() {
 		return idProgetto;
 	}
 

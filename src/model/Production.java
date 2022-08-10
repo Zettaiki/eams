@@ -1,20 +1,19 @@
 package model;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.util.Objects;
 
 public class Production {
-	private final Time oraInizioServizio;
+	private final String idServizio;
     private final String idEvento;
     private final Integer idProdotto;
     private final Integer quantit‡Prodotta;
     private final String materialeUsato;
     private final BigDecimal kgRifiutiUsati;
     
-	public Production(Time oraInizioServizio, String idEvento, Integer idProdotto, Integer quantit‡Prodotta,
+	public Production(String idServizio, String idEvento, Integer idProdotto, Integer quantit‡Prodotta,
 			String materialeUsato, BigDecimal kgRifiutiUsati) {
-		this.oraInizioServizio = oraInizioServizio;
+		this.idServizio = idServizio;
 		this.idEvento = idEvento;
 		this.idProdotto = idProdotto;
 		this.quantit‡Prodotta = quantit‡Prodotta;
@@ -22,8 +21,8 @@ public class Production {
 		this.kgRifiutiUsati = kgRifiutiUsati;
 	}
     
-	public Time getOraInizioServizio() {
-		return oraInizioServizio;
+	public String getIdServizio() {
+		return idServizio;
 	}
 
 	public String getIdEvento() {
@@ -49,7 +48,7 @@ public class Production {
 	@Override
     public String toString() {
         return new StringBuilder()
-            .append("(").append(oraInizioServizio).append(" ")
+            .append("(").append(idServizio).append(" ")
 			.append(idEvento).append(" ")
 			.append(idProdotto).append(") ")
 			.append(quantit‡Prodotta).append(" ")
@@ -60,7 +59,7 @@ public class Production {
     @Override
     public boolean equals(final Object other) {
         return (other instanceof Production)
-                && ((Production) other).getOraInizioServizio().equals(this.getOraInizioServizio())
+                && ((Production) other).getIdServizio().equals(this.getIdServizio())
                 && ((Production) other).getIdEvento().equals(this.getIdEvento())
                 && ((Production) other).getIdProdotto().equals(this.getIdProdotto())
                 && ((Production) other).getQuantit‡Prodotta().equals(this.getQuantit‡Prodotta())
@@ -70,7 +69,7 @@ public class Production {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.oraInizioServizio, this.idEvento, this.idProdotto, this.quantit‡Prodotta,
+        return Objects.hash(this.idServizio, this.idEvento, this.idProdotto, this.quantit‡Prodotta,
         		this.materialeUsato, this.kgRifiutiUsati);
     }
 }

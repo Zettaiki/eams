@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,16 +9,16 @@ public class Sale {
     private final Date data;
     private final Integer quantità;
     private final String idEvento;
-    private final Time oraInizioServizio;
+    private final String idServizio;
     
 	public Sale(String codiceFiscaleCliente, Integer idProdotto, Date data, Integer quantità,
-			String idEvento, Time oraInizioServizio) {
+			String idEvento, String idServizio) {
 		this.codiceFiscaleCliente = codiceFiscaleCliente;
 		this.idProdotto = idProdotto;
 		this.data = data;
 		this.quantità = quantità;
 		this.idEvento = idEvento;
-		this.oraInizioServizio = oraInizioServizio;
+		this.idServizio = idServizio;
 	}
 	
 	public String getCodiceFiscaleCliente() {
@@ -42,8 +41,8 @@ public class Sale {
 		return idEvento;
 	}
 	
-	public Time getOraInizioServizio() {
-		return oraInizioServizio;
+	public String getIdServizio() {
+		return idServizio;
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class Sale {
 			.append(data).append(") ")
 			.append(quantità).append(" ")
 			.append(idEvento).append(" ")
-			.append(oraInizioServizio).toString();
+			.append(idServizio).toString();
     }
 
     @Override
@@ -65,12 +64,12 @@ public class Sale {
                 && ((Sale) other).getData().equals(this.getData())
                 && ((Sale) other).getQuantità().equals(this.getQuantità())
                 && ((Sale) other).getIdEvento().equals(this.getIdEvento())
-                && ((Sale) other).getOraInizioServizio().equals(this.getOraInizioServizio());
+                && ((Sale) other).getIdServizio().equals(this.getIdServizio());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(this.codiceFiscaleCliente, this.idProdotto, this.data, this.quantità,
-        		this.idEvento, this.oraInizioServizio);
+        		this.idEvento, this.idServizio);
     }
 }

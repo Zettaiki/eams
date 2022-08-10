@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,11 +41,11 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
             			"data DATE NOT NULL," +
             			"quantità INT NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
-            			"oraInizioServizio TIME NOT NULL," +
+            			"idServizio CHAR(20) NOT NULL," +
             			"PRIMARY KEY (codiceFiscaleCliente, idProdotto, data)," +
             			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idEvento, oraInizioServizio) REFERENCES servizio (idEvento, oraInizio) " +
+            			"FOREIGN KEY (idEvento, idServizio) REFERENCES servizio (idEvento, oraInizio) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
@@ -90,9 +89,9 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
 			    final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
 			    final Integer quantità = resultSet.getInt("quantità");
 			    final String idEvento = resultSet.getString("idEvento");
-			    final Time oraInizioServizio = resultSet.getTime("oraInizioServizio");
+			    final String idServizio = resultSet.getString("idServizio");
 				
-				final Sale vendita = new Sale(codiceFiscaleCliente, idProdotto, data, quantità, idEvento, oraInizioServizio);
+				final Sale vendita = new Sale(codiceFiscaleCliente, idProdotto, data, quantità, idEvento, idServizio);
 				vendite.add(vendita);
 			}
 		} catch (final SQLException e) {}
@@ -102,7 +101,7 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
 	@Override
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleCliente, idProdotto, data, quantità, idEvento, oraInizioServizio) " +
+				"(codiceFiscaleCliente, idProdotto, data, quantità, idEvento, idServizio) " +
 				"VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, vendita.getCodiceFiscaleCliente());
@@ -110,7 +109,7 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
             statement.setDate(3, Utils.dateToSqlDate(vendita.getData()));
             statement.setInt(4, vendita.getQuantità());
             statement.setString(5, vendita.getIdEvento());
-            statement.setTime(6, vendita.getOraInizioServizio());
+            statement.setString(6, vendita.getIdServizio());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -123,13 +122,13 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
 	@Override
 	public boolean update(Sale updatedVendita) {
 		final String query = "UPDATE " + TABLE_NAME + " SET idProdotto = ?," + "data = ?, quantità = ?," +
-				 "idEvento = ?," + "oraInizioServizio = ? WHERE codiceFiscaleCliente = ?";
+				 "idEvento = ?," + "idServizio = ? WHERE codiceFiscaleCliente = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, updatedVendita.getIdProdotto());
             statement.setDate(2, Utils.dateToSqlDate(updatedVendita.getData()));
             statement.setInt(3, updatedVendita.getQuantità());
             statement.setString(4, updatedVendita.getIdEvento());
-            statement.setTime(5, updatedVendita.getOraInizioServizio());
+            statement.setString(5, updatedVendita.getIdServizio());
             statement.setString(6, updatedVendita.getCodiceFiscaleCliente());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {

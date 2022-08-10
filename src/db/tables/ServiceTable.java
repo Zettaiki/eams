@@ -84,7 +84,7 @@ public class ServiceTable implements TableDoublePk<Service, String, Time> {
 				final String tipo = resultSet.getString("tipo");
 				final Time oraInizio = resultSet.getTime("oraInizio");
 			    final Time oraFine = resultSet.getTime("oraFine");
-			    final Optional<String> idProgetto = Optional.ofNullable(resultSet.getString("idProgetto"));
+			    final Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
 				
 				final Service servizio = new Service(idEvento, oraInizio, oraFine, tipo, idProgetto);
 				servizi.add(servizio);
@@ -102,12 +102,13 @@ public class ServiceTable implements TableDoublePk<Service, String, Time> {
             statement.setString(2, servizio.getTipo());
             statement.setTime(3, servizio.getOraInizio());
             statement.setTime(4, servizio.getOraFine());
-            statement.setString(5, servizio.getIdProgetto().orElse(null));
+            statement.setInt(5, servizio.getIdProgetto().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
             return false;
         } catch (final SQLException e) {
+        	System.out.println(e.toString());
             throw new IllegalStateException(e);
         }
 	}
@@ -119,7 +120,7 @@ public class ServiceTable implements TableDoublePk<Service, String, Time> {
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setTime(1, updatedServizio.getOraFine());
 			statement.setString(2, updatedServizio.getTipo());
-            statement.setString(3, updatedServizio.getIdProgetto().orElse(null));
+            statement.setInt(3, updatedServizio.getIdProgetto().orElse(null));
             statement.setString(4, updatedServizio.getIdEvento());
             statement.setTime(5, updatedServizio.getOraInizio());
 			return statement.executeUpdate() > 0;

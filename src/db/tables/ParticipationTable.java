@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +14,7 @@ import java.util.Optional;
 import db.TableTriplePk;
 import model.Participation;
 
-public class ParticipationTable implements TableTriplePk<Participation, String, Time, String> {
+public class ParticipationTable implements TableTriplePk<Participation, String, String, String> {
 
 	public static final String TABLE_NAME = "partecipazione";
 
@@ -36,10 +35,10 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscaleVolontario CHAR(16) NOT NULL," +
-            			"oraInizioServizio TIME NOT NULL," +
+            			"idServizio CHAR(20) NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
-            			"PRIMARY KEY (codiceFiscaleVolontario, oraInizioServizio, idEvento)," +
-            			"FOREIGN KEY (oraInizioServizio, idEvento) REFERENCES servizio (oraInizio, idEvento) " +
+            			"PRIMARY KEY (codiceFiscaleVolontario, idServizio, idEvento)," +
+            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (oraInizio, idEvento) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (codiceFiscaleVolontario) REFERENCES volontario (codiceFiscale)" +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
@@ -51,12 +50,12 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 	}
 
 	@Override
-	public Optional<Participation> findByPrimaryKey(String codiceFiscaleVolontario, Time oraInizioServizio, String idEvento) {
+	public Optional<Participation> findByPrimaryKey(String codiceFiscaleVolontario, String idServizio, String idEvento) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ? AND " +
-				"oraInizioServizio = ? AND idEvento = ?";
+				"idServizio = ? AND idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleVolontario);
-            statement.setTime(2, oraInizioServizio);
+            statement.setString(2, idServizio);
             statement.setString(3, idEvento);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
@@ -81,10 +80,10 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 		try {
 			while (resultSet.next()) {
 				final String codiceFiscaleVolontario = resultSet.getString("codiceFiscaleVolontario");
-				final Time oraInizioServizio = resultSet.getTime("oraInizioServizio");
+				final String idServizio = resultSet.getString("idServizio");
 				final String idEvento = resultSet.getString("idEvento");
 				
-				final Participation partecipazione = new Participation(codiceFiscaleVolontario, oraInizioServizio, idEvento);
+				final Participation partecipazione = new Participation(codiceFiscaleVolontario, idServizio, idEvento);
 				partecipazioni.add(partecipazione);
 			}
 		} catch (final SQLException e) {}
@@ -94,10 +93,10 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 	@Override
 	public boolean save(Participation partecipazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleVolontario, oraInizioServizio, idEvento) VALUES (?,?,?)";
+				"(codiceFiscaleVolontario, idServizio, idEvento) VALUES (?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, partecipazione.getCodiceFiscaleVolontario());
-            statement.setTime(2, partecipazione.getOraInizioServizio());
+            statement.setString(2, partecipazione.getIdServizio());
             statement.setString(3, partecipazione.getIdEvento());
             statement.executeUpdate();
             return true;
@@ -114,12 +113,12 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 	}
 
 	@Override
-	public boolean delete(String codiceFiscaleVolontario, Time oraInizioServizio, String idEvento) {
+	public boolean delete(String codiceFiscaleVolontario, String idServizio, String idEvento) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ?" +
-				"AND oraInizioServizio = ? AND idEvento = ?";
+				"AND idServizio = ? AND idEvento = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleVolontario);
-            statement.setTime(2, oraInizioServizio);
+            statement.setString(2, idServizio);
             statement.setString(3, idEvento);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {

@@ -28,9 +28,9 @@ public class Planning {
 
     @Override
     public boolean equals(final Object other) {
-        return (other instanceof Participation)
-        		&& ((Participation) other).getCodiceFiscaleVolontario().equals(this.getCodiceFiscaleDipendente())
-                && ((Participation) other).getIdEvento().equals(this.getIdEvento());
+        return (other instanceof Planning)
+        		&& ((Planning) other).getCodiceFiscaleDipendente().equals(this.getCodiceFiscaleDipendente())
+                && ((Planning) other).getIdEvento().equals(this.getIdEvento());
     }
 
     @Override

@@ -37,13 +37,13 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
             			"codiceFiscaleDipendente CHAR(16) NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
             			"PRIMARY KEY (codiceFiscaleDipendente, idEvento)," +
-            			"FOREIGN KEY (codiceFiscaleDipendente) REFERENCES dipendente (codiceFiscale)" +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
+            			"FOREIGN KEY (codiceFiscaleDipendente) REFERENCES dipendente (codiceFiscale) " +
+            			"ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (idEvento) REFERENCES evento (idEvento) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +            			
+            			"ON DELETE CASCADE ON UPDATE CASCADE" +            			
             		")");
             return true;
-        } catch (final SQLException e) {        	
+        } catch (final SQLException e) {
             return false;
         }
 	}
@@ -89,7 +89,7 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
 	@Override
 	public boolean save(Planning organizzazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleDipendente, idEvento) VALUES (?,?)";
+				" (codiceFiscaleDipendente, idEvento) VALUES (?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, organizzazione.getCodiceFiscaleDipendente());
             statement.setString(2, organizzazione.getIdEvento());

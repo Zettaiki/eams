@@ -6,24 +6,30 @@ import java.util.Optional;
 
 public class Service {
 	private final String idEvento;
+	private final String idServizio;
     private final Time oraInizio;
     private final Time oraFine;
     private final String tipo;
     private final Optional<Integer> idProgetto;
     
-	public Service(String idEvento, Time oraInizio, Time oraFine, String tipo, Optional<Integer> idProgetto) {
+	public Service(String idEvento, String idServizio, Time oraInizio, Time oraFine, String tipo, Optional<Integer> idProgetto) {
 		this.idEvento = idEvento;
+		this.idServizio = idServizio;
 		this.oraInizio = oraInizio;
 		this.oraFine = oraFine;
 		this.tipo = tipo;
 		this.idProgetto = Objects.requireNonNull(idProgetto);
 	}
     
-	public Service(String idEvento, Time oraInizio, Time oraFine, String tipo) {
-		this(idEvento, oraInizio, oraFine, tipo, Optional.empty());
+	public Service(String idEvento, String idServizio, Time oraInizio, Time oraFine, String tipo) {
+		this(idEvento, idServizio, oraInizio, oraFine, tipo, Optional.empty());
 	}
 
 	public String getIdEvento() {
+		return this.idEvento;
+	}
+	
+	public String getIdServizio() {
 		return this.idEvento;
 	}
 
@@ -47,7 +53,8 @@ public class Service {
     public String toString() {
         return new StringBuilder()
             .append("(").append(idEvento).append(" ")
-			.append(oraInizio).append(") ")
+			.append(idServizio).append(") ")
+			.append(oraInizio).append(" ")
 			.append(oraFine).append(" ")
 			.append(tipo).append(" ")
 			.append(idProgetto).toString();
@@ -57,6 +64,7 @@ public class Service {
     public boolean equals(final Object other) {
         return (other instanceof Service)
         		&& ((Service) other).getIdEvento().equals(this.getIdEvento())
+        		&& ((Service) other).getIdServizio().equals(this.getIdServizio())
                 && ((Service) other).getOraInizio().equals(this.getOraInizio())
                 && ((Service) other).getOraFine().equals(this.getOraFine())
                 && ((Service) other).getTipo().equals(this.getTipo())
@@ -65,6 +73,6 @@ public class Service {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.idEvento, this.oraInizio, this.oraFine, this.tipo, this.idProgetto);
+        return Objects.hash(this.idEvento, this.idServizio, this.oraInizio, this.oraFine, this.tipo, this.idProgetto);
     }
 }

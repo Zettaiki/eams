@@ -23,8 +23,8 @@ public class ServiceTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static ServiceTable serviceTable = new ServiceTable(connectionProvider.getMySQLConnection());
 
-    final Service service1 = new Service("1", Time.valueOf("18:45:20"), Time.valueOf("19:45:20"), "ag", Optional.of(1));
-    final Service service2 = new Service("2", Time.valueOf("18:00:00"), Time.valueOf("19:45:20"), "bg", Optional.empty());
+    final Service service1 = new Service("1", "a1", Time.valueOf("18:45:20"), Time.valueOf("19:45:20"), "ag", Optional.of(1));
+    final Service service2 = new Service("2", "b1", Time.valueOf("18:00:00"), Time.valueOf("19:45:20"), "bg", Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
@@ -49,9 +49,9 @@ public class ServiceTableTest {
     void updateTest() {
         assertFalse(serviceTable.update(this.service1));
         serviceTable.save(this.service2);
-        final Service updatedService2 = new Service("2", Time.valueOf("18:00:00"), Time.valueOf("19:45:20"), "bg", Optional.of(2));
+        final Service updatedService2 = new Service("2", "b1", Time.valueOf("19:00:00"), Time.valueOf("19:45:20"), "bg", Optional.of(2));
         assertTrue(serviceTable.update(updatedService2));
-        final Optional<Service> foundService = serviceTable.findByPrimaryKey(updatedService2.getIdEvento(), updatedService2.getOraInizio());
+        final Optional<Service> foundService = serviceTable.findByPrimaryKey(updatedService2.getIdEvento(), updatedService2.getIdServizio());
         assertFalse(foundService.isEmpty());
         assertEquals(updatedService2.getIdProgetto(), foundService.get().getIdProgetto());
     }
@@ -59,17 +59,17 @@ public class ServiceTableTest {
     @Test
     void deleteTest() {
         serviceTable.save(this.service1);
-        assertTrue(serviceTable.delete(this.service1.getIdEvento(), this.service1.getOraInizio()));
-        assertFalse(serviceTable.delete(this.service1.getIdEvento(), this.service1.getOraInizio()));
-        assertTrue(serviceTable.findByPrimaryKey(this.service1.getIdEvento(), this.service1.getOraInizio()).isEmpty());
+        assertTrue(serviceTable.delete(this.service1.getIdEvento(), this.service1.getIdServizio()));
+        assertFalse(serviceTable.delete(this.service1.getIdEvento(), this.service1.getIdServizio()));
+        assertTrue(serviceTable.findByPrimaryKey(this.service1.getIdEvento(), this.service1.getIdServizio()).isEmpty());
     }
 
     @Test
     void findByPrimaryKeyTest() {
         serviceTable.save(this.service1);
         serviceTable.save(this.service2);
-        assertEquals(this.service1, serviceTable.findByPrimaryKey(this.service1.getIdEvento(), this.service1.getOraInizio()).orElse(null));
-        assertEquals(this.service2, serviceTable.findByPrimaryKey(this.service2.getIdEvento(), this.service2.getOraInizio()).orElse(null));
+        assertEquals(this.service1, serviceTable.findByPrimaryKey(this.service1.getIdEvento(), this.service1.getIdServizio()).orElse(null));
+        assertEquals(this.service2, serviceTable.findByPrimaryKey(this.service2.getIdEvento(), this.service2.getIdServizio()).orElse(null));
     }
 
     @Test

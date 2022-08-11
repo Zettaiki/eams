@@ -41,7 +41,7 @@ public class ProductTable implements Table<Product, String> {
             			"nome VARCHAR(30) NOT NULL," +
             			"prezzo DECIMAL(6,2) NOT NULL," +
             			"quantitàImmagazzinata INT NOT NULL," +
-            			"provenienza VARCHAR(15) NOT NULL," +
+            			"provenienza VARCHAR(20) NOT NULL," +
             			"descrizione MEDIUMTEXT NULL DEFAULT NULL," +
             			"FOREIGN KEY (categoria) REFERENCES categoria (nome) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
@@ -119,7 +119,7 @@ public class ProductTable implements Table<Product, String> {
 	@Override
 	public boolean update(Product updatedProdotto) {
 		final String query = "UPDATE " + TABLE_NAME + " SET " + "categoria = ?," + "nome = ?," + "prezzo = ?,"
-				+ "quantitàImmagazzinata = ?," + "provenienza = ?," + "descrizione = ?,"
+				+ "quantitàImmagazzinata = ?," + "provenienza = ?," + "descrizione = ? "
 				+ "WHERE idProdotto = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 	            statement.setString(1, updatedProdotto.getCategoria());

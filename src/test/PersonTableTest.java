@@ -50,10 +50,10 @@ class PersonTableTest {
         final Person updatedPerson2 = new Person("BBBBBBBBBBBBBBBB", "Gianpaolo", "Cavalieri", "mail2@nicemail.it",
         		Optional.of("33563674789056"), "via Garibaldi", "Ferrara", "Emilia-Romagna", "45678", Optional.of("Esterna"));
         assertTrue(personTable.update(updatedPerson2));
-        final Optional<Person> foundPersona = personTable.findByPrimaryKey(updatedPerson2.getCodiceFiscale());
-        assertFalse(foundPersona.isEmpty());
-        assertEquals(updatedPerson2.getNome(), foundPersona.get().getNome());
-        assertEquals(updatedPerson2.getTipo(), foundPersona.get().getTipo());
+        final Optional<Person> foundPerson = personTable.findByPrimaryKey(updatedPerson2.getCodiceFiscale());
+        assertFalse(foundPerson.isEmpty());
+        assertEquals(updatedPerson2.getNome(), foundPerson.get().getNome());
+        assertEquals(updatedPerson2.getTipo(), foundPerson.get().getTipo());
     }
 
     @Test

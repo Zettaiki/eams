@@ -23,8 +23,8 @@ public class ServiceTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static ServiceTable serviceTable = new ServiceTable(connectionProvider.getMySQLConnection());
 
-    final Service service1 = new Service("1", "a1", Time.valueOf("18:45:20"), Time.valueOf("19:45:20"), "ag", Optional.of(1));
-    final Service service2 = new Service("2", "b1", Time.valueOf("18:00:00"), Time.valueOf("19:45:20"), "bg", Optional.empty());
+    final Service service1 = new Service("s1", "e1", Time.valueOf("18:45:20"), Time.valueOf("19:45:20"), "ag", Optional.of(1));
+    final Service service2 = new Service("s2", "e2", Time.valueOf("18:00:00"), Time.valueOf("19:45:20"), "bg", Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
@@ -49,7 +49,7 @@ public class ServiceTableTest {
     void updateTest() {
         assertFalse(serviceTable.update(this.service1));
         serviceTable.save(this.service2);
-        final Service updatedService2 = new Service("2", "b1", Time.valueOf("19:00:00"), Time.valueOf("19:45:20"), "bg", Optional.of(2));
+        final Service updatedService2 = new Service("s2", "b1", Time.valueOf("19:00:00"), Time.valueOf("19:45:20"), "bg", Optional.of(2));
         assertTrue(serviceTable.update(updatedService2));
         final Optional<Service> foundService = serviceTable.findByPrimaryKey(updatedService2.getIdEvento(), updatedService2.getIdServizio());
         assertFalse(foundService.isEmpty());

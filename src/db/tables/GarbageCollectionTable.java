@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
+import db.TableTriplePk;
 import model.GarbageCollection;
 
-public class GarbageCollectionTable implements Table<GarbageCollection, String> {
+public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, String, String, String> {
 
 	public static final String TABLE_NAME = "raccolta";
 
@@ -46,16 +46,19 @@ public class GarbageCollectionTable implements Table<GarbageCollection, String> 
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
-        } catch (final SQLException e) {        	
+        } catch (final SQLException e) {    
+        	System.out.println(e.toString());
             return false;
         }
 	}
 
 	@Override
-	public Optional<GarbageCollection> findByPrimaryKey(String idServizio) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ?";
+	public Optional<GarbageCollection> findByPrimaryKey(String idServizio, String idEvento, String materiale) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND idEvento = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idServizio);
+            statement.setString(2, idEvento);
+            statement.setString(3, materiale);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -110,13 +113,13 @@ public class GarbageCollectionTable implements Table<GarbageCollection, String> 
 
 	@Override
 	public boolean update(GarbageCollection updatedRaccolta) {
-		final String query = "UPDATE " + TABLE_NAME + " SET partitaIVA = ?," + "data = ?," + "kgConsegnati = ? "
-				+ "WHERE materiale = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET kg = ? "
+				+ "WHERE idServizio = ? AND idEvento = ? AND materiale = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedRaccolta.getIdEvento());
-			statement.setString(2, updatedRaccolta.getMateriale());
-			statement.setBigDecimal(3, updatedRaccolta.getKg());
-			statement.setString(4, updatedRaccolta.getIdServizio());
+			statement.setBigDecimal(1, updatedRaccolta.getKg());
+			statement.setString(2, updatedRaccolta.getIdServizio());
+			statement.setString(3, updatedRaccolta.getIdEvento());
+			statement.setString(4, updatedRaccolta.getMateriale());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -124,10 +127,12 @@ public class GarbageCollectionTable implements Table<GarbageCollection, String> 
 	}
 
 	@Override
-	public boolean delete(String idServizio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ?";
+	public boolean delete(String idServizio, String idEvento, String materiale) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND idEvento = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idServizio);
+            statement.setString(2, idEvento);
+			statement.setString(3, materiale);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

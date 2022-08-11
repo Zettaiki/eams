@@ -46,7 +46,7 @@ public class PlanningTableTest {
     
     @Test
     public void updateTest() {
-        assertThrows(IllegalStateException.class, () -> planningTable.update(new Planning("-", "-")));
+        assertThrows(IllegalStateException.class, () -> planningTable.update(new Planning("AAAAAAAAAAAAAAAA", "1")));
     }
 
     @Test

@@ -23,8 +23,8 @@ public class EventTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static EventTable eventTable = new EventTable(connectionProvider.getMySQLConnection());
 
-    final Event event1 = new Event("1", "a", Utils.buildDate(11, 10, 2022).get(), Optional.of("molto bello"));
-    final Event event2 = new Event("2", "bo", Utils.buildDate(11, 12, 2021).get(), Optional.empty());
+    final Event event1 = new Event("e1", "a", Utils.buildDate(11, 10, 2022).get(), Optional.of("molto bello"));
+    final Event event2 = new Event("e2", "bo", Utils.buildDate(11, 12, 2021).get(), Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
@@ -49,7 +49,7 @@ public class EventTableTest {
     void updateTest() {
         assertFalse(eventTable.update(this.event1));
         eventTable.save(this.event2);
-        final Event updatedEvent2 = new Event("2", "bo", Utils.buildDate(11, 12, 2021).get(), Optional.of("molto belloanche questo"));
+        final Event updatedEvent2 = new Event("e2", "bo", Utils.buildDate(11, 12, 2021).get(), Optional.of("molto belloanche questo"));
         assertTrue(eventTable.update(updatedEvent2));
         final Optional<Event> foundEvent = eventTable.findByPrimaryKey(updatedEvent2.getIdEvento());
         assertFalse(foundEvent.isEmpty());

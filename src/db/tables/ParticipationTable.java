@@ -38,13 +38,14 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
             			"idServizio CHAR(20) NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
             			"PRIMARY KEY (codiceFiscaleVolontario, idServizio, idEvento)," +
-            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (oraInizio, idEvento) " +
+            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (idServizio, idEvento) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (codiceFiscaleVolontario) REFERENCES volontario (codiceFiscale)" +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
-        } catch (final SQLException e) {        	
+        } catch (final SQLException e) {
+        	System.out.println(e.toString());
             return false;
         }
 	}

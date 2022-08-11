@@ -34,16 +34,16 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscale` CHAR(16) NOT NULL," +
+            			"codiceFiscale CHAR(16) NOT NULL," +
             			"idNewsletter INT NOT NULL," +
-            			"PRIMARY KEY (`codiceFiscale`, `newsletterID`)," +
-            			"FOREIGN KEY (`newsletterID`) REFERENCES newsletter (idNewsletter) " +
+            			"PRIMARY KEY (codiceFiscale, idNewsletter)," +
+            			"FOREIGN KEY (idNewsletter) REFERENCES newsletter (idNewsletter) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (`codiceFiscale`) REFERENCES persona (codiceFiscale) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE)" +
+            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) " +
+            			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
-        } catch (final SQLException e) {        	
+        } catch (final SQLException e) {
             return false;
         }
 	}
@@ -96,6 +96,7 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
+        	System.out.println(e.toString());
             return false;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

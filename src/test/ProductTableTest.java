@@ -23,9 +23,9 @@ public class ProductTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static ProductTable productTable = new ProductTable(connectionProvider.getMySQLConnection());
 
-	final Product product1 = new Product("2", "a", "borraccia", new BigDecimal("20.90"), 20, "raccolta rifiuti",
+	final Product product1 = new Product("p1", "a", "borraccia", new BigDecimal("20.90"), 20, "raccolta rifiuti",
 			Optional.of("molto belle"));
-	final Product product2 = new Product("21", "b", "cappellino", new BigDecimal("10.50"), 50, "fornito",
+	final Product product2 = new Product("p2", "b", "cappellino", new BigDecimal("10.50"), 50, "fornito",
 			Optional.empty());
 
     @BeforeEach
@@ -51,7 +51,7 @@ public class ProductTableTest {
     void updateTest() {
         assertFalse(productTable.update(this.product1));
         productTable.save(this.product2);
-        final Product updatedProduct2 = new Product("21", "b", "cappellino", new BigDecimal("10.50"), 50, "fornito",
+        final Product updatedProduct2 = new Product("p2", "b", "cappellino", new BigDecimal("10.50"), 50, "fornito",
     			Optional.of("AAAAA"));
         assertTrue(productTable.update(updatedProduct2));
         final Optional<Product> foundProduct = productTable.findByPrimaryKey(updatedProduct2.getIdProdotto());

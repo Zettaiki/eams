@@ -6,12 +6,12 @@ import java.util.Objects;
 public class Production {
 	private final String idServizio;
     private final String idEvento;
-    private final Integer idProdotto;
+    private final String idProdotto;
     private final Integer quantitàProdotta;
     private final String materialeUsato;
     private final BigDecimal kgRifiutiUsati;
     
-	public Production(String idServizio, String idEvento, Integer idProdotto, Integer quantitàProdotta,
+	public Production(String idServizio, String idEvento, String idProdotto, Integer quantitàProdotta,
 			String materialeUsato, BigDecimal kgRifiutiUsati) {
 		this.idServizio = idServizio;
 		this.idEvento = idEvento;
@@ -29,7 +29,7 @@ public class Production {
 		return idEvento;
 	}
 	
-	public Integer getIdProdotto() {
+	public String getIdProdotto() {
 		return idProdotto;
 	}
 

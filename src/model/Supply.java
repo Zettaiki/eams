@@ -5,19 +5,19 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Supply {
-	private final Integer idProdotto;
+	private final String idProdotto;
 	private final BigDecimal partitaIVA;
     private final Date data;
     private final Integer quantitàFornita;
     
-	public Supply(Integer idProdotto, BigDecimal partitaIVA, Date data, Integer quantitàFornita) {
+	public Supply(String idProdotto, BigDecimal partitaIVA, Date data, Integer quantitàFornita) {
 		this.idProdotto = idProdotto;
 		this.partitaIVA = partitaIVA;
 		this.data = data;
 		this.quantitàFornita = quantitàFornita;
 	}
 
-	public Integer getIdProdotto() {
+	public String getIdProdotto() {
 		return idProdotto;
 	}
 

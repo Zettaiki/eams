@@ -17,7 +17,7 @@ import db.TableTriplePk;
 import model.Supply;
 import utils.Utils;
 
-public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, Date> {
+public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Date> {
 
 	public static final String TABLE_NAME = "fornitura";
 
@@ -37,7 +37,7 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idProdotto INT NOT NULL," +
+            			"idProdotto CHAR(20) NOT NULL," +
             			"partitaIVA DECIMAL(11) NOT NULL," +
             			"data DATE NOT NULL," +
             			"quantitàFornita INT NOT NULL," +
@@ -48,17 +48,17 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
-        } catch (final SQLException e) {        	
+        } catch (final SQLException e) {
             return false;
         }
 	}
 
 	@Override
-	public Optional<Supply> findByPrimaryKey(Integer idProdotto, BigDecimal partitaIVA, Date data) {
+	public Optional<Supply> findByPrimaryKey(String idProdotto, BigDecimal partitaIVA, Date data) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ? AND partitaIVA = ? " +
 				"AND data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idProdotto);
+            statement.setString(1, idProdotto);
             statement.setBigDecimal(2, partitaIVA);
             statement.setDate(3, Utils.dateToSqlDate(data));
             final ResultSet resultSet = statement.executeQuery();
@@ -83,7 +83,7 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 		final List<Supply> forniture = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Integer idProdotto = resultSet.getInt("idProdotto");
+				final String idProdotto = resultSet.getString("idProdotto");
 				final BigDecimal partitaIVA = resultSet.getBigDecimal("partitaIVA");
 				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
 				final Integer quantitàFornita = resultSet.getInt("quantitàFornita");
@@ -100,7 +100,7 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idProdotto, partitaIVA, data, quantitàFornita) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, fornitura.getIdProdotto());
+            statement.setString(1, fornitura.getIdProdotto());
             statement.setBigDecimal(2, fornitura.getPartitaIVA());
             statement.setDate(3, Utils.dateToSqlDate(fornitura.getData()));
             statement.setInt(4, fornitura.getQuantitàFornita());
@@ -119,7 +119,7 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 				+ "WHERE idProdotto = ? AND partitaIVA = ? AND data = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setInt(1, updatedFornitura.getQuantitàFornita());
-			statement.setInt(2, updatedFornitura.getIdProdotto());
+			statement.setString(2, updatedFornitura.getIdProdotto());
 			statement.setBigDecimal(3, updatedFornitura.getPartitaIVA());
 			statement.setDate(4, Utils.dateToSqlDate(updatedFornitura.getData()));
 			return statement.executeUpdate() > 0;
@@ -129,11 +129,11 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 	}
 
 	@Override
-	public boolean delete(Integer idProdotto, BigDecimal partitaIVA, Date data) {
+	public boolean delete(String idProdotto, BigDecimal partitaIVA, Date data) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProdotto = ? AND partitaIVA = ? " +
 				"AND data = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idProdotto);
+            statement.setString(1, idProdotto);
             statement.setBigDecimal(2, partitaIVA);
             statement.setDate(3, Utils.dateToSqlDate(data));
             return statement.executeUpdate() > 0;

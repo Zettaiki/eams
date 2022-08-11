@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class Sale {
 	private final String codiceFiscaleCliente;
-    private final Integer idProdotto;
+    private final String idProdotto;
     private final Date data;
     private final Integer quantità;
     private final String idEvento;
     private final String idServizio;
     
-	public Sale(String codiceFiscaleCliente, Integer idProdotto, Date data, Integer quantità,
+	public Sale(String codiceFiscaleCliente, String idProdotto, Date data, Integer quantità,
 			String idEvento, String idServizio) {
 		this.codiceFiscaleCliente = codiceFiscaleCliente;
 		this.idProdotto = idProdotto;
@@ -25,7 +25,7 @@ public class Sale {
 		return codiceFiscaleCliente;
 	}
 
-	public Integer getIdProdotto() {
+	public String getIdProdotto() {
 		return idProdotto;
 	}
 

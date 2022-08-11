@@ -8,13 +8,13 @@ public class Supply {
 	private final Integer idProdotto;
 	private final BigDecimal partitaIVA;
     private final Date data;
-    private final Integer quantit‡Fornita;
+    private final Integer quantit√†Fornita;
     
-	public Supply(Integer idProdotto, BigDecimal partitaIVA, Date data, Integer quantit‡Fornita) {
+	public Supply(Integer idProdotto, BigDecimal partitaIVA, Date data, Integer quantit√†Fornita) {
 		this.idProdotto = idProdotto;
 		this.partitaIVA = partitaIVA;
 		this.data = data;
-		this.quantit‡Fornita = quantit‡Fornita;
+		this.quantit√†Fornita = quantit√†Fornita;
 	}
 
 	public Integer getIdProdotto() {
@@ -29,8 +29,8 @@ public class Supply {
 		return data;
 	}
 
-	public Integer getQuantit‡Fornita() {
-		return quantit‡Fornita;
+	public Integer getQuantit√†Fornita() {
+		return quantit√†Fornita;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class Supply {
             .append("(").append(idProdotto).append(" ")
 			.append(partitaIVA).append(" ")
 			.append(data).append(") ")
-			.append(quantit‡Fornita).toString();
+			.append(quantit√†Fornita).toString();
     }
 
     @Override
@@ -48,11 +48,11 @@ public class Supply {
         		&& ((Supply) other).getIdProdotto().equals(this.getIdProdotto())
                 && ((Supply) other).getPartitaIVA().equals(this.getPartitaIVA())
                 && ((Supply) other).getData().equals(this.getData())
-                && ((Supply) other).getQuantit‡Fornita().equals(this.getQuantit‡Fornita());
+                && ((Supply) other).getQuantit√†Fornita().equals(this.getQuantit√†Fornita());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.idProdotto, this.partitaIVA, this.data, this.quantit‡Fornita);
+        return Objects.hash(this.idProdotto, this.partitaIVA, this.data, this.quantit√†Fornita);
     }
 }

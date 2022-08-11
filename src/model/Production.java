@@ -7,16 +7,16 @@ public class Production {
 	private final String idServizio;
     private final String idEvento;
     private final Integer idProdotto;
-    private final Integer quantit‡Prodotta;
+    private final Integer quantit√†Prodotta;
     private final String materialeUsato;
     private final BigDecimal kgRifiutiUsati;
     
-	public Production(String idServizio, String idEvento, Integer idProdotto, Integer quantit‡Prodotta,
+	public Production(String idServizio, String idEvento, Integer idProdotto, Integer quantit√†Prodotta,
 			String materialeUsato, BigDecimal kgRifiutiUsati) {
 		this.idServizio = idServizio;
 		this.idEvento = idEvento;
 		this.idProdotto = idProdotto;
-		this.quantit‡Prodotta = quantit‡Prodotta;
+		this.quantit√†Prodotta = quantit√†Prodotta;
 		this.materialeUsato = materialeUsato;
 		this.kgRifiutiUsati = kgRifiutiUsati;
 	}
@@ -33,8 +33,8 @@ public class Production {
 		return idProdotto;
 	}
 
-	public Integer getQuantit‡Prodotta() {
-		return quantit‡Prodotta;
+	public Integer getQuantit√†Prodotta() {
+		return quantit√†Prodotta;
 	}
 
 	public String getMaterialeUsato() {
@@ -51,7 +51,7 @@ public class Production {
             .append("(").append(idServizio).append(" ")
 			.append(idEvento).append(" ")
 			.append(idProdotto).append(") ")
-			.append(quantit‡Prodotta).append(" ")
+			.append(quantit√†Prodotta).append(" ")
 			.append(materialeUsato).append(" ")
 			.append(kgRifiutiUsati).toString();
     }
@@ -62,14 +62,14 @@ public class Production {
                 && ((Production) other).getIdServizio().equals(this.getIdServizio())
                 && ((Production) other).getIdEvento().equals(this.getIdEvento())
                 && ((Production) other).getIdProdotto().equals(this.getIdProdotto())
-                && ((Production) other).getQuantit‡Prodotta().equals(this.getQuantit‡Prodotta())
+                && ((Production) other).getQuantit√†Prodotta().equals(this.getQuantit√†Prodotta())
                 && ((Production) other).getMaterialeUsato().equals(this.getMaterialeUsato())
                 && ((Production) other).getKgRifiutiUsati().equals(this.getKgRifiutiUsati());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.idServizio, this.idEvento, this.idProdotto, this.quantit‡Prodotta,
+        return Objects.hash(this.idServizio, this.idEvento, this.idProdotto, this.quantit√†Prodotta,
         		this.materialeUsato, this.kgRifiutiUsati);
     }
 }

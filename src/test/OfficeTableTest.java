@@ -50,7 +50,7 @@ public class OfficeTableTest {
         officeTable.save(this.office2);
 		final Office updatedOffice2 = new Office("Roma", "via Ciccio", "Lazio", "320256", "054542020");
 		assertTrue(officeTable.update(updatedOffice2));
-        final Optional<Office> foundOffice = officeTable.findByPrimaryKey(updatedOffice2.getCitt‡());
+        final Optional<Office> foundOffice = officeTable.findByPrimaryKey(updatedOffice2.getCitt√†());
         assertFalse(foundOffice.isEmpty());
         assertEquals(updatedOffice2.getIndirizzo(), foundOffice.get().getIndirizzo());
     }
@@ -58,17 +58,17 @@ public class OfficeTableTest {
     @Test
     public void deleteTest() {
         officeTable.save(this.office1);
-        assertTrue(officeTable.delete(this.office1.getCitt‡()));
-        assertFalse(officeTable.delete(this.office1.getCitt‡()));
-        assertTrue(officeTable.findByPrimaryKey(this.office1.getCitt‡()).isEmpty());
+        assertTrue(officeTable.delete(this.office1.getCitt√†()));
+        assertFalse(officeTable.delete(this.office1.getCitt√†()));
+        assertTrue(officeTable.findByPrimaryKey(this.office1.getCitt√†()).isEmpty());
     }
 
     @Test
     public void findByPrimaryKeyTest() {
         officeTable.save(this.office1);
         officeTable.save(this.office2);
-        assertEquals(this.office1, officeTable.findByPrimaryKey(this.office1.getCitt‡()).orElse(null));
-        assertEquals(this.office2, officeTable.findByPrimaryKey(this.office2.getCitt‡()).orElse(null));
+        assertEquals(this.office1, officeTable.findByPrimaryKey(this.office1.getCitt√†()).orElse(null));
+        assertEquals(this.office2, officeTable.findByPrimaryKey(this.office2.getCitt√†()).orElse(null));
     }
 
     @Test

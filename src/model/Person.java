@@ -10,33 +10,33 @@ public class Person {
     private final String mail;
     private final Optional<String> telefono;
     private final String indirizzo;
-    private final String citt‡;
+    private final String citt√†;
     private final String regione;
     private final String codicePostale;
     private final Optional<String> tipo;
     
     public Person(final String codiceFiscale, final String nome, final String cognome, final String mail, final Optional<String> telefono,
-    		final String indirizzo, final String citt‡, final String regione, final String codicePostale, final Optional<String> tipo) {
+    		final String indirizzo, final String citt√†, final String regione, final String codicePostale, final Optional<String> tipo) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
         this.cognome = cognome;
         this.mail = mail;
         this.telefono = Objects.requireNonNull(telefono);
         this.indirizzo = indirizzo;
-        this.citt‡ = citt‡;
+        this.citt√† = citt√†;
         this.regione = regione;
         this.codicePostale = codicePostale;
 		this.tipo = Objects.requireNonNull(tipo);
     }
     
     public Person(final String codiceFiscale, final String nome, final String cognome, final String mail,
-    		final String indirizzo, final String citt‡, final String regione, final String codicePostale, final Optional<String> tipo) {
-        this(codiceFiscale, nome, cognome, mail, Optional.empty(), indirizzo, citt‡, regione, codicePostale, Objects.requireNonNull(tipo));
+    		final String indirizzo, final String citt√†, final String regione, final String codicePostale, final Optional<String> tipo) {
+        this(codiceFiscale, nome, cognome, mail, Optional.empty(), indirizzo, citt√†, regione, codicePostale, Objects.requireNonNull(tipo));
     }
     
     public Person(final String codiceFiscale, final String nome, final String cognome, final String mail,
-    		final String indirizzo, final String citt‡, final String regione, final String codicePostale) {
-        this(codiceFiscale, nome, cognome, mail, Optional.empty(), indirizzo, citt‡, regione, codicePostale, Optional.empty());
+    		final String indirizzo, final String citt√†, final String regione, final String codicePostale) {
+        this(codiceFiscale, nome, cognome, mail, Optional.empty(), indirizzo, citt√†, regione, codicePostale, Optional.empty());
     }
     
     public String getCodiceFiscale() {
@@ -63,8 +63,8 @@ public class Person {
 		return indirizzo;
 	}
 
-	public String getCitt‡() {
-		return citt‡;
+	public String getCitt√†() {
+		return citt√†;
 	}
 
 	public String getRegione() {
@@ -87,7 +87,7 @@ public class Person {
 				.append(this.cognome).append(" ")
 				.append(this.mail).append(" ")
 				.append(this.indirizzo).append(" ")
-				.append(this.citt‡).append(" ")
+				.append(this.citt√†).append(" ")
 				.append(this.regione).append(" ")
 				.append(this.codicePostale).append(" ")
 				.append(this.tipo).toString();
@@ -102,7 +102,7 @@ public class Person {
                 && ((Person) other).getMail().equals(this.getMail())
                 && ((Person) other).getTelefono().equals(this.getTelefono())
                 && ((Person) other).getIndirizzo().equals(this.getIndirizzo())
-                && ((Person) other).getCitt‡().equals(this.getCitt‡())
+                && ((Person) other).getCitt√†().equals(this.getCitt√†())
                 && ((Person) other).getRegione().equals(this.getRegione())
                 && ((Person) other).getCodicePostale().equals(this.getCodicePostale())
                 && ((Person) other).getTipo().equals(this.getTipo());
@@ -111,6 +111,6 @@ public class Person {
 	@Override
     public int hashCode() {
         return Objects.hash(this.codiceFiscale, this.nome, this.cognome, this.mail, this.telefono, this.indirizzo,
-        		this.citt‡, this.regione, this.codicePostale, this.tipo);
+        		this.citt√†, this.regione, this.codicePostale, this.tipo);
     }
 }

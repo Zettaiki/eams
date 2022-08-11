@@ -40,7 +40,7 @@ public class ProductTable implements Table<Product, String> {
             			"categoria VARCHAR(30) NOT NULL," +
             			"nome VARCHAR(30) NOT NULL," +
             			"prezzo DECIMAL(6,2) NOT NULL," +
-            			"quantit‡Immagazzinata INT NOT NULL," +
+            			"quantit√†Immagazzinata INT NOT NULL," +
             			"provenienza VARCHAR(15) NOT NULL," +
             			"descrizione MEDIUMTEXT NULL DEFAULT NULL," +
             			"FOREIGN KEY (categoria) REFERENCES categoria (nome) " +
@@ -83,11 +83,11 @@ public class ProductTable implements Table<Product, String> {
 				final String categoria = resultSet.getString("categoria");
 				final String nome = resultSet.getString("nome");
 				final BigDecimal prezzo = resultSet.getBigDecimal("prezzo");
-				final Integer quantit‡Immagazzinata = resultSet.getInt("quantit‡Immagazzinata");
+				final Integer quantit√†Immagazzinata = resultSet.getInt("quantit√†Immagazzinata");
 				final String provenienza = resultSet.getString("provenienza");
 				final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
 								
-				final Product prodotto = new Product(idProdotto, categoria, nome, prezzo, quantit‡Immagazzinata, provenienza, descrizione);
+				final Product prodotto = new Product(idProdotto, categoria, nome, prezzo, quantit√†Immagazzinata, provenienza, descrizione);
 				prodotti.add(prodotto);
 			}
 		} catch (final SQLException e) {}
@@ -97,14 +97,14 @@ public class ProductTable implements Table<Product, String> {
 	@Override
 	public boolean save(Product prodotto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idProdotto, categoria, nome, prezzo, quantit‡Immagazzinata, provenienza, descrizione)"
+				"(idProdotto, categoria, nome, prezzo, quantit√†Immagazzinata, provenienza, descrizione)"
 				+ " VALUES (?,?,?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, prodotto.getIdProdotto());
             statement.setString(2, prodotto.getCategoria());
             statement.setString(3, prodotto.getNome());
             statement.setBigDecimal(4, prodotto.getPrezzo());
-            statement.setInt(5, prodotto.getQuantit‡Immagazzinata());
+            statement.setInt(5, prodotto.getQuantit√†Immagazzinata());
             statement.setString(6, prodotto.getProvenienza());
             statement.setString(7, prodotto.getDescrizione().orElse(null));
             statement.executeUpdate();
@@ -119,13 +119,13 @@ public class ProductTable implements Table<Product, String> {
 	@Override
 	public boolean update(Product updatedProdotto) {
 		final String query = "UPDATE " + TABLE_NAME + " SET " + "categoria = ?," + "nome = ?," + "prezzo = ?,"
-				+ "quantit‡Immagazzinata = ?," + "provenienza = ?," + "descrizione = ?,"
+				+ "quantit√†Immagazzinata = ?," + "provenienza = ?," + "descrizione = ?,"
 				+ "WHERE idProdotto = ?";
 	        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 	            statement.setString(1, updatedProdotto.getCategoria());
 	            statement.setString(2, updatedProdotto.getNome());
 	            statement.setBigDecimal(3, updatedProdotto.getPrezzo());
-	            statement.setInt(4, updatedProdotto.getQuantit‡Immagazzinata());
+	            statement.setInt(4, updatedProdotto.getQuantit√†Immagazzinata());
 	            statement.setString(5, updatedProdotto.getProvenienza());
 	            statement.setString(6, updatedProdotto.getDescrizione().orElse(null));
 	            statement.setString(7, updatedProdotto.getIdProdotto());

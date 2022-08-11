@@ -39,7 +39,7 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
             			"codiceFiscaleCliente CHAR(16) NOT NULL," +
             			"idProdotto INT NOT NULL," +
             			"data DATE NOT NULL," +
-            			"quantit‡ INT NOT NULL," +
+            			"quantit√† INT NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
             			"idServizio CHAR(20) NOT NULL," +
             			"PRIMARY KEY (codiceFiscaleCliente, idProdotto, data)," +
@@ -87,11 +87,11 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
 				final String codiceFiscaleCliente = resultSet.getString("codiceFiscaleCliente");
 			    final Integer idProdotto = resultSet.getInt("idProdotto");
 			    final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
-			    final Integer quantit‡ = resultSet.getInt("quantit‡");
+			    final Integer quantit√† = resultSet.getInt("quantit√†");
 			    final String idEvento = resultSet.getString("idEvento");
 			    final String idServizio = resultSet.getString("idServizio");
 				
-				final Sale vendita = new Sale(codiceFiscaleCliente, idProdotto, data, quantit‡, idEvento, idServizio);
+				final Sale vendita = new Sale(codiceFiscaleCliente, idProdotto, data, quantit√†, idEvento, idServizio);
 				vendite.add(vendita);
 			}
 		} catch (final SQLException e) {}
@@ -101,13 +101,13 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
 	@Override
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleCliente, idProdotto, data, quantit‡, idEvento, idServizio) " +
+				"(codiceFiscaleCliente, idProdotto, data, quantit√†, idEvento, idServizio) " +
 				"VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, vendita.getCodiceFiscaleCliente());
             statement.setInt(2, vendita.getIdProdotto());
             statement.setDate(3, Utils.dateToSqlDate(vendita.getData()));
-            statement.setInt(4, vendita.getQuantit‡());
+            statement.setInt(4, vendita.getQuantit√†());
             statement.setString(5, vendita.getIdEvento());
             statement.setString(6, vendita.getIdServizio());
             statement.executeUpdate();
@@ -121,12 +121,12 @@ public class SaleTable implements TableTriplePk<Sale, String, Integer, Date> {
 
 	@Override
 	public boolean update(Sale updatedVendita) {
-		final String query = "UPDATE " + TABLE_NAME + " SET idProdotto = ?," + "data = ?, quantit‡ = ?," +
+		final String query = "UPDATE " + TABLE_NAME + " SET idProdotto = ?," + "data = ?, quantit√† = ?," +
 				 "idEvento = ?," + "idServizio = ? WHERE codiceFiscaleCliente = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, updatedVendita.getIdProdotto());
             statement.setDate(2, Utils.dateToSqlDate(updatedVendita.getData()));
-            statement.setInt(3, updatedVendita.getQuantit‡());
+            statement.setInt(3, updatedVendita.getQuantit√†());
             statement.setString(4, updatedVendita.getIdEvento());
             statement.setString(5, updatedVendita.getIdServizio());
             statement.setString(6, updatedVendita.getCodiceFiscaleCliente());

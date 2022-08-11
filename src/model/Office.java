@@ -3,23 +3,23 @@ package model;
 import java.util.Objects;
 
 public class Office {
-	private final String citt‡;
+	private final String citt√†;
     private final String indirizzo;
     private final String regione;
     private final String codicePostale;
     private final String telefono;
     
-    public Office(final String citt‡, final String indirizzo, final String regione, final String codicePostale,
+    public Office(final String citt√†, final String indirizzo, final String regione, final String codicePostale,
     		final String telefono) {
-    	this.citt‡ = citt‡;
+    	this.citt√† = citt√†;
     	this.indirizzo = indirizzo;
         this.regione = regione;
         this.codicePostale = codicePostale;
         this.telefono = telefono;
     }   
 	
-	public String getCitt‡() {
-		return this.citt‡;
+	public String getCitt√†() {
+		return this.citt√†;
 	}
 
 	public String getIndirizzo() {
@@ -41,7 +41,7 @@ public class Office {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append("(").append(this.citt‡).append(") ")
+				.append("(").append(this.citt√†).append(") ")
 				.append(this.indirizzo).append(" ")
 				.append(this.regione).append(" ")
 				.append(this.codicePostale).append(" ")
@@ -51,7 +51,7 @@ public class Office {
 	@Override
     public boolean equals(final Object other) {
         return (other instanceof Office)
-                && ((Office) other).getCitt‡().equals(this.getCitt‡())
+                && ((Office) other).getCitt√†().equals(this.getCitt√†())
                 && ((Office) other).getIndirizzo().equals(this.getIndirizzo())
                 && ((Office) other).getRegione().equals(this.getRegione())
                 && ((Office) other).getCodicePostale().equals(this.getCodicePostale())
@@ -60,6 +60,6 @@ public class Office {
 
 	@Override
     public int hashCode() {
-        return Objects.hash(this.citt‡, this.indirizzo, this.regione, this.codicePostale, this.telefono);
+        return Objects.hash(this.citt√†, this.indirizzo, this.regione, this.codicePostale, this.telefono);
     }
 }

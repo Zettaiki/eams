@@ -39,7 +39,7 @@ public class BusinessTable implements Table<Business, BigDecimal> {
             			"denominazioneSociale VARCHAR(45) NOT NULL," +
             			"telefono VARCHAR(24) NOT NULL," +
             			"indirizzo VARCHAR(60) NOT NULL," +
-            			"citt‡ VARCHAR(15) NOT NULL," +
+            			"citt√† VARCHAR(15) NOT NULL," +
             			"regione VARCHAR(20) NOT NULL," +
             			"codicePostale VARCHAR(10) NOT NULL," +
             			"mail VARCHAR(20) NOT NULL," +
@@ -82,13 +82,13 @@ public class BusinessTable implements Table<Business, BigDecimal> {
 			    final String denominazioneSociale = resultSet.getString("denominazioneSociale");
 			    final String telefono = resultSet.getString("telefono");
 			    final String indirizzo = resultSet.getString("indirizzo");
-			    final String citt‡ = resultSet.getString("citt‡");
+			    final String citt√† = resultSet.getString("citt√†");
 			    final String regione = resultSet.getString("regione");
 			    final String codicePostale = resultSet.getString("codicePostale");
 			    final String mail = resultSet.getString("mail");
 			    final Optional<String> fax = Optional.ofNullable(resultSet.getString("fax"));
 				
-				final Business azienda = new Business(partitaIVA, denominazioneSociale, telefono, indirizzo, citt‡, regione, codicePostale, mail, fax);
+				final Business azienda = new Business(partitaIVA, denominazioneSociale, telefono, indirizzo, citt√†, regione, codicePostale, mail, fax);
 				aziende.add(azienda);
 			}
 		} catch (final SQLException e) {}
@@ -98,14 +98,14 @@ public class BusinessTable implements Table<Business, BigDecimal> {
 	@Override
 	public boolean save(Business azienda) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(partitaIVA, denominazioneSociale, telefono, indirizzo, citt‡, regione, codicePostale, mail, fax)"
+				"(partitaIVA, denominazioneSociale, telefono, indirizzo, citt√†, regione, codicePostale, mail, fax)"
 				+ " VALUES (?,?,?,?,?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setBigDecimal(1, azienda.getPartitaIVA());
         	statement.setString(2, azienda.getDenominazioneSociale());
         	statement.setString(3, azienda.getTelefono());
         	statement.setString(4, azienda.getIndirizzo());
-        	statement.setString(5, azienda.getCitt‡());
+        	statement.setString(5, azienda.getCitt√†());
         	statement.setString(6, azienda.getRegione());
         	statement.setString(7, azienda.getCodicePostale());
         	statement.setString(8, azienda.getMail());
@@ -123,14 +123,14 @@ public class BusinessTable implements Table<Business, BigDecimal> {
 	public boolean update(Business updatedAzienda) {
 		final String query =
 			"UPDATE " + TABLE_NAME + " SET " + "denominazioneSociale = ?," + "telefono = ?," 
-					+ "indirizzo = ?," + "citt‡ = ?," + "regione = ?," + "codicePostale = ?,"
+					+ "indirizzo = ?," + "citt√† = ?," + "regione = ?," + "codicePostale = ?,"
 					+ "mail = ?," + "fax = ? "
 					+ "WHERE partitaIVA = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, updatedAzienda.getDenominazioneSociale());
             statement.setString(2, updatedAzienda.getTelefono());
             statement.setString(3, updatedAzienda.getIndirizzo());
-            statement.setString(4, updatedAzienda.getCitt‡());
+            statement.setString(4, updatedAzienda.getCitt√†());
             statement.setString(5, updatedAzienda.getRegione());
             statement.setString(6, updatedAzienda.getCodicePostale());
             statement.setString(7, updatedAzienda.getMail());

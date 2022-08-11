@@ -34,7 +34,7 @@ public class OfficeTable implements Table<Office, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"citt‡ VARCHAR(25) NOT NULL PRIMARY KEY," +
+            			"citt√† VARCHAR(25) NOT NULL PRIMARY KEY," +
             			"indirizzo VARCHAR(60) NOT NULL," +
             			"regione VARCHAR(20) NOT NULL," +
             			"codicePostale VARCHAR(10) NOT NULL," +
@@ -47,10 +47,10 @@ public class OfficeTable implements Table<Office, String> {
 	}
 
 	@Override
-	public Optional<Office> findByPrimaryKey(String citt‡) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE citt‡ = ?";
+	public Optional<Office> findByPrimaryKey(String citt√†) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE citt√† = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, citt‡);
+            statement.setString(1, citt√†);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -73,13 +73,13 @@ public class OfficeTable implements Table<Office, String> {
 		final List<Office> sedi = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final String citt‡ = resultSet.getString("citt‡");
+				final String citt√† = resultSet.getString("citt√†");
 				final String indirizzo = resultSet.getString("indirizzo");
 				final String regione = resultSet.getString("regione");
 				final String codicePostale = resultSet.getString("codicePostale");
 				final String telefono = resultSet.getString("telefono");
 				
-				final Office sede = new Office(citt‡, indirizzo, regione, codicePostale, telefono);
+				final Office sede = new Office(citt√†, indirizzo, regione, codicePostale, telefono);
 				sedi.add(sede);
 			}
 		} catch (final SQLException e) {}
@@ -89,9 +89,9 @@ public class OfficeTable implements Table<Office, String> {
 	@Override
 	public boolean save(Office sede) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(citt‡, indirizzo, regione, codicePostale, telefono) VALUES (?,?,?,?,?)";
+				"(citt√†, indirizzo, regione, codicePostale, telefono) VALUES (?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, sede.getCitt‡());
+            statement.setString(1, sede.getCitt√†());
             statement.setString(2, sede.getIndirizzo());
             statement.setString(3, sede.getRegione());
             statement.setString(4, sede.getCodicePostale());
@@ -109,13 +109,13 @@ public class OfficeTable implements Table<Office, String> {
 	public boolean update(Office updatedSede) {
 		final String query = "UPDATE " + TABLE_NAME + " SET indirizzo = ?," + "regione = ?,"
 				+ "codicePostale = ?," + "telefono = ? "
-				+ "WHERE citt‡ = ?";
+				+ "WHERE citt√† = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setString(1, updatedSede.getIndirizzo());
 			statement.setString(2, updatedSede.getRegione());
 			statement.setString(3, updatedSede.getCodicePostale());
 			statement.setString(4, updatedSede.getTelefono());
-			statement.setString(5, updatedSede.getCitt‡());
+			statement.setString(5, updatedSede.getCitt√†());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -123,10 +123,10 @@ public class OfficeTable implements Table<Office, String> {
 	}
 
 	@Override
-	public boolean delete(String citt‡) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE citt‡ = ?";
+	public boolean delete(String citt√†) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE citt√† = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, citt‡);
+            statement.setString(1, citt√†);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

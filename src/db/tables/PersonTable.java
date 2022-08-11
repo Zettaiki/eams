@@ -40,7 +40,7 @@ public class PersonTable implements Table<Person, String> {
             			"mail VARCHAR(45)," +
             			"telefono VARCHAR(24)," +
             			"indirizzo VARCHAR(60)," +
-            			"citt‡ VARCHAR(15)," +
+            			"citt√† VARCHAR(15)," +
             			"regione VARCHAR(20)," +
             			"codicePostale VARCHAR(10)," +
             			"tipo VARCHAR(45)" +
@@ -84,12 +84,12 @@ public class PersonTable implements Table<Person, String> {
 				final String mail = resultSet.getString("mail");
 				final Optional<String> telefono = Optional.ofNullable(resultSet.getString("telefono"));
 				final String indirizzo = resultSet.getString("indirizzo");
-				final String citt‡ = resultSet.getString("citt‡");
+				final String citt√† = resultSet.getString("citt√†");
 				final String regione = resultSet.getString("regione");
 				final String codicePostale = resultSet.getString("codicePostale");
 				final Optional<String> tipo = Optional.ofNullable(resultSet.getString("tipo"));
 				
-				final Person persona = new Person(codiceFiscale, nome, cognome, mail, telefono, indirizzo, citt‡, regione, codicePostale, tipo);
+				final Person persona = new Person(codiceFiscale, nome, cognome, mail, telefono, indirizzo, citt√†, regione, codicePostale, tipo);
 				persone.add(persona);
 			}
 		} catch (final SQLException e) {}
@@ -99,7 +99,7 @@ public class PersonTable implements Table<Person, String> {
 	@Override
 	public boolean save(Person persona) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscale, nome, cognome, mail, telefono, indirizzo, citt‡, regione, codicePostale, tipo)"
+				"(codiceFiscale, nome, cognome, mail, telefono, indirizzo, citt√†, regione, codicePostale, tipo)"
 				+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, persona.getCodiceFiscale());
@@ -108,7 +108,7 @@ public class PersonTable implements Table<Person, String> {
             statement.setString(4, persona.getMail());
             statement.setString(5, persona.getTelefono().orElse(null));
             statement.setString(6, persona.getIndirizzo());
-            statement.setString(7, persona.getCitt‡());
+            statement.setString(7, persona.getCitt√†());
             statement.setString(8, persona.getRegione());
             statement.setString(9, persona.getCodicePostale());
             statement.setString(10, persona.getTipo().orElse(null));
@@ -125,7 +125,7 @@ public class PersonTable implements Table<Person, String> {
 	public boolean update(final Person updatedPersona) {
 		final String query =
 			"UPDATE " + TABLE_NAME + " SET " + "nome = ?," + "cognome = ?," + "mail = ?," + "telefono = ?,"
-					+ "indirizzo = ?," + "citt‡ = ?," + "regione = ?," + "codicePostale = ?," + "tipo = ? "
+					+ "indirizzo = ?," + "citt√† = ?," + "regione = ?," + "codicePostale = ?," + "tipo = ? "
 					+ "WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setString(1, updatedPersona.getNome());
@@ -133,7 +133,7 @@ public class PersonTable implements Table<Person, String> {
             statement.setString(3, updatedPersona.getMail());
             statement.setString(4, updatedPersona.getTelefono().orElse(null));
             statement.setString(5, updatedPersona.getIndirizzo());
-            statement.setString(6, updatedPersona.getCitt‡());
+            statement.setString(6, updatedPersona.getCitt√†());
             statement.setString(7, updatedPersona.getRegione());
             statement.setString(8, updatedPersona.getCodicePostale());
             statement.setString(9, updatedPersona.getTipo().orElse(null));

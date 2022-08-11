@@ -37,10 +37,10 @@ public class VolunteerTable implements Table<Volunteer, String> {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
-            			"sedeCitt‡ VARCHAR(25) NOT NULL," +
+            			"sedeCitt√† VARCHAR(25) NOT NULL," +
             			"dataIscrizione DATE NOT NULL," +
             			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (sedeCitt‡) REFERENCES sede (citt‡) ON DELETE CASCADE ON UPDATE CASCADE" +
+            			"FOREIGN KEY (sedeCitt√†) REFERENCES sede (citt√†) ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
         } catch (final SQLException e) {        	
@@ -76,10 +76,10 @@ public class VolunteerTable implements Table<Volunteer, String> {
 		try {
 			while (resultSet.next()) {
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
-				final String sedeCitt‡ = resultSet.getString("sedeCitt‡");
+				final String sedeCitt√† = resultSet.getString("sedeCitt√†");
 				final Date dataIscrizione = Utils.sqlDateToDate(resultSet.getDate("dataIscrizione"));
 				
-				final Volunteer volontario = new Volunteer(codiceFiscale, sedeCitt‡, dataIscrizione);
+				final Volunteer volontario = new Volunteer(codiceFiscale, sedeCitt√†, dataIscrizione);
 				volontari.add(volontario);
 			}
 		} catch (final SQLException e) {}
@@ -89,10 +89,10 @@ public class VolunteerTable implements Table<Volunteer, String> {
 	@Override
 	public boolean save(Volunteer volontario) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscale, sedeCitt‡, dataIscrizione) VALUES (?,?,?)";
+				"(codiceFiscale, sedeCitt√†, dataIscrizione) VALUES (?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, volontario.getCodiceFiscale());
-            statement.setString(2, volontario.getSedeCitt‡());
+            statement.setString(2, volontario.getSedeCitt√†());
             statement.setDate(3, Utils.dateToSqlDate(volontario.getDataIscrizione()));
             statement.executeUpdate();
             return true;
@@ -105,10 +105,10 @@ public class VolunteerTable implements Table<Volunteer, String> {
 
 	@Override
 	public boolean update(Volunteer updatedVolontario) {
-		final String query = "UPDATE " + TABLE_NAME + " SET sedeCitt‡ = ?," + "dataIscrizione = ? "
+		final String query = "UPDATE " + TABLE_NAME + " SET sedeCitt√† = ?," + "dataIscrizione = ? "
 				+ "WHERE codiceFiscale = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedVolontario.getSedeCitt‡());
+			statement.setString(1, updatedVolontario.getSedeCitt√†());
 			statement.setDate(2, Utils.dateToSqlDate(updatedVolontario.getDataIscrizione()));
 			statement.setString(3, updatedVolontario.getCodiceFiscale());
 			return statement.executeUpdate() > 0;

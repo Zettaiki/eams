@@ -7,16 +7,16 @@ public class Sale {
 	private final String codiceFiscaleCliente;
     private final Integer idProdotto;
     private final Date data;
-    private final Integer quantit‡;
+    private final Integer quantit√†;
     private final String idEvento;
     private final String idServizio;
     
-	public Sale(String codiceFiscaleCliente, Integer idProdotto, Date data, Integer quantit‡,
+	public Sale(String codiceFiscaleCliente, Integer idProdotto, Date data, Integer quantit√†,
 			String idEvento, String idServizio) {
 		this.codiceFiscaleCliente = codiceFiscaleCliente;
 		this.idProdotto = idProdotto;
 		this.data = data;
-		this.quantit‡ = quantit‡;
+		this.quantit√† = quantit√†;
 		this.idEvento = idEvento;
 		this.idServizio = idServizio;
 	}
@@ -33,8 +33,8 @@ public class Sale {
 		return data;
 	}
 	
-	public Integer getQuantit‡() {
-		return quantit‡;
+	public Integer getQuantit√†() {
+		return quantit√†;
 	}
 	
 	public String getIdEvento() {
@@ -51,7 +51,7 @@ public class Sale {
             .append("(").append(codiceFiscaleCliente).append(" ")
 			.append(idProdotto).append(" ")
 			.append(data).append(") ")
-			.append(quantit‡).append(" ")
+			.append(quantit√†).append(" ")
 			.append(idEvento).append(" ")
 			.append(idServizio).toString();
     }
@@ -62,14 +62,14 @@ public class Sale {
         		&& ((Sale) other).getCodiceFiscaleCliente().equals(this.getCodiceFiscaleCliente())
                 && ((Sale) other).getIdProdotto().equals(this.getIdProdotto())                
                 && ((Sale) other).getData().equals(this.getData())
-                && ((Sale) other).getQuantit‡().equals(this.getQuantit‡())
+                && ((Sale) other).getQuantit√†().equals(this.getQuantit√†())
                 && ((Sale) other).getIdEvento().equals(this.getIdEvento())
                 && ((Sale) other).getIdServizio().equals(this.getIdServizio());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.codiceFiscaleCliente, this.idProdotto, this.data, this.quantit‡,
+        return Objects.hash(this.codiceFiscaleCliente, this.idProdotto, this.data, this.quantit√†,
         		this.idEvento, this.idServizio);
     }
 }

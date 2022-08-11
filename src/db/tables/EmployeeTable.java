@@ -38,11 +38,11 @@ public class EmployeeTable implements Table<Employee, String> {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
-            			"sedeCitt‡ VARCHAR(25) NOT NULL," +
+            			"sedeCitt√† VARCHAR(25) NOT NULL," +
             			"dataAssunzione DATE NOT NULL," +
             			"salario DECIMAL(8,2) NOT NULL," +
             			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (sedeCitt‡) REFERENCES sede (citt‡) ON DELETE CASCADE ON UPDATE CASCADE" +
+            			"FOREIGN KEY (sedeCitt√†) REFERENCES sede (citt√†) ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
         } catch (final SQLException e) {        	
@@ -78,11 +78,11 @@ public class EmployeeTable implements Table<Employee, String> {
 		try {
 			while (resultSet.next()) {
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
-				final String sedeCitt‡ = resultSet.getString("sedeCitt‡");
+				final String sedeCitt√† = resultSet.getString("sedeCitt√†");
 				final Date dataAssunzione = Utils.sqlDateToDate(resultSet.getDate("dataAssunzione"));
 				final BigDecimal salario = resultSet.getBigDecimal("salario");
 				
-				final Employee Dipendente = new Employee(codiceFiscale, sedeCitt‡, dataAssunzione, salario);
+				final Employee Dipendente = new Employee(codiceFiscale, sedeCitt√†, dataAssunzione, salario);
 				volontari.add(Dipendente);
 			}
 		} catch (final SQLException e) {}
@@ -92,10 +92,10 @@ public class EmployeeTable implements Table<Employee, String> {
 	@Override
 	public boolean save(Employee Dipendente) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscale, sedeCitt‡, dataAssunzione, salario) VALUES (?,?,?,?)";
+				"(codiceFiscale, sedeCitt√†, dataAssunzione, salario) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, Dipendente.getCodiceFiscale());
-            statement.setString(2, Dipendente.getSedeCitt‡());
+            statement.setString(2, Dipendente.getSedeCitt√†());
             statement.setDate(3, Utils.dateToSqlDate(Dipendente.getDataAssunzione()));
             statement.setBigDecimal(4, Dipendente.getSalario());
             statement.executeUpdate();
@@ -109,10 +109,10 @@ public class EmployeeTable implements Table<Employee, String> {
 
 	@Override
 	public boolean update(Employee updatedDipendente) {
-		final String query = "UPDATE " + TABLE_NAME + " SET sedeCitt‡ = ?," + "dataAssunzione = ?," + "salario = ? "
+		final String query = "UPDATE " + TABLE_NAME + " SET sedeCitt√† = ?," + "dataAssunzione = ?," + "salario = ? "
 				+ "WHERE codiceFiscale = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedDipendente.getSedeCitt‡());
+			statement.setString(1, updatedDipendente.getSedeCitt√†());
 			statement.setDate(2, Utils.dateToSqlDate(updatedDipendente.getDataAssunzione()));
 			statement.setBigDecimal(3, updatedDipendente.getSalario());
 			statement.setString(4, updatedDipendente.getCodiceFiscale());

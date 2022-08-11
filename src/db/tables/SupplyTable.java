@@ -40,7 +40,7 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
             			"idProdotto INT NOT NULL," +
             			"partitaIVA DECIMAL(11) NOT NULL," +
             			"data DATE NOT NULL," +
-            			"quantitàFornita INT NOT NULL," +
+            			"quantitÃ Fornita INT NOT NULL," +
             			"PRIMARY KEY (idProdotto, partitaIVA, data)," +
             			"FOREIGN KEY (partitaIVA) REFERENCES azienda (partitaIVA) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
@@ -86,9 +86,9 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 				final Integer idProdotto = resultSet.getInt("idProdotto");
 				final BigDecimal partitaIVA = resultSet.getBigDecimal("partitaIVA");
 				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
-				final Integer quantitàFornita = resultSet.getInt("quantitàFornita");
+				final Integer quantitÃ Fornita = resultSet.getInt("quantitÃ Fornita");
 				
-				final Supply fornitura = new Supply(idProdotto, partitaIVA, data, quantitàFornita);
+				final Supply fornitura = new Supply(idProdotto, partitaIVA, data, quantitÃ Fornita);
 				forniture.add(fornitura);
 			}
 		} catch (final SQLException e) {}
@@ -98,12 +98,12 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 	@Override
 	public boolean save(Supply fornitura) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idProdotto, partitaIVA, data, quantitàFornita) VALUES (?,?,?,?)";
+				"(idProdotto, partitaIVA, data, quantitÃ Fornita) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, fornitura.getIdProdotto());
             statement.setBigDecimal(2, fornitura.getPartitaIVA());
             statement.setDate(3, Utils.dateToSqlDate(fornitura.getData()));
-            statement.setInt(4, fornitura.getQuantitàFornita());
+            statement.setInt(4, fornitura.getQuantitÃ Fornita());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -115,10 +115,10 @@ public class SupplyTable implements TableTriplePk<Supply, Integer, BigDecimal, D
 
 	@Override
 	public boolean update(Supply updatedFornitura) {
-		final String query = "UPDATE " + TABLE_NAME + " SET quantitàFornita = ? "
+		final String query = "UPDATE " + TABLE_NAME + " SET quantitÃ Fornita = ? "
 				+ "WHERE idProdotto = ? AND partitaIVA = ? AND data = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setInt(1, updatedFornitura.getQuantitàFornita());
+			statement.setInt(1, updatedFornitura.getQuantitÃ Fornita());
 			statement.setInt(2, updatedFornitura.getIdProdotto());
 			statement.setBigDecimal(3, updatedFornitura.getPartitaIVA());
 			statement.setDate(4, Utils.dateToSqlDate(updatedFornitura.getData()));

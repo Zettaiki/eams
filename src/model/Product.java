@@ -9,24 +9,24 @@ public class Product {
     private final String categoria;
     private final String nome;
     private final BigDecimal prezzo;
-    private final Integer quantit‡Immagazzinata;
+    private final Integer quantit√†Immagazzinata;
     private final String provenienza;
     private final Optional<String> descrizione;
     
     public Product(final String idProdotto, final String categoria, final String nome, final BigDecimal prezzo, 
-    		final Integer quantit‡Immagazzinata, final String provenienza, final Optional<String> descrizione) {
+    		final Integer quantit√†Immagazzinata, final String provenienza, final Optional<String> descrizione) {
     	this.idProdotto = idProdotto;
     	this.categoria = categoria;
         this.nome = nome;
         this.prezzo = prezzo;
-        this.quantit‡Immagazzinata = quantit‡Immagazzinata;
+        this.quantit√†Immagazzinata = quantit√†Immagazzinata;
         this.provenienza = provenienza;
         this.descrizione = Objects.requireNonNull(descrizione);
     }
     
     public Product(final String idProdotto, final String categoria, final String nome, final BigDecimal prezzo, 
-    		final Integer quantit‡Immagazzinata, final String provenienza) {
-        this(idProdotto, categoria, nome, prezzo, quantit‡Immagazzinata, provenienza, Optional.empty());
+    		final Integer quantit√†Immagazzinata, final String provenienza) {
+        this(idProdotto, categoria, nome, prezzo, quantit√†Immagazzinata, provenienza, Optional.empty());
     }   
 	
 	public String getIdProdotto() {
@@ -45,8 +45,8 @@ public class Product {
 		return prezzo;
 	}
 
-	public Integer getQuantit‡Immagazzinata() {
-		return quantit‡Immagazzinata;
+	public Integer getQuantit√†Immagazzinata() {
+		return quantit√†Immagazzinata;
 	}
 
 	public String getProvenienza() {
@@ -64,7 +64,7 @@ public class Product {
 				.append(this.categoria).append(" ")
 				.append(this.nome).append(" ")
 				.append(this.prezzo).append(" ")
-				.append(this.quantit‡Immagazzinata).append(" ")
+				.append(this.quantit√†Immagazzinata).append(" ")
 				.append(this.provenienza).append(" ")
 				.append(this.descrizione).toString();
 	}
@@ -76,14 +76,14 @@ public class Product {
                 && ((Product) other).getCategoria().equals(this.getCategoria())
                 && ((Product) other).getNome().equals(this.getNome())
                 && ((Product) other).getPrezzo().equals(this.getPrezzo())
-                && ((Product) other).getQuantit‡Immagazzinata().equals(this.getQuantit‡Immagazzinata())
+                && ((Product) other).getQuantit√†Immagazzinata().equals(this.getQuantit√†Immagazzinata())
                 && ((Product) other).getProvenienza().equals(this.getProvenienza())
                 && ((Product) other).getDescrizione().equals(this.getDescrizione());
     }
 
 	@Override
     public int hashCode() {
-        return Objects.hash(this.idProdotto, this.categoria, this.nome, this.prezzo, this.quantit‡Immagazzinata,
+        return Objects.hash(this.idProdotto, this.categoria, this.nome, this.prezzo, this.quantit√†Immagazzinata,
         		this.provenienza, this.descrizione);
     }
 }

@@ -38,7 +38,7 @@ public class ProductionTable implements TableTriplePk<Production, String, String
             			"idServizio CHAR(20) NOT NULL," +
             			"idEvento CHAR(20) NOT NULL," +
             			"idProdotto INT NOT NULL," +
-            			"quantitàProdotta INT NOT NULL," +
+            			"quantitÃ Prodotta INT NOT NULL," +
             			"materialeUsato VARCHAR(30) NOT NULL," +
             			"kgRifiutiUsati DECIMAL(8,2) NOT NULL," +
             			"PRIMARY KEY (idServizio, idEvento, materialeUsato, idProdotto)," +
@@ -88,11 +88,11 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 				final String idServizio = resultSet.getString("idServizio");
 			    final String idEvento = resultSet.getString("idEvento");
 			    final Integer idProdotto = resultSet.getInt("idProdotto");
-			    final Integer quantitàProdotta = resultSet.getInt("quantitàProdotta");
+			    final Integer quantitÃ Prodotta = resultSet.getInt("quantitÃ Prodotta");
 			    final String materialeUsato = resultSet.getString("materialeUsato");
 			    final BigDecimal kgRifiutiUsati = resultSet.getBigDecimal("kgRifiutiUsati");
 				
-				final Production produzione = new Production(idServizio, idEvento, idProdotto, quantitàProdotta,
+				final Production produzione = new Production(idServizio, idEvento, idProdotto, quantitÃ Prodotta,
 						materialeUsato, kgRifiutiUsati);
 				produzioni.add(produzione);
 			}
@@ -103,13 +103,13 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 	@Override
 	public boolean save(Production produzione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idServizio, idEvento, idProdotto, quantitàProdotta, " +
+				"(idServizio, idEvento, idProdotto, quantitÃ Prodotta, " +
 				"materialeUsato, kgRifiutiUsati) VALUES (?,?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setString(1, produzione.getIdServizio());
             statement.setString(2, produzione.getIdEvento());
             statement.setInt(3, produzione.getIdProdotto());
-            statement.setInt(4, produzione.getQuantitàProdotta());
+            statement.setInt(4, produzione.getQuantitÃ Prodotta());
             statement.setString(5, produzione.getMaterialeUsato());
             statement.setBigDecimal(6, produzione.getKgRifiutiUsati());
             statement.executeUpdate();
@@ -123,10 +123,10 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 
 	@Override
 	public boolean update(Production updatedProduzione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET quantitàProdotta = ?," + "materialeUsato = ?," +
+		final String query = "UPDATE " + TABLE_NAME + " SET quantitÃ Prodotta = ?," + "materialeUsato = ?," +
 				"kgRifiutiUsati = ? WHERE idServizio = ? AND idEvento = ? AND idProdotto = ?,";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setInt(1, updatedProduzione.getQuantitàProdotta());
+			statement.setInt(1, updatedProduzione.getQuantitÃ Prodotta());
 			statement.setString(2, updatedProduzione.getMaterialeUsato());
 			statement.setBigDecimal(3, updatedProduzione.getKgRifiutiUsati());
 			statement.setString(4, updatedProduzione.getIdServizio());

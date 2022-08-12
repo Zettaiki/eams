@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +19,11 @@ import model.Service;
 import model.Volunteer;
 
 public class TableExtractorUtils {
+	
+	private static <T> String checkIfEmpty(Optional<T> o) {
+		if(o.isEmpty()) return "";
+		return o.get().toString();
+	}
 	
 	public static DefaultTableModel volunteerTable() {
 		// Requesting conection
@@ -58,7 +64,7 @@ public class TableExtractorUtils {
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Donation> donationList = donationTable.findAll();
 	    for( Donation x : donationList ) {
-	    	Object[] temp = {x.getIdDonazione(), x.getImporto(), x.getCodiceFiscale(), x.getDataDonazione(), x.getIdProgetto()};
+	    	Object[] temp = {x.getIdDonazione(), x.getImporto(), x.getCodiceFiscale(), x.getDataDonazione(), checkIfEmpty(x.getIdProgetto())};
 	    	data.addRow(temp);
 	    }
 	    return data;
@@ -73,7 +79,7 @@ public class TableExtractorUtils {
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Event> eventList = eventTable.findAll();
 	    for( Event x : eventList ) {
-	    	Object[] temp = {x.getIdEvento(), x.getNome(), x.getData(), x.getDescrizione()};
+	    	Object[] temp = {x.getIdEvento(), x.getNome(), x.getData(), checkIfEmpty(x.getDescrizione())};
 	    	data.addRow(temp);
 	    }
 	    return data;
@@ -88,7 +94,7 @@ public class TableExtractorUtils {
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Service> serviceList = serviceTable.findAll();
 	    for( Service x : serviceList ) {
-	    	Object[] temp = {x.getIdServizio(), x.getOraInizio(), x.getOraInizio(), x.getTipo(), x.getIdProgetto().toString()};
+	    	Object[] temp = {x.getIdServizio(), x.getOraInizio(), x.getOraInizio(), x.getTipo(), checkIfEmpty(x.getIdProgetto())};
 	    	data.addRow(temp);
 	    }
 	    return data;
@@ -103,7 +109,7 @@ public class TableExtractorUtils {
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Newsletter> serviceList = newsletterTable.findAll();
 	    for( Newsletter x : serviceList ) {
-	    	Object[] temp = {x.getIdNewsletter(), x.getArgomento(), x.getDescrizione().get()};
+	    	Object[] temp = {x.getIdNewsletter(), x.getArgomento(), checkIfEmpty(x.getDescrizione())};
 	    	data.addRow(temp);
 	    }
 	    return data;

@@ -64,7 +64,7 @@ public class ParticipationTable {
 
 	public boolean save(Participation partecipazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleVolontario, idServizio, idEvento) VALUES (?,?)";
+				"(codiceFiscaleVolontario, idServizio) VALUES (?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, partecipazione.getCodiceFiscaleVolontario());
             statement.setString(2, partecipazione.getIdServizio());
@@ -79,7 +79,7 @@ public class ParticipationTable {
 
 	public boolean delete(String codiceFiscaleVolontario, String idServizio) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ?" +
-				"AND idServizio = ? AND idEvento = ?";
+				"AND idServizio = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleVolontario);
             statement.setString(2, idServizio);

@@ -67,9 +67,15 @@ public class LoginPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         var b1 = new JButton("Login");
-        b1.addActionListener(e -> {
-        	JFrame parent = JComponentLoader.getParentFrame(this);
-            JComponentLoader.load(parent, new MenuPanel());
+        b1.addActionListener((e) -> {
+        	String username = t1.getText();
+        	String password = t2.getText();
+        	if(username.equals("eams") && password.equals("eams")) {
+        		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		        JComponentLoader.load(parentFrame, new MenuPanel());
+        	} else {
+        		JOptionPane.showMessageDialog(getParent(), "Utente o password sbagliati.", "Login error", JOptionPane.ERROR_MESSAGE);
+        	}	
         });
         p3.add(b1, c);
         

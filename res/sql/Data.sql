@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `eams` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `eams`;
 -- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eams
@@ -27,9 +29,9 @@ CREATE TABLE `azienda` (
   `denominazioneSociale` varchar(45) NOT NULL,
   `telefono` varchar(24) NOT NULL,
   `indirizzo` varchar(60) NOT NULL,
+  `codicePostale` varchar(10) NOT NULL,
   `città` varchar(15) NOT NULL,
   `regione` varchar(20) NOT NULL,
-  `codicePostale` varchar(10) NOT NULL,
   `mail` varchar(40) NOT NULL,
   `fax` varchar(24) DEFAULT NULL,
   PRIMARY KEY (`partitaIVA`)
@@ -42,6 +44,7 @@ CREATE TABLE `azienda` (
 
 LOCK TABLES `azienda` WRITE;
 /*!40000 ALTER TABLE `azienda` DISABLE KEYS */;
+INSERT INTO `azienda` VALUES (12345678191,'Rainbow srl','0832-675104','piazza 4 maggio, 45','73120','Campi Salentina','Puglia','rainbowsrl@gmail.com','0832-675104'),(12345678911,'Hera Recycle srl','0543-627897','via G. Garibaldi, 94','47122','Forlì','Emilia-Romagna','herarecycle@gmail.com','0543-627897'),(12346578911,'Trash tossers srl','0836-627897','via Taranto, 12','73100','Lecce','Puglia','trashtossers@gmail.com','0836-627897'),(12435678911,'GreenWash spa','0961-453415','via G. Garibaldi, 36','85544','Catanzaro','Calabria','greenwash@gmail.com','0961-453415'),(13245678911,'Paper Crafts spa','0774-796084','corso Mazzini, 52','00118','Roma','Lazio','papercrafts@gmail.com','0774-796084');
 /*!40000 ALTER TABLE `azienda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,6 +68,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
+INSERT INTO `categoria` VALUES ('Abbigliamento',NULL),('Cancelleria',NULL),('Cucina',NULL),('Cura della persona',NULL),('Giardinaggio',NULL),('Idee regalo','Regali ecosostenibili.'),('Merchandise','Eco-gadget con il logo dell\'associazione.'),('On the go','Usati spesso da portare fuori casa che di solito sono in plastica, usa e getta o non riciclabili.');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,6 +98,7 @@ CREATE TABLE `consegna` (
 
 LOCK TABLES `consegna` WRITE;
 /*!40000 ALTER TABLE `consegna` DISABLE KEYS */;
+INSERT INTO `consegna` VALUES ('Carta',12346578911,'2022-04-11',19.20),('Termoplastiche',12345678911,'2022-02-23',13.40),('Termoplastiche',12345678911,'2022-07-07',5.70),('Termoplastiche',12346578911,'2022-08-11',10.50),('Termoplastiche',12346578911,'2022-08-27',8.40);
 /*!40000 ALTER TABLE `consegna` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,6 +127,7 @@ CREATE TABLE `dipendente` (
 
 LOCK TABLES `dipendente` WRITE;
 /*!40000 ALTER TABLE `dipendente` DISABLE KEYS */;
+INSERT INTO `dipendente` VALUES ('CLDMTR70A01G479X','Pesaro','2021-01-01',1500.00),('GNMRZN78A01B354R','Catanzaro','2020-04-01',1200.00);
 /*!40000 ALTER TABLE `dipendente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +149,7 @@ CREATE TABLE `donazione` (
   KEY `fk_donazione_persona1_idx` (`codiceFiscale`),
   CONSTRAINT `fk_donazione_persona1` FOREIGN KEY (`codiceFiscale`) REFERENCES `persona` (`codiceFiscale`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_donazione_progetto1` FOREIGN KEY (`idProgetto`) REFERENCES `progetto` (`idProgetto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,6 +158,7 @@ CREATE TABLE `donazione` (
 
 LOCK TABLES `donazione` WRITE;
 /*!40000 ALTER TABLE `donazione` DISABLE KEYS */;
+INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24',4),(3,5.00,'PLABNL91S14I608D','2022-06-29',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24',4);
 /*!40000 ALTER TABLE `donazione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +173,7 @@ CREATE TABLE `evento` (
   `idEvento` char(20) NOT NULL,
   `nome` varchar(30) NOT NULL,
   `data` date NOT NULL,
-  `descrizione` varchar(60) DEFAULT NULL,
+  `descrizione` mediumtext,
   PRIMARY KEY (`idEvento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -177,6 +184,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
+INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.');
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,6 +214,7 @@ CREATE TABLE `fornitura` (
 
 LOCK TABLES `fornitura` WRITE;
 /*!40000 ALTER TABLE `fornitura` DISABLE KEYS */;
+INSERT INTO `fornitura` VALUES ('DG56',12435678911,'2022-01-19',30),('NT39',12435678911,'2022-04-19',15),('PA73',12345678191,'2022-02-05',10);
 /*!40000 ALTER TABLE `fornitura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,6 +242,7 @@ CREATE TABLE `iscrizione` (
 
 LOCK TABLES `iscrizione` WRITE;
 /*!40000 ALTER TABLE `iscrizione` DISABLE KEYS */;
+INSERT INTO `iscrizione` VALUES ('GNMRZN78A01B354R',1),('CHRGTN88A01C352W',2),('GNMRZN78A01B354R',3),('CHRGTN88A01C352W',6),('GNMRZN78A01B354R',6),('CHRGTN88A01C352W',7),('CHRGTN88A01C352W',9);
 /*!40000 ALTER TABLE `iscrizione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +258,7 @@ CREATE TABLE `newsletter` (
   `argomento` varchar(45) NOT NULL,
   `descrizione` mediumtext,
   PRIMARY KEY (`idNewsletter`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -257,6 +267,7 @@ CREATE TABLE `newsletter` (
 
 LOCK TABLES `newsletter` WRITE;
 /*!40000 ALTER TABLE `newsletter` DISABLE KEYS */;
+INSERT INTO `newsletter` VALUES (1,'Ambiente',NULL),(2,'Animali in estinzione',NULL),(3,'Inquinamento',NULL),(4,'Junior','Una newsletter dedicata ai più piccoli.'),(5,'Quiz',NULL),(6,'Novità sui progetti',NULL),(7,'Notizie verdi',NULL),(8,'Curiosità ed eco-consigli',NULL),(9,'Crimini di natura',NULL);
 /*!40000 ALTER TABLE `newsletter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,6 +295,7 @@ CREATE TABLE `organizzazione` (
 
 LOCK TABLES `organizzazione` WRITE;
 /*!40000 ALTER TABLE `organizzazione` DISABLE KEYS */;
+INSERT INTO `organizzazione` VALUES ('CLDMTR70A01G479X','e1'),('CLDMTR70A01G479X','e3'),('CLDMTR70A01G479X','e7'),('GNMRZN78A01B354R','e2'),('GNMRZN78A01B354R','e4'),('GNMRZN78A01B354R','e5'),('GNMRZN78A01B354R','e6');
 /*!40000 ALTER TABLE `organizzazione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,6 +323,7 @@ CREATE TABLE `partecipazione` (
 
 LOCK TABLES `partecipazione` WRITE;
 /*!40000 ALTER TABLE `partecipazione` DISABLE KEYS */;
+INSERT INTO `partecipazione` VALUES ('NDRCSD00A01C573B','S1-1'),('NDRCSD00A01C573B','S4-1'),('NDRCSD00A01C573B','S5-1'),('PLABNL91S14I608D','S1-2'),('PLABNL91S14I608D','S5-1');
 /*!40000 ALTER TABLE `partecipazione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -328,9 +341,9 @@ CREATE TABLE `persona` (
   `mail` varchar(45) NOT NULL,
   `telefono` varchar(24) DEFAULT NULL,
   `indirizzo` varchar(60) NOT NULL,
+  `codicePostale` varchar(10) NOT NULL,
   `città` varchar(15) NOT NULL,
   `regione` varchar(20) NOT NULL,
-  `codicePostale` varchar(10) NOT NULL,
   `tipo` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`codiceFiscale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -342,6 +355,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
+INSERT INTO `persona` VALUES ('CHRGTN88A01C352W','Chiara','Gatani','chiara88@gmail.com','0961-15640','via F. Tozzi, 56','85545','Catanzaro','Calabria',NULL),('CLDMTR70A01G479X','Claudio','Mastrati','claudio70@gmail.com','0721-10434','viale della Costituzione, 178','61121','Pesaro','Marche','dipendente'),('GNMRZN78A01B354R','Gianmarco','Oronzini','gianma78@gmail.com','0732-76078','piazza 20 settembre, 4','09134','Cagliari','Sardegna','dipendente'),('NDRCSD00A01C573B','Andrea','Casadei','andrecas@gmail.com','0543-80765','via A. Avogadro, 13','47122','Forlì','Emilia-Romagna','volontario'),('PLABNL91S14I608D','Paolo','Brunelli','brunellipaolo@gmail.com','0719-84515','corso Mazzini, 29','44207','Senigallia','Marche','volontario');
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,6 +386,7 @@ CREATE TABLE `prodotto` (
 
 LOCK TABLES `prodotto` WRITE;
 /*!40000 ALTER TABLE `prodotto` DISABLE KEYS */;
+INSERT INTO `prodotto` VALUES ('DG56','On the go','Bottiglia di acciaio blu',20.00,30,'Fornito',NULL),('EC51','Abbigliamento','Cappello da baseball',20.00,30,'Fornito','Logo sulla parte frontale.'),('F001','Merchandise','Braccialetto turtle',7.00,50,'Fabbricato','Plastica riciclata, ciondolo tartaruga.'),('F002','Merchandise','Braccialetto dolphin',7.00,50,'Fabbricato','Plastica riciclata, ciondolo delfino.'),('F003','Merchandise','Collana turtle',10.00,40,'Fabbricato','Plastica riciclata, ciondolo tartaruga.'),('F005','Merchandise','Collana dolphin',10.00,40,'Fabbricato','Plastica riciclata, ciondolo delfino.'),('HG46','Cura della persona','Spazzolino bamboo',20.00,30,'Fornito','Set da 7 spazzolini.'),('JW49','Idee regalo','Sacchetto di tela',5.50,50,'Fornito',NULL),('NT39','On the go','Bottiglia di acciaio grigia',20.00,30,'Fornito',NULL),('PA73','On the go','Set posate in bamboo',15.00,25,'Fornito',NULL),('RB87','On the go','Bottiglia di acciaio nera',20.00,30,'Fornito',NULL),('W79R','On the go','Bottiglia di acciaio rosa',20.00,30,'Fornito',NULL);
 /*!40000 ALTER TABLE `prodotto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,6 +419,7 @@ CREATE TABLE `produzione` (
 
 LOCK TABLES `produzione` WRITE;
 /*!40000 ALTER TABLE `produzione` DISABLE KEYS */;
+INSERT INTO `produzione` VALUES ('F001','S4-3',15,'Termoplastiche',13.52),('F002','S4-3',13,'Termoplastiche',10.70);
 /*!40000 ALTER TABLE `produzione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,7 +437,7 @@ CREATE TABLE `progetto` (
   `durataMesi` int NOT NULL,
   `descrizione` mediumtext,
   PRIMARY KEY (`idProgetto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,6 +446,7 @@ CREATE TABLE `progetto` (
 
 LOCK TABLES `progetto` WRITE;
 /*!40000 ALTER TABLE `progetto` DISABLE KEYS */;
+INSERT INTO `progetto` VALUES (1,'Creare un rifugio per animali','0000-00-00',6,NULL),(2,'Ecofishing','0000-00-00',12,'Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate \ne l’implementazione di un programma di pesca sostenibile.'),(3,'Rain-forest','0000-00-00',18,'Piano di reinforestazione delle aree più colpite dal disboscamento in Italia.'),(4,'Città verde','0000-00-00',12,'Rendere più verdi le zone urbane.'),(5,'Leopardo delle nevi','0000-00-00',12,'Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli.'),(6,'Tour in bosco','0000-00-00',9,'Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie.'),(7,'Elefanti','0000-00-00',12,'Ridurre il bracconaggio.');
 /*!40000 ALTER TABLE `progetto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,6 +475,7 @@ CREATE TABLE `raccolta` (
 
 LOCK TABLES `raccolta` WRITE;
 /*!40000 ALTER TABLE `raccolta` DISABLE KEYS */;
+INSERT INTO `raccolta` VALUES ('S4-1','Carta',25.30),('S4-1','Plastiche termoindurenti',30.40),('S4-1','Termoplastiche',10.02),('S4-2','Carta',25.73),('S4-2','Termoplastiche',18.02),('S4-2','Vetro',20.92);
 /*!40000 ALTER TABLE `raccolta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -483,6 +501,7 @@ CREATE TABLE `rifiuto` (
 
 LOCK TABLES `rifiuto` WRITE;
 /*!40000 ALTER TABLE `rifiuto` DISABLE KEYS */;
+INSERT INTO `rifiuto` VALUES ('Carta','Riciclabile',154.65,NULL),('Plastiche termoindurenti','Non riciclabile',322.54,'7 - Altre plastiche'),('Termoplastiche','Riciclabile',260.87,'1 - PET (polietilene tereftalato), \n2 - HDPE (polietilene ad alta densità), 3 - PVC O V (cloruro di polivinile), 4 - LDPE (polietilene a bassa densità), 5 - PP (polipropilene), \n6 - PS (polistirene o polistirolo)'),('Vetro','Riciclabile',134.78,NULL);
 /*!40000 ALTER TABLE `rifiuto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -496,8 +515,8 @@ DROP TABLE IF EXISTS `sede`;
 CREATE TABLE `sede` (
   `città` varchar(25) NOT NULL,
   `indirizzo` varchar(60) NOT NULL,
-  `regione` varchar(20) NOT NULL,
   `codicePostale` varchar(10) NOT NULL,
+  `regione` varchar(20) NOT NULL,
   `telefono` varchar(24) NOT NULL,
   PRIMARY KEY (`città`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -509,6 +528,7 @@ CREATE TABLE `sede` (
 
 LOCK TABLES `sede` WRITE;
 /*!40000 ALTER TABLE `sede` DISABLE KEYS */;
+INSERT INTO `sede` VALUES ('Catanzaro','via delle rocce, 273','85545','Calabria','0961-40864'),('Forlì','viale Franco, 45','47121','Emilia-Romagna','0543-86546'),('Pesaro','via ponti, 23','61121','Marche','0721-01898'),('Roma','piazzetta della misura, 76','00118','Lazio','0774-34837');
 /*!40000 ALTER TABLE `sede` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -540,6 +560,7 @@ CREATE TABLE `servizio` (
 
 LOCK TABLES `servizio` WRITE;
 /*!40000 ALTER TABLE `servizio` DISABLE KEYS */;
+INSERT INTO `servizio` VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e1','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S4-1','e7','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e7','15:00:00','17:00:00','Fabbricazione prodotti',NULL),('S5-1','e4','16:30:00','19:00:00','Raccolta fondi',NULL);
 /*!40000 ALTER TABLE `servizio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -566,6 +587,7 @@ CREATE TABLE `tesserasocio` (
 
 LOCK TABLES `tesserasocio` WRITE;
 /*!40000 ALTER TABLE `tesserasocio` DISABLE KEYS */;
+INSERT INTO `tesserasocio` VALUES ('SOC0000001','CHRGTN88A01C352W','2022-05-24'),('SOC0000002','PLABNL91S14I608D','2021-12-07');
 /*!40000 ALTER TABLE `tesserasocio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -597,6 +619,7 @@ CREATE TABLE `vendita` (
 
 LOCK TABLES `vendita` WRITE;
 /*!40000 ALTER TABLE `vendita` DISABLE KEYS */;
+INSERT INTO `vendita` VALUES ('DG56','S1-1','GNMRZN78A01B354R',1),('DG56','S1-1','NDRCSD00A01C573B',1),('EC51','S1-1','CLDMTR70A01G479X',2),('F003','S1-1','CHRGTN88A01C352W',4);
 /*!40000 ALTER TABLE `vendita` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -625,6 +648,7 @@ CREATE TABLE `volontario` (
 
 LOCK TABLES `volontario` WRITE;
 /*!40000 ALTER TABLE `volontario` DISABLE KEYS */;
+INSERT INTO `volontario` VALUES ('NDRCSD00A01C573B','Forlì','2021-05-17'),('PLABNL91S14I608D','Pesaro','2020-02-21');
 /*!40000 ALTER TABLE `volontario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -637,4 +661,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-12 21:17:58
+-- Dump completed on 2022-08-13  0:51:54

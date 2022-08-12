@@ -9,7 +9,8 @@ public enum ServerCredentials {
 		this.string = string;
 	}
 	
-	public String getString() {
+	@Override
+	public String toString() {
         return this.string;
 	}
 }

@@ -56,8 +56,9 @@ public class ProjectTable {
 			    final String obbiettivo = resultSet.getString("obbiettivo");
 			    final Date dataInizio = Utils.sqlDateToDate(resultSet.getDate("dataInizio"));
 			    final Integer durataMesi = resultSet.getInt("durataMesi");
+			    final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
 				
-				final Project progetto = new Project(obbiettivo, dataInizio, durataMesi);
+				final Project progetto = new Project(obbiettivo, dataInizio, durataMesi, descrizione);
 				progetti.add(progetto);
 			}
 		} catch (final SQLException e) {}
@@ -66,11 +67,12 @@ public class ProjectTable {
 
 	public boolean save(Project progetto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(obbiettivo, dataInizio, durataMesi) VALUES (?,?,?)";
+				"(obbiettivo, dataInizio, durataMesi, descrizione) VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setString(1, progetto.getObbiettivo());
 			statement.setDate(2, Utils.dateToSqlDate(progetto.getDataInizio()));
 			statement.setInt(3, progetto.getDurataMesi());
+			statement.setString(4, progetto.getDescrizione().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -81,13 +83,14 @@ public class ProjectTable {
 	}
 
 	public boolean update(Project updatedProgetto) {
-		final String query = "UPDATE " + TABLE_NAME + " SET obbiettivo = ?, dataInizio = ?, durataMesi = ? "
-				+ "WHERE idProgetto = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET obbiettivo = ?, dataInizio = ?, durataMesi = ?,"
+				+ "descrizione = ? WHERE idProgetto = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setString(1, updatedProgetto.getObbiettivo());
 			statement.setDate(2, Utils.dateToSqlDate(updatedProgetto.getDataInizio()));
 			statement.setInt(3, updatedProgetto.getDurataMesi());
-			statement.setInt(4, updatedProgetto.getIdProgetto());
+			statement.setString(4, updatedProgetto.getDescrizione().orElse(null));
+			statement.setInt(5, updatedProgetto.getIdProgetto());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);

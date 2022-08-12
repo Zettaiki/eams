@@ -11,13 +11,10 @@ import org.junit.jupiter.api.Test;
 import db.tables.PersonTable;
 import model.Person;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
-class PersonTableTest {    
-    final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static PersonTable personTable = new PersonTable(connectionProvider.getMySQLConnection());
+class PersonTableTest {
+    final static PersonTable personTable = new PersonTable(ConnectionProvider.getMySQLConnection());
 
     final Person person1 = new Person("AAAAAAAAAAAAAAAA", "Giacomo", "Cavalieri", "mail1@nicemail.it",
     		Optional.of("33123446756678"), "via Giuseppe", "Ancona", "Marche", "320256", Optional.of("Interna"));
@@ -26,13 +23,13 @@ class PersonTableTest {
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), personTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), personTable.getTableName());
         personTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), personTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), personTable.getTableName()));
         assertTrue(personTable.createTable());
     }
     

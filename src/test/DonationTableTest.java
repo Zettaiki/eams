@@ -15,14 +15,11 @@ import org.junit.jupiter.api.Test;
 import db.tables.DonationTable;
 import model.Donation;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class DonationTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(),
-			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-	final static DonationTable donationTable = new DonationTable(connectionProvider.getMySQLConnection());
+	final static DonationTable donationTable = new DonationTable(ConnectionProvider.getMySQLConnection());
 
 	final Donation donation1 = new Donation(new BigDecimal("22.20"), "AAAAAAAAAAAAAAAA",
 			Utils.buildDate(11, 10, 2022).get(), Optional.of(1));
@@ -31,20 +28,20 @@ public class DonationTableTest {
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), donationTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), donationTable.getTableName());
         donationTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), donationTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), donationTable.getTableName()));
         assertTrue(donationTable.createTable());
     }
     
     @Test
     void saveTest() {
         assertTrue(donationTable.save(this.donation1));
-        //assertFalse(donationTable.save(this.donation1)); non serve perch� non inserisco pk
+        //assertFalse(donationTable.save(this.donation1)); non serve perché non inserisco pk
         assertTrue(donationTable.save(this.donation2));
     }
     

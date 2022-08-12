@@ -14,27 +14,24 @@ import org.junit.jupiter.api.Test;
 import db.tables.ProjectTable;
 import model.Project;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class ProjectTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(),
-			ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-	final static ProjectTable projectTable = new ProjectTable(connectionProvider.getMySQLConnection());
+	final static ProjectTable projectTable = new ProjectTable(ConnectionProvider.getMySQLConnection());
 
 	final Project project1 = new Project("m", Utils.buildDate(11, 10, 2022).get(), 4);
 	final Project project2 = new Project("a", Utils.buildDate(11, 12, 2021).get(), 5);
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), projectTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), projectTable.getTableName());
         projectTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-        assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), projectTable.getTableName()));
+        assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), projectTable.getTableName()));
         assertTrue(projectTable.createTable());
     }
     

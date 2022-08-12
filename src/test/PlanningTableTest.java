@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.PlanningTable;
 import model.Planning;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class PlanningTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static PlanningTable planningTable = new PlanningTable(connectionProvider.getMySQLConnection());
+    final static PlanningTable planningTable = new PlanningTable(ConnectionProvider.getMySQLConnection());
 
     final Planning planning1 = new Planning("AAAAAAAAAAAAAAAA", "1");
     final Planning planning2 = new Planning("BBBBBBBBBBBBBBBB", "2");
 
     @BeforeEach
 	public void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), planningTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), planningTable.getTableName());
         planningTable.createTable();
     }
 
     @Test
 	public void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), planningTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), planningTable.getTableName()));
         assertTrue(planningTable.createTable());
     }
     

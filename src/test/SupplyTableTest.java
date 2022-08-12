@@ -15,27 +15,24 @@ import org.junit.jupiter.api.Test;
 import db.tables.SupplyTable;
 import model.Supply;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class SupplyTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static SupplyTable supplyTable = new SupplyTable(connectionProvider.getMySQLConnection());
+    final static SupplyTable supplyTable = new SupplyTable(ConnectionProvider.getMySQLConnection());
 
     final Supply supply1 = new Supply("p1", new BigDecimal("12345678911"), Utils.buildDate(11, 12, 2021).get(), 20);
     final Supply supply2 = new Supply("p2", new BigDecimal("25369874102"), Utils.buildDate(11, 12, 2021).get(), 15);
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), supplyTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), supplyTable.getTableName());
         supplyTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), supplyTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), supplyTable.getTableName()));
         assertTrue(supplyTable.createTable());
     }
     

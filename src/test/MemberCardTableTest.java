@@ -12,26 +12,23 @@ import db.tables.MemberCardTable;
 import utils.Utils;
 import model.MemberCard;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 class MemberCardTableTest {
-    final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static MemberCardTable memberCardTable = new MemberCardTable(connectionProvider.getMySQLConnection());
+    final static MemberCardTable memberCardTable = new MemberCardTable(ConnectionProvider.getMySQLConnection());
 
     final MemberCard memberCard1 = new MemberCard("1", "AAAAAAAAAAAAAAAA", Utils.buildDate(11, 10, 2022).get());
     final MemberCard memberCard2 = new MemberCard("2", "BBBBBBBBBBBBBBBB", Utils.buildDate(11, 12, 2021).get());
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), memberCardTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), memberCardTable.getTableName());
         memberCardTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), memberCardTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), memberCardTable.getTableName()));
         assertTrue(memberCardTable.createTable());
     }
     

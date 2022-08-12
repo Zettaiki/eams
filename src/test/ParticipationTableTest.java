@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.ParticipationTable;
 import model.Participation;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class ParticipationTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static ParticipationTable participationTable = new ParticipationTable(connectionProvider.getMySQLConnection());
+    final static ParticipationTable participationTable = new ParticipationTable(ConnectionProvider.getMySQLConnection());
 
     final Participation participation1 = new Participation("AAAAAAAAAAAAAAAA", "s1");
     final Participation participation2 = new Participation("BBBBBBBBBBBBBBBB", "s2");
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), participationTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), participationTable.getTableName());
         participationTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), participationTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), participationTable.getTableName()));
         assertTrue(participationTable.createTable());
     }
     

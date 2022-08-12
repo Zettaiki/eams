@@ -15,26 +15,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.ServiceTable;
 import model.Service;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class ServiceTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static ServiceTable serviceTable = new ServiceTable(connectionProvider.getMySQLConnection());
+    final static ServiceTable serviceTable = new ServiceTable(ConnectionProvider.getMySQLConnection());
 
     final Service service1 = new Service("s1", "e1", Time.valueOf("18:45:20"), Time.valueOf("19:45:20"), "ag", Optional.of(1));
     final Service service2 = new Service("s2", "e2", Time.valueOf("18:00:00"), Time.valueOf("19:45:20"), "bg", Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), serviceTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), serviceTable.getTableName());
         serviceTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), serviceTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), serviceTable.getTableName()));
         assertTrue(serviceTable.createTable());
     }
     

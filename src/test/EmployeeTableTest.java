@@ -15,14 +15,11 @@ import org.junit.jupiter.api.Test;
 import db.tables.EmployeeTable;
 import model.Employee;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class EmployeeTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static EmployeeTable employeeTable = new EmployeeTable(connectionProvider.getMySQLConnection());
+    final static EmployeeTable employeeTable = new EmployeeTable(ConnectionProvider.getMySQLConnection());
 
 	final Employee employee1 = new Employee("AAAAAAAAAAAAAAAA", "Roma", Utils.buildDate(11, 12, 2022).get(),
 			new BigDecimal("1000.00"));
@@ -31,13 +28,13 @@ public class EmployeeTableTest {
 
     @BeforeEach
 	public void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), employeeTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), employeeTable.getTableName());
         employeeTable.createTable();
     }
 
     @Test
 	public void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), employeeTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), employeeTable.getTableName()));
         assertTrue(employeeTable.createTable());
     }
     

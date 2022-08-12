@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.CategoryTable;
 import model.Category;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class CategoryTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static CategoryTable categoryTable = new CategoryTable(connectionProvider.getMySQLConnection());
+    final static CategoryTable categoryTable = new CategoryTable(ConnectionProvider.getMySQLConnection());
 
     final Category category1 = new Category("a", Optional.of("mail1@nicemail.it"));
     final Category category2 = new Category("b", Optional.empty());
 
     @BeforeEach
 	public void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), categoryTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), categoryTable.getTableName());
         categoryTable.createTable();
     }
 
     @Test
 	public void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), categoryTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), categoryTable.getTableName()));
         assertTrue(categoryTable.createTable());
     }
     

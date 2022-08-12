@@ -14,27 +14,24 @@ import org.junit.jupiter.api.Test;
 import db.tables.EventTable;
 import model.Event;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class EventTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static EventTable eventTable = new EventTable(connectionProvider.getMySQLConnection());
+    final static EventTable eventTable = new EventTable(ConnectionProvider.getMySQLConnection());
 
     final Event event1 = new Event("e1", "a", Utils.buildDate(11, 10, 2022).get(), Optional.of("molto bello"));
     final Event event2 = new Event("e2", "bo", Utils.buildDate(11, 12, 2021).get(), Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), eventTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), eventTable.getTableName());
         eventTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), eventTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), eventTable.getTableName()));
         assertTrue(eventTable.createTable());
     }
     

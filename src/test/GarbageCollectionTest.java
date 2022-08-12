@@ -15,26 +15,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.GarbageCollectionTable;
 import model.GarbageCollection;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class GarbageCollectionTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static GarbageCollectionTable garbageCollectionTable = new GarbageCollectionTable(connectionProvider.getMySQLConnection());
+    final static GarbageCollectionTable garbageCollectionTable = new GarbageCollectionTable(ConnectionProvider.getMySQLConnection());
 
     final GarbageCollection garbageCollection1 = new GarbageCollection("s1", "carta", new BigDecimal("30.20"));
     final GarbageCollection garbageCollection2 = new GarbageCollection("s2", "plastica", new BigDecimal("220.10"));
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), garbageCollectionTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), garbageCollectionTable.getTableName());
         garbageCollectionTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), garbageCollectionTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), garbageCollectionTable.getTableName()));
         assertTrue(garbageCollectionTable.createTable());
     }
     

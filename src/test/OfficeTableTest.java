@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.OfficeTable;
 import model.Office;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class OfficeTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static OfficeTable officeTable = new OfficeTable(connectionProvider.getMySQLConnection());
+    final static OfficeTable officeTable = new OfficeTable(ConnectionProvider.getMySQLConnection());
 
     final Office office1 = new Office("Bari", "via Garibaldi", "Puglia", "743873", "0142415245");
 	final Office office2 = new Office("Roma", "via Giuseppe", "Lazio", "320256", "054542020");
 
     @BeforeEach
 	public void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), officeTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), officeTable.getTableName());
         officeTable.createTable();
     }
 
     @Test
 	public void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), officeTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), officeTable.getTableName()));
         assertTrue(officeTable.createTable());
     }
     

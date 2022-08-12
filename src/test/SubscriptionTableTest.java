@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.SubscriptionTable;
 import model.Subscription;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class SubscriptionTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static SubscriptionTable subscriptionTable = new SubscriptionTable(connectionProvider.getMySQLConnection());
+    final static SubscriptionTable subscriptionTable = new SubscriptionTable(ConnectionProvider.getMySQLConnection());
 
     final Subscription subscription1 = new Subscription("AAAAAAAAAAAAAAAA", 1);
     final Subscription subscription2 = new Subscription("BBBBBBBBBBBBBBBB", 2);
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), subscriptionTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), subscriptionTable.getTableName());
         subscriptionTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), subscriptionTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), subscriptionTable.getTableName()));
         assertTrue(subscriptionTable.createTable());
     }
     

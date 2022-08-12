@@ -15,13 +15,10 @@ import org.junit.jupiter.api.Test;
 import db.tables.ProductTable;
 import model.Product;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class ProductTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static ProductTable productTable = new ProductTable(connectionProvider.getMySQLConnection());
+    final static ProductTable productTable = new ProductTable(ConnectionProvider.getMySQLConnection());
 
 	final Product product1 = new Product("p1", "a", "borraccia", new BigDecimal("20.90"), 20, "raccolta rifiuti",
 			Optional.of("molto belle"));
@@ -30,13 +27,13 @@ public class ProductTableTest {
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), productTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), productTable.getTableName());
         productTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), productTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), productTable.getTableName()));
         assertTrue(productTable.createTable());
     }
     

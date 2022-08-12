@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.NewsletterTable;
 import model.Newsletter;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class NewsletterTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static NewsletterTable newsletterTable = new NewsletterTable(connectionProvider.getMySQLConnection());
+    final static NewsletterTable newsletterTable = new NewsletterTable(ConnectionProvider.getMySQLConnection());
 
     final Newsletter newsletter1 = new Newsletter(1, "12345678911", Optional.of("interessante"));
     final Newsletter newsletter2 = new Newsletter(2,  "25369874102", Optional.empty());
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), newsletterTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), newsletterTable.getTableName());
         newsletterTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), newsletterTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), newsletterTable.getTableName()));
         assertTrue(newsletterTable.createTable());
     }
     

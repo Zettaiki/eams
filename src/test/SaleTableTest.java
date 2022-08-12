@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Test;
 import db.tables.SaleTable;
 import model.Sale;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 
 public class SaleTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static SaleTable saleTable = new SaleTable(connectionProvider.getMySQLConnection());
+    final static SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
 
     final Sale sale1 = new Sale("p1", "s1", "AAAAAAAAAAAAAAAA", 20);
     final Sale sale2 = new Sale("p2", "s2", "BBBBBBBBBBBBBBBB", 15);
 
     @BeforeEach
     void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), saleTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), saleTable.getTableName());
         saleTable.createTable();
     }
 
     @Test
     void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), saleTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), saleTable.getTableName()));
         assertTrue(saleTable.createTable());
     }
     

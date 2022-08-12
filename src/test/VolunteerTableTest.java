@@ -14,27 +14,24 @@ import org.junit.jupiter.api.Test;
 import db.tables.VolunteerTable;
 import model.Volunteer;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class VolunteerTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static VolunteerTable volunteerTable = new VolunteerTable(connectionProvider.getMySQLConnection());
+    final static VolunteerTable volunteerTable = new VolunteerTable(ConnectionProvider.getMySQLConnection());
 
 	final Volunteer volunteer1 = new Volunteer("AAAAAAAAAAAAAAAA", "Roma", Utils.buildDate(11, 12, 2022).get());
 	final Volunteer volunteer2 = new Volunteer("BBBBBBBBBBBBBBBB", "Bari", Utils.buildDate(11, 12, 2021).get());
 
     @BeforeEach
 	public void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), volunteerTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), volunteerTable.getTableName());
         volunteerTable.createTable();
     }
 
     @Test
 	public void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), volunteerTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), volunteerTable.getTableName()));
         assertTrue(volunteerTable.createTable());
     }
     

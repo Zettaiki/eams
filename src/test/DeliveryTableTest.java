@@ -15,27 +15,24 @@ import org.junit.jupiter.api.Test;
 import db.tables.DeliveryTable;
 import model.Delivery;
 import utils.ConnectionProvider;
-import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
 
 public class DeliveryTableTest {
-	final static ConnectionProvider connectionProvider = new ConnectionProvider(ServerCredentials.USERNAME.getString(), 
-    		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
-    final static DeliveryTable deliveryTable = new DeliveryTable(connectionProvider.getMySQLConnection());
+    final static DeliveryTable deliveryTable = new DeliveryTable(ConnectionProvider.getMySQLConnection());
 
     final Delivery delivery1 = new Delivery("carta", new BigDecimal("12345678911"), Utils.buildDate(11, 12, 2021).get(), new BigDecimal("420.50"));
     final Delivery delivery2 = new Delivery("plastica", new BigDecimal("25369874102"), Utils.buildDate(11, 12, 2022).get(), new BigDecimal("200.00"));
 
     @BeforeEach
 	public void setUp() throws Exception {
-    	TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), deliveryTable.getTableName());
+    	TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), deliveryTable.getTableName());
         deliveryTable.createTable();
     }
 
     @Test
 	public void creationAndDropTest() {
-    	assertTrue(TableTestUtils.dropTable(connectionProvider.getMySQLConnection(), deliveryTable.getTableName()));
+    	assertTrue(TableTestUtils.dropTable(ConnectionProvider.getMySQLConnection(), deliveryTable.getTableName()));
         assertTrue(deliveryTable.createTable());
     }
     

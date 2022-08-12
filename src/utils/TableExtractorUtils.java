@@ -9,12 +9,14 @@ import db.tables.DonationTable;
 import db.tables.EventTable;
 import db.tables.NewsletterTable;
 import db.tables.ProjectTable;
+import db.tables.SaleTable;
 import db.tables.ServiceTable;
 import db.tables.VolunteerTable;
 import model.Donation;
 import model.Event;
 import model.Newsletter;
 import model.Project;
+import model.Sale;
 import model.Service;
 import model.Volunteer;
 
@@ -115,5 +117,18 @@ public class TableExtractorUtils {
 	    return data;
 	}
 	
-	
+	public static DefaultTableModel	saleTable() {
+		// Requesting conection
+		SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
+	    
+	    // Ordering and collecting the data
+		String[] columnNames = {"ID", "ID servizio", "Codice Fiscale Cliente", "Quantità"};	    
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+	    List<Sale> saleList = saleTable.findAll();
+	    for( Sale x : saleList ) {
+	    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità()};
+	    	data.addRow(temp);
+	    }
+	    return data;
+	}
 }

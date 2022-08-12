@@ -2,9 +2,11 @@ package gui.volunteering_menu;
 
 import javax.swing.*;
 import java.awt.*;
+
 import gui.GUI;
 import gui.MenuPanel;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class VolunteeringMenuPanel extends JPanel {
     private static final long serialVersionUID = 8475751505006519027L;
@@ -66,15 +68,7 @@ public class VolunteeringMenuPanel extends JPanel {
     		b2.setBorder(BorderFactory.createTitledBorder("Volontari registrati:"));
     		b2.setLayout(new GridLayout(0,1));
     		{
-    			String[] columnNames = {"Codice fiscale",
-                        "Sede",
-                        "Data inscrizione"};
-            	
-            	Object[][] data = {
-            		    {"-", "-", "-"}
-            		};
-            	
-            	var volunteeringTable = new JTable(data, columnNames);
+            	var volunteeringTable = new JTable(TableExtractorUtils.volunteerTable());
             	volunteeringTable.setEnabled(false);
             	volunteeringTable.getTableHeader().setReorderingAllowed(false);
             	volunteeringTable.getTableHeader().setEnabled(false);

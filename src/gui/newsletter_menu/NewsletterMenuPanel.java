@@ -20,6 +20,7 @@ import javax.swing.SwingUtilities;
 import gui.GUI;
 import gui.MenuPanel;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class NewsletterMenuPanel extends JPanel {
 	private static final long serialVersionUID = -4421801245124223386L;
@@ -74,15 +75,7 @@ public class NewsletterMenuPanel extends JPanel {
     		b2.setBorder(BorderFactory.createTitledBorder("Newsletter:"));
     		b2.setLayout(new GridLayout(0,1));
     		{
-    			String[] columnNames = {"ID",
-                        "Argomento",
-                        "Descrizione"};
-            	
-            	Object[][] data = {
-            		    {"-", "-", "-"}
-            		};
-            	
-            	var volunteeringTable = new JTable(data, columnNames);
+            	var volunteeringTable = new JTable(TableExtractorUtils.newsletterTable());
             	volunteeringTable.setEnabled(false);
             	volunteeringTable.getTableHeader().setReorderingAllowed(false);
             	volunteeringTable.getTableHeader().setEnabled(false);

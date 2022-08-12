@@ -3,6 +3,7 @@ package gui.project_menu;
 import javax.swing.*;
 import java.awt.*;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class DonationPanel extends JPanel {
 	private static final long serialVersionUID = 7637300465466931816L;
@@ -50,17 +51,7 @@ public class DonationPanel extends JPanel {
 		a1.setBorder(BorderFactory.createTitledBorder("Donazioni registrate:"));
 		a1.setLayout(new GridLayout(0,1));
 		{
-			String[] columnNames = {"ID",
-		            "Importo",
-		            "Codice fiscale",
-		            "Data donazione",
-		            "ID progetto"};
-			
-			Object[][] data = {
-				    {"-", "-", "-", "-", "-"},
-				};
-			
-			var donationTable = new JTable(data, columnNames);
+			var donationTable = new JTable(TableExtractorUtils.donationTable());
 			donationTable.setEnabled(false);
 			donationTable.getTableHeader().setReorderingAllowed(false);
 			donationTable.getTableHeader().setEnabled(false);

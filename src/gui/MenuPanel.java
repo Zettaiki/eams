@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 
 import gui.events_menu.EventsMenuPanel;
+import gui.newsletter_menu.NewsletterMenuPanel;
 import gui.project_menu.ProjectDonationMenuPanel;
 import gui.volunteering_menu.VolunteeringMenuPanel;
 import utils.JComponentLoader;
@@ -83,7 +84,8 @@ public class MenuPanel extends JPanel {
             c.gridy = 4;
             var newsletterButton = new JButton("Newsletter");
             newsletterButton.addActionListener(e -> {
-            	// TODO
+            	JFrame parent = JComponentLoader.getParentFrame(this);
+                JComponentLoader.load(parent, new NewsletterMenuPanel());
             });
             b0.add(newsletterButton, c);
     	}

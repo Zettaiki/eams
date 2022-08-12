@@ -2,6 +2,8 @@ package gui.project_menu;
 
 import javax.swing.*;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
+
 import java.awt.*;
 
 public class ProjectPanel extends JPanel {
@@ -51,16 +53,7 @@ public class ProjectPanel extends JPanel {
         a1.setBorder(BorderFactory.createTitledBorder("Progetti registrati:"));
         a1.setLayout(new GridLayout(0,1));
         {
-        	String[] columnNames = {"ID",
-                    "Obbiettivo",
-                    "Data inizio",
-                    "Durata mesi"};
-        	
-        	Object[][] data = {
-        		    {"-", "-", "-", "-"}
-        		};
-        	
-        	var projectTable = new JTable(data, columnNames);
+        	var projectTable = new JTable(TableExtractorUtils.projectTable());
 			projectTable.setEnabled(false);
         	projectTable.getTableHeader().setReorderingAllowed(false);
 			projectTable.getTableHeader().setEnabled(false);

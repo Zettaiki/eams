@@ -28,26 +28,6 @@ public class GarbageCollectionTable {
 		return TABLE_NAME;
 	}
 
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idServizio CHAR(20) NOT NULL," +
-            			"materiale VARCHAR(30) NOT NULL," +
-            			"kg FLOAT NOT NULL," +
-            			"PRIMARY KEY (idServizio, materiale)," +
-            			"FOREIGN KEY (materiale) REFERENCES rifiuto (materiale) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {    
-        	System.out.println(e.toString());
-            return false;
-        }
-	}
-
 	public Optional<GarbageCollection> findByPrimaryKey(String idServizio, String materiale) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

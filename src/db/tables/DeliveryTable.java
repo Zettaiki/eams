@@ -30,26 +30,6 @@ public class DeliveryTable {
 		return TABLE_NAME;
 	}
 
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"materiale VARCHAR(30) NOT NULL," +
-            			"partitaIVA DECIMAL(11) NOT NULL," +
-            			"data DATE NOT NULL," +
-            			"kgConsegnati DECIMAL(11,2) NOT NULL," +
-            			"PRIMARY KEY (materiale, partitaIVA, data)," +
-            			"FOREIGN KEY (partitaIVA) REFERENCES azienda (partitaIVA) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (materiale) REFERENCES rifiuto (materiale) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
 	public Optional<Delivery> findByPrimaryKey(String materiale, BigDecimal partitaIVA, Date data) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ? AND partitaIVA = ? "
 				+ "AND data = ?";

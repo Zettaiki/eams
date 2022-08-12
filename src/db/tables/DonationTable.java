@@ -30,24 +30,6 @@ public class DonationTable {
 		return TABLE_NAME;
 	}
 
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
-					+ "idDonazione INT NOT NULL AUTO_INCREMENT PRIMARY KEY," + "importo DECIMAL(11,2) NOT NULL,"
-					+ "codiceFiscale CHAR(16) NOT NULL," + "dataDonazione DATE NOT NULL,"
-					+ "idProgetto INT NULL,"					
-					+ "FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) "
-					+ "ON DELETE CASCADE ON UPDATE CASCADE,"
-					+ "FOREIGN KEY (idProgetto) REFERENCES progetto (idProgetto) "
-					+ "ON DELETE CASCADE ON UPDATE CASCADE" +
-					")");
-			return true;
-		} catch (final SQLException e) {
-			return false;
-		}
-	}
-
 	public Optional<Donation> findByPrimaryKey(Integer idDonazione) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idDonazione = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

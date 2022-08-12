@@ -29,21 +29,6 @@ public class EventTable {
 		return TABLE_NAME;
 	}
 
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idEvento CHAR(20) NOT NULL PRIMARY KEY," +
-            			"nome VARCHAR(30) NOT NULL," +
-            			"data DATE NOT NULL," +
-            			"descrizione VARCHAR(60) NULL DEFAULT NULL" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
 	public Optional<Event> findByPrimaryKey(String idEvento) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

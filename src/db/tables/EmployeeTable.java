@@ -29,24 +29,7 @@ public class EmployeeTable {
 	public String getTableName() {
 		return TABLE_NAME;
 	}
-
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
-            			"sedeCittà VARCHAR(25) NOT NULL," +
-            			"dataAssunzione DATE NOT NULL," +
-            			"salario DECIMAL(8,2) NOT NULL," +
-            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (sedeCittà) REFERENCES sede (città) ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
+	
 	public Optional<Employee> findByPrimaryKey(String codiceFiscale) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

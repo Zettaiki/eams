@@ -27,19 +27,6 @@ public class CategoryTable {
 		return TABLE_NAME;
 	}
 
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"nome VARCHAR(30) NOT NULL PRIMARY KEY," +
-            			"descrizione MEDIUMTEXT NULL DEFAULT NULL" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
 	public Optional<Category> findByPrimaryKey(String nome) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE nome = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

@@ -12,9 +12,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.ConnectionProvider;
 import db.tables.DonationTable;
 import model.Donation;
+import utils.ConnectionProvider;
 import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
@@ -44,7 +44,7 @@ public class DonationTableTest {
     @Test
     void saveTest() {
         assertTrue(donationTable.save(this.donation1));
-        //assertFalse(donationTable.save(this.donation1)); non serve perché non inserisco pk
+        //assertFalse(donationTable.save(this.donation1)); non serve perchï¿½ non inserisco pk
         assertTrue(donationTable.save(this.donation2));
     }
     

@@ -11,9 +11,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.ConnectionProvider;
 import db.tables.ProjectTable;
 import model.Project;
+import utils.ConnectionProvider;
 import utils.ServerCredentials;
 import utils.TableTestUtils;
 import utils.Utils;
@@ -41,7 +41,7 @@ public class ProjectTableTest {
     @Test
     void saveTest() {
         assertTrue(projectTable.save(this.project1));
-        //assertFalse(projectTable.save(this.project1)); non serve perché non inserisco pk
+        //assertFalse(projectTable.save(this.project1)); non serve perchï¿½ non inserisco pk
         assertTrue(projectTable.save(this.project2));
     }
     

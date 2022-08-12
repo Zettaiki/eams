@@ -11,9 +11,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.ConnectionProvider;
 import db.tables.PlanningTable;
 import model.Planning;
+import utils.ConnectionProvider;
 import utils.ServerCredentials;
 import utils.TableTestUtils;
 

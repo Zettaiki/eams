@@ -11,9 +11,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.ConnectionProvider;
 import db.tables.NewsletterTable;
 import model.Newsletter;
+import utils.ConnectionProvider;
 import utils.ServerCredentials;
 import utils.TableTestUtils;
 

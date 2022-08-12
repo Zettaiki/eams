@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import utils.Utils;
 import model.MemberCard;
 
-public class MemberCardTable implements Table<MemberCard, String> {
+public class MemberCardTable {
 
 	public static final String TABLE_NAME = "tesserasocio";
 
@@ -26,28 +25,10 @@ public class MemberCardTable implements Table<MemberCard, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idSocio VARCHAR(15) NOT NULL PRIMARY KEY," +
-            			"codiceFiscale CHAR(16) NOT NULL," +
-            			"dataAssociazione DATE NOT NULL," +
-            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<MemberCard> findByPrimaryKey(String idSocio) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idSocio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -59,7 +40,7 @@ public class MemberCardTable implements Table<MemberCard, String> {
         }
 	}
 
-	@Override
+
 	public List<MemberCard> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -69,7 +50,6 @@ public class MemberCardTable implements Table<MemberCard, String> {
         }
 	}
 	
-	@Override
 	public List<MemberCard> readFromResultSet(ResultSet resultSet) {
 		final List<MemberCard> tesseresocio = new ArrayList<>();
 		try {
@@ -85,7 +65,6 @@ public class MemberCardTable implements Table<MemberCard, String> {
 		return tesseresocio;
 	}
 
-	@Override
 	public boolean save(MemberCard tesserasocio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idSocio, codiceFiscale, dataAssociazione) VALUES (?,?,?)";
@@ -102,7 +81,6 @@ public class MemberCardTable implements Table<MemberCard, String> {
         }
 	}
 
-	@Override
 	public boolean update(MemberCard updatedTesserasocio) {
 		final String query = "UPDATE " + TABLE_NAME + " SET codiceFiscale = ?," + "dataAssociazione = ? "
 				+ "WHERE idSocio = ?";
@@ -116,7 +94,6 @@ public class MemberCardTable implements Table<MemberCard, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String idSocio) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idSocio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

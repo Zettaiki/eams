@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Office;
 
-public class OfficeTable implements Table<Office, String> {
+public class OfficeTable {
 
 	public static final String TABLE_NAME = "sede";
 
@@ -24,29 +23,10 @@ public class OfficeTable implements Table<Office, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"città VARCHAR(25) NOT NULL PRIMARY KEY," +
-            			"indirizzo VARCHAR(60) NOT NULL," +
-            			"regione VARCHAR(20) NOT NULL," +
-            			"codicePostale VARCHAR(10) NOT NULL," +
-            			"telefono VARCHAR(24) NOT NULL" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Office> findByPrimaryKey(String città) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE città = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -58,7 +38,6 @@ public class OfficeTable implements Table<Office, String> {
         }
 	}
 
-	@Override
 	public List<Office> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -68,7 +47,6 @@ public class OfficeTable implements Table<Office, String> {
         }
 	}
 
-	@Override
 	public List<Office> readFromResultSet(ResultSet resultSet) {
 		final List<Office> sedi = new ArrayList<>();
 		try {
@@ -86,7 +64,6 @@ public class OfficeTable implements Table<Office, String> {
 		return sedi;
 	}
 
-	@Override
 	public boolean save(Office sede) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(città, indirizzo, regione, codicePostale, telefono) VALUES (?,?,?,?,?)";
@@ -105,7 +82,6 @@ public class OfficeTable implements Table<Office, String> {
         }
 	}
 
-	@Override
 	public boolean update(Office updatedSede) {
 		final String query = "UPDATE " + TABLE_NAME + " SET indirizzo = ?," + "regione = ?,"
 				+ "codicePostale = ?," + "telefono = ? "
@@ -122,7 +98,6 @@ public class OfficeTable implements Table<Office, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String città) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE città = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Employee;
 import utils.Utils;
 
-public class EmployeeTable implements Table<Employee, String> {
+public class EmployeeTable {
 
 	public static final String TABLE_NAME = "dipendente";
 
@@ -27,12 +26,10 @@ public class EmployeeTable implements Table<Employee, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
@@ -50,7 +47,6 @@ public class EmployeeTable implements Table<Employee, String> {
         }
 	}
 
-	@Override
 	public Optional<Employee> findByPrimaryKey(String codiceFiscale) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -62,7 +58,6 @@ public class EmployeeTable implements Table<Employee, String> {
         }
 	}
 
-	@Override
 	public List<Employee> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -72,7 +67,6 @@ public class EmployeeTable implements Table<Employee, String> {
         }
 	}
 
-	@Override
 	public List<Employee> readFromResultSet(ResultSet resultSet) {
 		final List<Employee> volontari = new ArrayList<>();
 		try {
@@ -89,7 +83,6 @@ public class EmployeeTable implements Table<Employee, String> {
 		return volontari;
 	}
 
-	@Override
 	public boolean save(Employee Dipendente) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(codiceFiscale, sedeCittà, dataAssunzione, salario) VALUES (?,?,?,?)";
@@ -107,7 +100,6 @@ public class EmployeeTable implements Table<Employee, String> {
         }
 	}
 
-	@Override
 	public boolean update(Employee updatedDipendente) {
 		final String query = "UPDATE " + TABLE_NAME + " SET sedeCittà = ?," + "dataAssunzione = ?," + "salario = ? "
 				+ "WHERE codiceFiscale = ?";
@@ -122,7 +114,6 @@ public class EmployeeTable implements Table<Employee, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String codiceFiscale) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

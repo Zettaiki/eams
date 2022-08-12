@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Project;
 import utils.Utils;
 
-public class ProjectTable implements Table<Project, Integer> {
+public class ProjectTable {
 
 	public static final String TABLE_NAME = "donazione";
 
@@ -26,28 +25,10 @@ public class ProjectTable implements Table<Project, Integer> {
 		this.connection = Objects.requireNonNull(connection);
 	}
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
-					+ "idProgetto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-					+ "obbiettivo VARCHAR(45) NOT NULL,"
-					+ "dataInizio DATE NOT NULL,"
-					+ "durataMesi INT NOT NULL"	+
-					")");
-			return true;
-		} catch (final SQLException e) {
-			return false;
-		}
-	}
-
-	@Override
 	public Optional<Project> findByPrimaryKey(Integer idProgetto) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProgetto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -59,7 +40,6 @@ public class ProjectTable implements Table<Project, Integer> {
         }
 	}
 
-	@Override
 	public List<Project> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -69,7 +49,6 @@ public class ProjectTable implements Table<Project, Integer> {
         }
 	}
 
-	@Override
 	public List<Project> readFromResultSet(ResultSet resultSet) {
 		final List<Project> progetti = new ArrayList<>();
 		try {
@@ -85,7 +64,6 @@ public class ProjectTable implements Table<Project, Integer> {
 		return progetti;
 	}
 
-	@Override
 	public boolean save(Project progetto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(obbiettivo, dataInizio, durataMesi) VALUES (?,?,?)";
@@ -102,7 +80,6 @@ public class ProjectTable implements Table<Project, Integer> {
         }
 	}
 
-	@Override
 	public boolean update(Project updatedProgetto) {
 		final String query = "UPDATE " + TABLE_NAME + " SET obbiettivo = ?, dataInizio = ?, durataMesi = ? "
 				+ "WHERE idProgetto = ?";
@@ -117,7 +94,6 @@ public class ProjectTable implements Table<Project, Integer> {
 		}
 	}
 
-	@Override
 	public boolean delete(Integer idProgetto) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProgetto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

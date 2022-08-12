@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Service;
 
-public class ServiceTable implements Table<Service, String> {
+public class ServiceTable {
 
 	public static final String TABLE_NAME = "servizio";
 
@@ -25,34 +24,10 @@ public class ServiceTable implements Table<Service, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idServizio CHAR(20) NOT NULL PRIMARY KEY," +
-            			"idEvento CHAR(20) NOT NULL," +
-            			"oraInizio TIME NOT NULL," +
-            			"oraFine TIME NOT NULL," +
-            			"tipo VARCHAR(45) NOT NULL," +
-            			"idProgetto INT NULL DEFAULT NULL," +
-            			"FOREIGN KEY (idEvento) REFERENCES evento (idEvento)" +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idProgetto) REFERENCES progetto (idProgetto) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Service> findByPrimaryKey(String idServizio) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -64,7 +39,6 @@ public class ServiceTable implements Table<Service, String> {
         }
 	}
 
-	@Override
 	public List<Service> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -74,7 +48,6 @@ public class ServiceTable implements Table<Service, String> {
         }
 	}
 
-	@Override
 	public List<Service> readFromResultSet(ResultSet resultSet) {
 		final List<Service> servizi = new ArrayList<>();
 		try {
@@ -93,7 +66,6 @@ public class ServiceTable implements Table<Service, String> {
 		return servizi;
 	}
 
-	@Override
 	public boolean save(Service servizio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idServizio, idEvento, oraInizio, oraFine, tipo, idProgetto) VALUES (?,?,?,?,?,?)";
@@ -114,7 +86,6 @@ public class ServiceTable implements Table<Service, String> {
         }
 	}
 
-	@Override
 	public boolean update(Service updatedServizio) {
 		final String query = "UPDATE " + TABLE_NAME + " SET idEvento = ?, oraInizio = ?, oraFine = ?, tipo = ?, idProgetto = ? "
 				+ "WHERE idServizio = ?";
@@ -131,7 +102,6 @@ public class ServiceTable implements Table<Service, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String idServizio) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

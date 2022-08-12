@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Volunteer;
 import utils.Utils;
 
-public class VolunteerTable implements Table<Volunteer, String> {
+public class VolunteerTable {
 
 	public static final String TABLE_NAME = "volontario";
 
@@ -26,29 +25,10 @@ public class VolunteerTable implements Table<Volunteer, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
-
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
-            			"sedeCittà VARCHAR(25) NOT NULL," +
-            			"dataIscrizione DATE NOT NULL," +
-            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (sedeCittà) REFERENCES sede (città) ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
-	@Override
+	
 	public Optional<Volunteer> findByPrimaryKey(String codiceFiscale) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -60,7 +40,6 @@ public class VolunteerTable implements Table<Volunteer, String> {
         }
 	}
 
-	@Override
 	public List<Volunteer> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -70,7 +49,6 @@ public class VolunteerTable implements Table<Volunteer, String> {
         }
 	}
 
-	@Override
 	public List<Volunteer> readFromResultSet(ResultSet resultSet) {
 		final List<Volunteer> volontari = new ArrayList<>();
 		try {
@@ -86,7 +64,6 @@ public class VolunteerTable implements Table<Volunteer, String> {
 		return volontari;
 	}
 
-	@Override
 	public boolean save(Volunteer volontario) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(codiceFiscale, sedeCittà, dataIscrizione) VALUES (?,?,?)";
@@ -103,7 +80,6 @@ public class VolunteerTable implements Table<Volunteer, String> {
         }
 	}
 
-	@Override
 	public boolean update(Volunteer updatedVolontario) {
 		final String query = "UPDATE " + TABLE_NAME + " SET sedeCittà = ?," + "dataIscrizione = ? "
 				+ "WHERE codiceFiscale = ?";
@@ -117,7 +93,6 @@ public class VolunteerTable implements Table<Volunteer, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String codiceFiscale) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

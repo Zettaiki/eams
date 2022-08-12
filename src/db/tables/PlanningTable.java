@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableDoublePk;
 import model.Planning;
 
-public class PlanningTable implements TableDoublePk<Planning, String, String> {
+public class PlanningTable {
 
 	public static final String TABLE_NAME = "organizzazione";
 
@@ -24,31 +23,10 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscaleDipendente CHAR(16) NOT NULL," +
-            			"idEvento CHAR(20) NOT NULL," +
-            			"PRIMARY KEY (codiceFiscaleDipendente, idEvento)," +
-            			"FOREIGN KEY (codiceFiscaleDipendente) REFERENCES dipendente (codiceFiscale) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idEvento) REFERENCES evento (idEvento) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +            			
-            		")");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Planning> findByPrimaryKey(String codiceFiscaleDipendente, String idEvento) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ? AND idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -61,7 +39,6 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
         }
 	}
 
-	@Override
 	public List<Planning> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -71,7 +48,6 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
         }
 	}
 
-	@Override
 	public List<Planning> readFromResultSet(ResultSet resultSet) {
 		final List<Planning> organizzazioni = new ArrayList<>();
 		try {
@@ -86,7 +62,6 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
 		return organizzazioni;
 	}
 
-	@Override
 	public boolean save(Planning organizzazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				" (codiceFiscaleDipendente, idEvento) VALUES (?,?)";
@@ -102,12 +77,6 @@ public class PlanningTable implements TableDoublePk<Planning, String, String> {
         }
 	}
 
-	@Override
-	public boolean update(Planning updatedOrganizzazione) {
-		throw new IllegalStateException();
-	}
-
-	@Override
 	public boolean delete(String codiceFiscaleDipendente, String idEvento) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ? AND idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

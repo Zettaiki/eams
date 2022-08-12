@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableTriplePk;
 import model.Supply;
 import utils.Utils;
 
-public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Date> {
+public class SupplyTable {
 
 	public static final String TABLE_NAME = "fornitura";
 
@@ -27,33 +26,10 @@ public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Da
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
-
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idProdotto CHAR(20) NOT NULL," +
-            			"partitaIVA DECIMAL(11) NOT NULL," +
-            			"data DATE NOT NULL," +
-            			"quantitàFornita INT NOT NULL," +
-            			"PRIMARY KEY (idProdotto, partitaIVA, data)," +
-            			"FOREIGN KEY (partitaIVA) REFERENCES azienda (partitaIVA) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
-	@Override
+	
 	public Optional<Supply> findByPrimaryKey(String idProdotto, BigDecimal partitaIVA, Date data) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ? AND partitaIVA = ? " +
 				"AND data = ?";
@@ -68,7 +44,6 @@ public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Da
         }
 	}
 
-	@Override
 	public List<Supply> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -78,7 +53,6 @@ public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Da
         }
 	}
 
-	@Override
 	public List<Supply> readFromResultSet(ResultSet resultSet) {
 		final List<Supply> forniture = new ArrayList<>();
 		try {
@@ -95,7 +69,6 @@ public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Da
 		return forniture;
 	}
 
-	@Override
 	public boolean save(Supply fornitura) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idProdotto, partitaIVA, data, quantitàFornita) VALUES (?,?,?,?)";
@@ -113,7 +86,6 @@ public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Da
         }
 	}
 
-	@Override
 	public boolean update(Supply updatedFornitura) {
 		final String query = "UPDATE " + TABLE_NAME + " SET quantitàFornita = ? "
 				+ "WHERE idProdotto = ? AND partitaIVA = ? AND data = ?";
@@ -128,7 +100,6 @@ public class SupplyTable implements TableTriplePk<Supply, String, BigDecimal, Da
 		}
 	}
 
-	@Override
 	public boolean delete(String idProdotto, BigDecimal partitaIVA, Date data) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProdotto = ? AND partitaIVA = ? " +
 				"AND data = ?";

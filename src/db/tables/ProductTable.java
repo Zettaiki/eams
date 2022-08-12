@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Product;
 
-public class ProductTable implements Table<Product, String> {
+public class ProductTable {
 
 
 	public static final String TABLE_NAME = "prodotto";
@@ -26,33 +25,10 @@ public class ProductTable implements Table<Product, String> {
         this.connection = Objects.requireNonNull(connection);
     }
     
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idProdotto INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-            			"categoria VARCHAR(30) NOT NULL," +
-            			"nome VARCHAR(30) NOT NULL," +
-            			"prezzo DECIMAL(6,2) NOT NULL," +
-            			"quantitàImmagazzinata INT NOT NULL," +
-            			"provenienza VARCHAR(20) NOT NULL," +
-            			"descrizione MEDIUMTEXT NULL DEFAULT NULL," +
-            			"FOREIGN KEY (categoria) REFERENCES categoria (nome) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Product> findByPrimaryKey(String idProdotto) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -64,7 +40,6 @@ public class ProductTable implements Table<Product, String> {
         }
 	}
 
-	@Override
 	public List<Product> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -74,7 +49,6 @@ public class ProductTable implements Table<Product, String> {
         }
 	}
 
-	@Override
 	public List<Product> readFromResultSet(ResultSet resultSet) {
 		final List<Product> prodotti = new ArrayList<>();
 		try {
@@ -94,7 +68,6 @@ public class ProductTable implements Table<Product, String> {
 		return prodotti;
 	}
 
-	@Override
 	public boolean save(Product prodotto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idProdotto, categoria, nome, prezzo, quantitàImmagazzinata, provenienza, descrizione)"
@@ -116,7 +89,6 @@ public class ProductTable implements Table<Product, String> {
         }
 	}
 
-	@Override
 	public boolean update(Product updatedProdotto) {
 		final String query = "UPDATE " + TABLE_NAME + " SET " + "categoria = ?," + "nome = ?," + "prezzo = ?,"
 				+ "quantitàImmagazzinata = ?," + "provenienza = ?," + "descrizione = ? "
@@ -136,7 +108,6 @@ public class ProductTable implements Table<Product, String> {
 	        }
 	}
 
-	@Override
 	public boolean delete(String idProdotto) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

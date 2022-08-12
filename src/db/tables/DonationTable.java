@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Donation;
 import utils.Utils;
 
-public class DonationTable implements Table<Donation, Integer> {
+public class DonationTable {
 
 	public static final String TABLE_NAME = "donazione";
 
@@ -27,12 +26,10 @@ public class DonationTable implements Table<Donation, Integer> {
 		this.connection = Objects.requireNonNull(connection);
 	}
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
 			statement.executeUpdate(
@@ -51,7 +48,6 @@ public class DonationTable implements Table<Donation, Integer> {
 		}
 	}
 
-	@Override
 	public Optional<Donation> findByPrimaryKey(Integer idDonazione) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idDonazione = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -63,7 +59,6 @@ public class DonationTable implements Table<Donation, Integer> {
 		}
 	}
 
-	@Override
 	public List<Donation> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
 			final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -73,7 +68,6 @@ public class DonationTable implements Table<Donation, Integer> {
 		}
 	}
 
-	@Override
 	public List<Donation> readFromResultSet(ResultSet resultSet) {
 		final List<Donation> donazioni = new ArrayList<>();
 		try {
@@ -92,7 +86,6 @@ public class DonationTable implements Table<Donation, Integer> {
 		return donazioni;
 	}
 
-	@Override
 	public boolean save(Donation donazione) {
 		final String query = "INSERT INTO " + TABLE_NAME
 				+ "(importo, codiceFiscale, dataDonazione, idProgetto) VALUES (?,?,?,?)";
@@ -111,7 +104,6 @@ public class DonationTable implements Table<Donation, Integer> {
 		}
 	}
 
-	@Override
 	public boolean update(Donation updatedDonazione) {
 		final String query = "UPDATE " + TABLE_NAME + " SET " + "importo = ?," + "codiceFiscale = ?, "
 				+ "dataDonazione = ?, " + "idProgetto = ? " + "WHERE idDonazione = ?";
@@ -127,7 +119,6 @@ public class DonationTable implements Table<Donation, Integer> {
 		}
 	}
 
-	@Override
 	public boolean delete(Integer idDonazione) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idDonazione = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableTriplePk;
 import model.Delivery;
 import utils.Utils;
 
-public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal, Date> {
+public class DeliveryTable {
 
 	public static final String TABLE_NAME = "consegna";
 
@@ -27,12 +26,10 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
@@ -53,7 +50,6 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
         }
 	}
 
-	@Override
 	public Optional<Delivery> findByPrimaryKey(String materiale, BigDecimal partitaIVA, Date data) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ? AND partitaIVA = ? "
 				+ "AND data = ?";
@@ -68,7 +64,6 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
         }
 	}
 
-	@Override
 	public List<Delivery> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -78,7 +73,6 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
         }
 	}
 
-	@Override
 	public List<Delivery> readFromResultSet(ResultSet resultSet) {
 		final List<Delivery> consegne = new ArrayList<>();
 		try {
@@ -95,7 +89,6 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
 		return consegne;
 	}
 
-	@Override
 	public boolean save(Delivery consegna) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(materiale, partitaIVA, data, kgConsegnati) VALUES (?,?,?,?)";
@@ -113,7 +106,6 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
         }
 	}
 
-	@Override
 	public boolean update(Delivery updatedConsegna) {
 		final String query = "UPDATE " + TABLE_NAME + " SET kgConsegnati = ? "
 				+ "WHERE materiale = ? AND partitaIVA = ? AND data = ?";
@@ -128,7 +120,6 @@ public class DeliveryTable implements TableTriplePk<Delivery, String, BigDecimal
 		}
 	}
 
-	@Override
 	public boolean delete(String materiale, BigDecimal partitaIVA, Date data) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ? AND partitaIVA = ? " +
 				"AND data = ?";

@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableDoublePk;
 import model.Production;
 
-public class ProductionTable implements TableDoublePk<Production, String, String> {
+public class ProductionTable {
 
 	public static final String TABLE_NAME = "produzione";
 
@@ -25,35 +24,10 @@ public class ProductionTable implements TableDoublePk<Production, String, String
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
-
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idServizio CHAR(20) NOT NULL," +
-            			"idProdotto CHAR(20) NOT NULL," +
-            			"quantitàProdotta INT NOT NULL," +
-            			"materialeUsato VARCHAR(30) NOT NULL," +
-            			"kgRifiutiUsati DECIMAL(8,2) NOT NULL," +
-            			"PRIMARY KEY (idServizio, idProdotto)," +
-            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio)" +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {
-        	System.out.println(e.toString());
-            return false;
-        }
-	}
-
-	@Override
+	
 	public Optional<Production> findByPrimaryKey(String idServizio, String idProdotto) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -66,7 +40,6 @@ public class ProductionTable implements TableDoublePk<Production, String, String
         }
 	}
 
-	@Override
 	public List<Production> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -76,7 +49,6 @@ public class ProductionTable implements TableDoublePk<Production, String, String
         }
 	}
 
-	@Override
 	public List<Production> readFromResultSet(ResultSet resultSet) {
 		final List<Production> produzioni = new ArrayList<>();
 		try {
@@ -95,7 +67,6 @@ public class ProductionTable implements TableDoublePk<Production, String, String
 		return produzioni;
 	}
 
-	@Override
 	public boolean save(Production produzione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idServizio, idProdotto, quantitàProdotta, " +
@@ -115,7 +86,6 @@ public class ProductionTable implements TableDoublePk<Production, String, String
         }
 	}
 
-	@Override
 	public boolean update(Production updatedProduzione) {
 		final String query = "UPDATE " + TABLE_NAME + " SET quantitàProdotta = ?," + "materialeUsato = ?," +
 				"kgRifiutiUsati = ? WHERE idServizio = ? AND idProdotto = ?,";
@@ -131,7 +101,6 @@ public class ProductionTable implements TableDoublePk<Production, String, String
 		}
 	}
 
-	@Override
 	public boolean delete(String idServizio, String idProdotto) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

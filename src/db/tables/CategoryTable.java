@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Category;
 
-public class CategoryTable implements Table<Category, String> {
+public class CategoryTable {
 
 	public static final String TABLE_NAME = "categoria";
 
@@ -24,12 +23,10 @@ public class CategoryTable implements Table<Category, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
@@ -43,7 +40,6 @@ public class CategoryTable implements Table<Category, String> {
         }
 	}
 
-	@Override
 	public Optional<Category> findByPrimaryKey(String nome) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE nome = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -55,7 +51,6 @@ public class CategoryTable implements Table<Category, String> {
         }
 	}
 
-	@Override
 	public List<Category> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -65,7 +60,6 @@ public class CategoryTable implements Table<Category, String> {
         }
 	}
 
-	@Override
 	public List<Category> readFromResultSet(ResultSet resultSet) {
 		final List<Category> categorie = new ArrayList<>();
 		try {
@@ -80,7 +74,6 @@ public class CategoryTable implements Table<Category, String> {
 		return categorie;
 	}
 
-	@Override
 	public boolean save(Category Categoria) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(nome, descrizione) VALUES (?,?)";
@@ -96,7 +89,6 @@ public class CategoryTable implements Table<Category, String> {
         }
 	}
 
-	@Override
 	public boolean update(Category updatedCategoria) {
 		final String query = "UPDATE " + TABLE_NAME + " SET descrizione = ? WHERE nome = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -108,7 +100,6 @@ public class CategoryTable implements Table<Category, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String nome) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE nome = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

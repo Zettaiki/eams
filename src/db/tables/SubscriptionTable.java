@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableDoublePk;
 import model.Subscription;
 
-public class SubscriptionTable implements TableDoublePk<Subscription, String, Integer> {
+public class SubscriptionTable {
 	
 	public static final String TABLE_NAME = "iscrizione";
 
@@ -24,31 +23,10 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscale CHAR(16) NOT NULL," +
-            			"idNewsletter INT NOT NULL," +
-            			"PRIMARY KEY (codiceFiscale, idNewsletter)," +
-            			"FOREIGN KEY (idNewsletter) REFERENCES newsletter (idNewsletter) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (codiceFiscale) REFERENCES persona (codiceFiscale) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Subscription> findByPrimaryKey(String codiceFiscale, Integer idNewsletter) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ? AND idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -61,7 +39,6 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
         }
 	}
 
-	@Override
 	public List<Subscription> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -71,7 +48,6 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
         }
 	}
 
-	@Override
 	public List<Subscription> readFromResultSet(ResultSet resultSet) {
 		final List<Subscription> newsletters = new ArrayList<>();
 		try {
@@ -86,7 +62,6 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
 		return newsletters;
 	}
 
-	@Override
 	public boolean save(Subscription Iscrizione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(codiceFiscale, idNewsletter) VALUES (?,?)";
@@ -103,12 +78,6 @@ public class SubscriptionTable implements TableDoublePk<Subscription, String, In
         }
 	}
 
-	@Override
-	public boolean update(Subscription updatedIscrizione) {
-		throw new IllegalStateException();
-	}
-
-	@Override
 	public boolean delete(String codiceFiscale, Integer idNewsletter) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ? AND idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

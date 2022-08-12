@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableDoublePk;
 import model.GarbageCollection;
 
-public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, String, String> {
+public class GarbageCollectionTable {
 
 	public static final String TABLE_NAME = "raccolta";
 
@@ -25,12 +24,10 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
@@ -51,7 +48,6 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
         }
 	}
 
-	@Override
 	public Optional<GarbageCollection> findByPrimaryKey(String idServizio, String materiale) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -64,7 +60,6 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
         }
 	}
 
-	@Override
 	public List<GarbageCollection> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -74,7 +69,6 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
         }
 	}
 
-	@Override
 	public List<GarbageCollection> readFromResultSet(ResultSet resultSet) {
 		final List<GarbageCollection> raccolte = new ArrayList<>();
 		try {
@@ -90,7 +84,6 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
 		return raccolte;
 	}
 
-	@Override
 	public boolean save(GarbageCollection raccolta) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idServizio, materiale, kg) VALUES (?,?,?)";
@@ -107,7 +100,6 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
         }
 	}
 
-	@Override
 	public boolean update(GarbageCollection updatedRaccolta) {
 		final String query = "UPDATE " + TABLE_NAME + " SET kg = ? "
 				+ "WHERE idServizio = ? AND materiale = ?";
@@ -121,7 +113,6 @@ public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, 
 		}
 	}
 
-	@Override
 	public boolean delete(String idServizio, String materiale) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

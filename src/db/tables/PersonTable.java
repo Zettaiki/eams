@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Person;
 
-public class PersonTable implements Table<Person, String> {
+public class PersonTable {
 
 	public static final String TABLE_NAME = "persona";
     
@@ -24,34 +23,10 @@ public class PersonTable implements Table<Person, String> {
         this.connection = Objects.requireNonNull(connection);
     }
     
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscale CHAR(16) NOT NULL PRIMARY KEY," +
-            			"nome VARCHAR(25)," +
-            			"cognome VARCHAR(25)," +
-            			"mail VARCHAR(45)," +
-            			"telefono VARCHAR(24)," +
-            			"indirizzo VARCHAR(60)," +
-            			"città VARCHAR(15)," +
-            			"regione VARCHAR(20)," +
-            			"codicePostale VARCHAR(10)," +
-            			"tipo VARCHAR(45)" +
-            		")");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Person> findByPrimaryKey(final String codiceFiscale) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -63,7 +38,6 @@ public class PersonTable implements Table<Person, String> {
         }
 	}
 
-	@Override
 	public List<Person> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -73,7 +47,6 @@ public class PersonTable implements Table<Person, String> {
         }
 	}
 	
-	@Override
 	public List<Person> readFromResultSet(final ResultSet resultSet) {
 		final List<Person> persone = new ArrayList<>();
 		try {
@@ -96,7 +69,6 @@ public class PersonTable implements Table<Person, String> {
 		return persone;
 	}
 
-	@Override
 	public boolean save(Person persona) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(codiceFiscale, nome, cognome, mail, telefono, indirizzo, città, regione, codicePostale, tipo)"
@@ -121,7 +93,6 @@ public class PersonTable implements Table<Person, String> {
         }
 	}	
 
-	@Override
 	public boolean update(final Person updatedPersona) {
 		final String query =
 			"UPDATE " + TABLE_NAME + " SET " + "nome = ?," + "cognome = ?," + "mail = ?," + "telefono = ?,"
@@ -145,7 +116,6 @@ public class PersonTable implements Table<Person, String> {
         }
 	}
 
-	@Override
 	public boolean delete(String codiceFiscale) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Garbage;
 
-public class GarbageTable implements Table<Garbage, String> {
+public class GarbageTable {
 
 	public static final String TABLE_NAME = "rifiuto";
 
@@ -25,28 +24,10 @@ public class GarbageTable implements Table<Garbage, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 	
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"materiale VARCHAR(30) NOT NULL PRIMARY KEY," +
-            			"tipo VARCHAR(45) NOT NULL," +
-            			"kgImagazzinati DECIMAL(17,2) NOT NULL," +
-            			"note MEDIUMTEXT NULL DEFAULT NULL" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Garbage> findByPrimaryKey(String materiale) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -58,7 +39,6 @@ public class GarbageTable implements Table<Garbage, String> {
         }
 	}
 
-	@Override
 	public List<Garbage> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -68,7 +48,6 @@ public class GarbageTable implements Table<Garbage, String> {
         }
 	}
 
-	@Override
 	public List<Garbage> readFromResultSet(ResultSet resultSet) {
 		final List<Garbage> rifiuti = new ArrayList<>();
 		try {
@@ -85,7 +64,6 @@ public class GarbageTable implements Table<Garbage, String> {
 		return rifiuti;
 	}
 
-	@Override
 	public boolean save(Garbage rifiuto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(materiale, tipo, kgImagazzinati, note) VALUES (?,?,?,?)";
@@ -103,7 +81,6 @@ public class GarbageTable implements Table<Garbage, String> {
         }
 	}
 
-	@Override
 	public boolean update(Garbage updatedRifiuto) {
 		final String query = "UPDATE " + TABLE_NAME + " SET tipo = ?," + "kgImagazzinati = ?," + "note = ? "
 				+ "WHERE materiale = ?";
@@ -118,7 +95,6 @@ public class GarbageTable implements Table<Garbage, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String materiale) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Newsletter;
 
-public class NewsletterTable implements Table<Newsletter, Integer> {
+public class NewsletterTable {
 
 	public static final String TABLE_NAME = "newsletter";
 
@@ -24,27 +23,10 @@ public class NewsletterTable implements Table<Newsletter, Integer> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idNewsletter INT NOT NULL PRIMARY KEY," +
-            			"argomento VARCHAR(45) NOT NULL," +
-            			"descrizione MEDIUMTEXT NULL DEFAULT NULL" +
-            		")");
-            return true;
-        } catch (final SQLException e) {        	
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Newsletter> findByPrimaryKey(Integer idNewsletter) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -56,7 +38,6 @@ public class NewsletterTable implements Table<Newsletter, Integer> {
         }
 	}
 
-	@Override
 	public List<Newsletter> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -66,7 +47,6 @@ public class NewsletterTable implements Table<Newsletter, Integer> {
         }
 	}
 
-	@Override
 	public List<Newsletter> readFromResultSet(ResultSet resultSet) {
 		final List<Newsletter> newsletters = new ArrayList<>();
 		try {
@@ -82,7 +62,6 @@ public class NewsletterTable implements Table<Newsletter, Integer> {
 		return newsletters;
 	}
 
-	@Override
 	public boolean save(Newsletter newsletter) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idNewsletter, argomento, descrizione) VALUES (?,?,?)";
@@ -99,7 +78,6 @@ public class NewsletterTable implements Table<Newsletter, Integer> {
         }
 	}
 
-	@Override
 	public boolean update(Newsletter updatedNewsletter) {
 		final String query = "UPDATE " + TABLE_NAME + " SET argomento = ?," + "descrizione = ? "
 				+ "WHERE idNewsletter = ?";
@@ -113,7 +91,6 @@ public class NewsletterTable implements Table<Newsletter, Integer> {
 		}
 	}
 
-	@Override
 	public boolean delete(Integer idNewsletter) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idNewsletter = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

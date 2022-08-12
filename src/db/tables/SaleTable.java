@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableTriplePk;
 import model.Sale;
 
-public class SaleTable implements TableTriplePk<Sale, String, String, String> {
+public class SaleTable {
 
 	public static final String TABLE_NAME = "fornitura";
 
@@ -24,35 +23,10 @@ public class SaleTable implements TableTriplePk<Sale, String, String, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
-	public boolean createTable() {
-		try (final Statement statement = this.connection.createStatement()) {
-            statement.executeUpdate(
-            	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"idProdotto CHAR(20) NOT NULL," +
-            			"idServizio CHAR(20) NOT NULL," +
-            			"codiceFiscaleCliente CHAR(16) NOT NULL," +
-            			"quantità INT NOT NULL," +
-            			"PRIMARY KEY (idProdotto, idServizio, codiceFiscaleCliente)," +
-            			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (codiceFiscaleCliente) REFERENCES persona (codiceFiscale) " +
-            			"ON DELETE CASCADE ON UPDATE CASCADE" +
-            		")");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
-
-	@Override
 	public Optional<Sale> findByPrimaryKey(String idProdotto, String idServizio, String codiceFiscaleCliente) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ? AND idServizio = ? "
 				+ "AND codiceFiscaleCliente = ?";
@@ -67,7 +41,6 @@ public class SaleTable implements TableTriplePk<Sale, String, String, String> {
         }
 	}
 
-	@Override
 	public List<Sale> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -77,7 +50,6 @@ public class SaleTable implements TableTriplePk<Sale, String, String, String> {
         }
 	}
 
-	@Override
 	public List<Sale> readFromResultSet(ResultSet resultSet) {
 		final List<Sale> vendite = new ArrayList<>();
 		try {
@@ -94,7 +66,6 @@ public class SaleTable implements TableTriplePk<Sale, String, String, String> {
 		return vendite;
 	}
 
-	@Override
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idProdotto, idServizio, codiceFiscaleCliente, quantità) " +
@@ -114,7 +85,6 @@ public class SaleTable implements TableTriplePk<Sale, String, String, String> {
         }
 	}
 
-	@Override
 	public boolean update(Sale updatedVendita) {
 		final String query = "UPDATE " + TABLE_NAME + " SET quantità = ? " +
 				 "WHERE idProdotto = ? AND idServizio = ? AND codiceFiscaleCliente = ?";
@@ -129,7 +99,6 @@ public class SaleTable implements TableTriplePk<Sale, String, String, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String idProdotto, String idServizio, String codiceFiscaleCliente) {
 		final String query = "DELETE FROM " + TABLE_NAME
 				+ " WHERE  idProdotto = ? AND idServizio = ? AND codiceFiscaleCliente = ?";

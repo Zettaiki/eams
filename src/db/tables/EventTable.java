@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.Table;
 import model.Event;
 import utils.Utils;
 
-public class EventTable implements Table<Event, String> {
+public class EventTable {
 
 	public static final String TABLE_NAME = "evento";
 
@@ -26,12 +25,10 @@ public class EventTable implements Table<Event, String> {
         this.connection = Objects.requireNonNull(connection);
     }
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}
 
-	@Override
 	public boolean createTable() {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
@@ -47,7 +44,6 @@ public class EventTable implements Table<Event, String> {
         }
 	}
 
-	@Override
 	public Optional<Event> findByPrimaryKey(String idEvento) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -59,7 +55,6 @@ public class EventTable implements Table<Event, String> {
         }
 	}
 
-	@Override
 	public List<Event> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -69,7 +64,6 @@ public class EventTable implements Table<Event, String> {
         }
 	}
 
-	@Override
 	public List<Event> readFromResultSet(ResultSet resultSet) {
 		final List<Event> eventi = new ArrayList<>();
 		try {
@@ -86,7 +80,6 @@ public class EventTable implements Table<Event, String> {
 		return eventi;
 	}
 
-	@Override
 	public boolean save(Event evento) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idEvento, nome, data, descrizione) VALUES (?,?,?,?)";
@@ -104,7 +97,6 @@ public class EventTable implements Table<Event, String> {
         }
 	}
 
-	@Override
 	public boolean update(Event updatedEvento) {
 		final String query = "UPDATE " + TABLE_NAME + " SET nome = ?," + "data = ?," + "descrizione = ? "
 				+ "WHERE idEvento = ?";
@@ -119,7 +111,6 @@ public class EventTable implements Table<Event, String> {
 		}
 	}
 
-	@Override
 	public boolean delete(String idEvento) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

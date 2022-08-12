@@ -7,16 +7,14 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import db.TableTriplePk;
 import model.Sale;
-import utils.Utils;
 
-public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
+public class SaleTable implements TableTriplePk<Sale, String, String, String> {
 
 	public static final String TABLE_NAME = "fornitura";
 
@@ -36,16 +34,16 @@ public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-            			"codiceFiscaleCliente CHAR(16) NOT NULL," +
             			"idProdotto CHAR(20) NOT NULL," +
-            			"data DATE NOT NULL," +
-            			"quantità INT NOT NULL," +
-            			"idEvento CHAR(20) NOT NULL," +
             			"idServizio CHAR(20) NOT NULL," +
-            			"PRIMARY KEY (codiceFiscaleCliente, idProdotto, data)," +
+            			"codiceFiscaleCliente CHAR(16) NOT NULL," +
+            			"quantità INT NOT NULL," +
+            			"PRIMARY KEY (idProdotto, idServizio, codiceFiscaleCliente)," +
             			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idEvento, idServizio) REFERENCES servizio (idEvento, idServizio) " +
+            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio) " +
+            			"ON DELETE CASCADE ON UPDATE CASCADE," +
+            			"FOREIGN KEY (codiceFiscaleCliente) REFERENCES persona (codiceFiscale) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
@@ -55,13 +53,13 @@ public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
 	}
 
 	@Override
-	public Optional<Sale> findByPrimaryKey(String codiceFiscaleCliente, String idProdotto, Date data) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleCliente = ? AND idProdotto = ? "
-				+ "AND data = ?";
+	public Optional<Sale> findByPrimaryKey(String idProdotto, String idServizio, String codiceFiscaleCliente) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idProdotto = ? AND idServizio = ? "
+				+ "AND codiceFiscaleCliente = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscaleCliente);
-            statement.setString(2, idProdotto);
-            statement.setDate(3, Utils.dateToSqlDate(data));
+			statement.setString(2, idProdotto);
+            statement.setString(1, idServizio);
+            statement.setString(3, codiceFiscaleCliente);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -84,14 +82,12 @@ public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
 		final List<Sale> vendite = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
+				final String idProdotto = resultSet.getString("idProdotto");
+				final String idServizio = resultSet.getString("idServizio");
 				final String codiceFiscaleCliente = resultSet.getString("codiceFiscaleCliente");
-			    final String idProdotto = resultSet.getString("idProdotto");
-			    final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
 			    final Integer quantità = resultSet.getInt("quantità");
-			    final String idEvento = resultSet.getString("idEvento");
-			    final String idServizio = resultSet.getString("idServizio");
 				
-				final Sale vendita = new Sale(codiceFiscaleCliente, idProdotto, data, quantità, idEvento, idServizio);
+				final Sale vendita = new Sale(idProdotto, idServizio, codiceFiscaleCliente, quantità);
 				vendite.add(vendita);
 			}
 		} catch (final SQLException e) {}
@@ -101,15 +97,13 @@ public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
 	@Override
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleCliente, idProdotto, data, quantità, idEvento, idServizio) " +
-				"VALUES (?,?,?,?,?,?)";
+				"(idProdotto, idServizio, codiceFiscaleCliente, quantità) " +
+				"VALUES (?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, vendita.getCodiceFiscaleCliente());
-            statement.setString(2, vendita.getIdProdotto());
-            statement.setDate(3, Utils.dateToSqlDate(vendita.getData()));
+            statement.setString(1, vendita.getIdProdotto());
+            statement.setString(2, vendita.getIdServizio());
+            statement.setString(3, vendita.getCodiceFiscaleCliente());
             statement.setInt(4, vendita.getQuantità());
-            statement.setString(5, vendita.getIdEvento());
-            statement.setString(6, vendita.getIdServizio());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -122,15 +116,13 @@ public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
 
 	@Override
 	public boolean update(Sale updatedVendita) {
-		final String query = "UPDATE " + TABLE_NAME + " SET idProdotto = ?," + "data = ?, quantità = ?," +
-				 "idEvento = ?," + "idServizio = ? WHERE codiceFiscaleCliente = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET quantità = ? " +
+				 "WHERE idProdotto = ? AND idServizio = ? AND codiceFiscaleCliente = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, updatedVendita.getIdProdotto());
-            statement.setDate(2, Utils.dateToSqlDate(updatedVendita.getData()));
-            statement.setInt(3, updatedVendita.getQuantità());
-            statement.setString(4, updatedVendita.getIdEvento());
-            statement.setString(5, updatedVendita.getIdServizio());
-            statement.setString(6, updatedVendita.getCodiceFiscaleCliente());
+            statement.setInt(1, updatedVendita.getQuantità());
+            statement.setString(2, updatedVendita.getIdProdotto());
+            statement.setString(3, updatedVendita.getIdServizio());
+            statement.setString(4, updatedVendita.getCodiceFiscaleCliente());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -138,13 +130,13 @@ public class SaleTable implements TableTriplePk<Sale, String, String, Date> {
 	}
 
 	@Override
-	public boolean delete(String codiceFiscaleCliente, String idProdotto, Date data) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleCliente = ? AND idProdotto = ? "
-				+ "AND data = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+	public boolean delete(String idProdotto, String idServizio, String codiceFiscaleCliente) {
+		final String query = "DELETE FROM " + TABLE_NAME
+				+ " WHERE  idProdotto = ? AND idServizio = ? AND codiceFiscaleCliente = ?";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+			statement.setString(2, idProdotto);
+			statement.setString(3, idServizio);
             statement.setString(1, codiceFiscaleCliente);
-            statement.setString(2, idProdotto);
-            statement.setDate(3, Utils.dateToSqlDate(data));
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

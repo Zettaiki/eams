@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableTriplePk;
+import db.TableDoublePk;
 import model.GarbageCollection;
 
-public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, String, String, String> {
+public class GarbageCollectionTable implements TableDoublePk<GarbageCollection, String, String> {
 
 	public static final String TABLE_NAME = "raccolta";
 
@@ -36,13 +36,12 @@ public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, 
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"idServizio CHAR(20) NOT NULL," +
-            			"idEvento CHAR(20) NOT NULL," +
             			"materiale VARCHAR(30) NOT NULL," +
             			"kg FLOAT NOT NULL," +
-            			"PRIMARY KEY (idServizio, idEvento, materiale)," +
+            			"PRIMARY KEY (idServizio, materiale)," +
             			"FOREIGN KEY (materiale) REFERENCES rifiuto (materiale) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
-            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (idServizio, idEvento) " +
+            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
             		")");
             return true;
@@ -53,12 +52,11 @@ public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, 
 	}
 
 	@Override
-	public Optional<GarbageCollection> findByPrimaryKey(String idServizio, String idEvento, String materiale) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND idEvento = ? AND materiale = ?";
+	public Optional<GarbageCollection> findByPrimaryKey(String idServizio, String materiale) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idServizio);
-            statement.setString(2, idEvento);
-            statement.setString(3, materiale);
+            statement.setString(2, materiale);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -82,11 +80,10 @@ public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, 
 		try {
 			while (resultSet.next()) {
 				final String idServizio = resultSet.getString("idServizio");
-				final String idEvento = resultSet.getString("idEvento");
 				final String materiale = resultSet.getString("materiale");
 				final BigDecimal kg = resultSet.getBigDecimal("kg");
 				
-				final GarbageCollection raccolta = new GarbageCollection(idServizio, idEvento, materiale, kg);
+				final GarbageCollection raccolta = new GarbageCollection(idServizio, materiale, kg);
 				raccolte.add(raccolta);
 			}
 		} catch (final SQLException e) {}
@@ -96,12 +93,11 @@ public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, 
 	@Override
 	public boolean save(GarbageCollection raccolta) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idServizio, idEvento, materiale, kg) VALUES (?,?,?,?)";
+				"(idServizio, materiale, kg) VALUES (?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setString(1, raccolta.getIdServizio());
-            statement.setString(2, raccolta.getIdEvento());
-            statement.setString(3, raccolta.getMateriale());
-            statement.setBigDecimal(4, raccolta.getKg());
+            statement.setString(2, raccolta.getMateriale());
+            statement.setBigDecimal(3, raccolta.getKg());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -114,12 +110,11 @@ public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, 
 	@Override
 	public boolean update(GarbageCollection updatedRaccolta) {
 		final String query = "UPDATE " + TABLE_NAME + " SET kg = ? "
-				+ "WHERE idServizio = ? AND idEvento = ? AND materiale = ?";
+				+ "WHERE idServizio = ? AND materiale = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setBigDecimal(1, updatedRaccolta.getKg());
 			statement.setString(2, updatedRaccolta.getIdServizio());
-			statement.setString(3, updatedRaccolta.getIdEvento());
-			statement.setString(4, updatedRaccolta.getMateriale());
+			statement.setString(3, updatedRaccolta.getMateriale());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
@@ -127,12 +122,11 @@ public class GarbageCollectionTable implements TableTriplePk<GarbageCollection, 
 	}
 
 	@Override
-	public boolean delete(String idServizio, String idEvento, String materiale) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND idEvento = ? AND materiale = ?";
+	public boolean delete(String idServizio, String materiale) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idServizio);
-            statement.setString(2, idEvento);
-			statement.setString(3, materiale);
+			statement.setString(2, materiale);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

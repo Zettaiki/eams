@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableTriplePk;
+import db.TableDoublePk;
 import model.Production;
 
-public class ProductionTable implements TableTriplePk<Production, String, String, String> {
+public class ProductionTable implements TableDoublePk<Production, String, String> {
 
 	public static final String TABLE_NAME = "produzione";
 
@@ -36,13 +36,12 @@ public class ProductionTable implements TableTriplePk<Production, String, String
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"idServizio CHAR(20) NOT NULL," +
-            			"idEvento CHAR(20) NOT NULL," +
             			"idProdotto CHAR(20) NOT NULL," +
             			"quantitàProdotta INT NOT NULL," +
             			"materialeUsato VARCHAR(30) NOT NULL," +
             			"kgRifiutiUsati DECIMAL(8,2) NOT NULL," +
-            			"PRIMARY KEY (idServizio, idEvento, idProdotto)," +
-            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (idServizio, idEvento)" +
+            			"PRIMARY KEY (idServizio, idProdotto)," +
+            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio)" +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (idProdotto) REFERENCES prodotto (idProdotto) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
@@ -55,13 +54,11 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 	}
 
 	@Override
-	public Optional<Production> findByPrimaryKey(String idServizio, String idEvento, String idProdotto) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND idEvento = ? " +
-				"AND idProdotto = ?";
+	public Optional<Production> findByPrimaryKey(String idServizio, String idProdotto) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idServizio);
-            statement.setString(2, idEvento);
-            statement.setString(3, idProdotto);
+            statement.setString(2, idProdotto);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -85,13 +82,12 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 		try {
 			while (resultSet.next()) {
 				final String idServizio = resultSet.getString("idServizio");
-			    final String idEvento = resultSet.getString("idEvento");
 			    final String idProdotto = resultSet.getString("idProdotto");
 			    final Integer quantitàProdotta = resultSet.getInt("quantitàProdotta");
 			    final String materialeUsato = resultSet.getString("materialeUsato");
 			    final BigDecimal kgRifiutiUsati = resultSet.getBigDecimal("kgRifiutiUsati");
 				
-				final Production produzione = new Production(idServizio, idEvento, idProdotto, quantitàProdotta,
+				final Production produzione = new Production(idServizio, idProdotto, quantitàProdotta,
 						materialeUsato, kgRifiutiUsati);
 				produzioni.add(produzione);
 			}
@@ -102,11 +98,10 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 	@Override
 	public boolean save(Production produzione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idServizio, idEvento, idProdotto, quantitàProdotta, " +
-				"materialeUsato, kgRifiutiUsati) VALUES (?,?,?,?,?,?)";
+				"(idServizio, idProdotto, quantitàProdotta, " +
+				"materialeUsato, kgRifiutiUsati) VALUES (?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
         	statement.setString(1, produzione.getIdServizio());
-            statement.setString(2, produzione.getIdEvento());
             statement.setString(3, produzione.getIdProdotto());
             statement.setInt(4, produzione.getQuantitàProdotta());
             statement.setString(5, produzione.getMaterialeUsato());
@@ -123,13 +118,12 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 	@Override
 	public boolean update(Production updatedProduzione) {
 		final String query = "UPDATE " + TABLE_NAME + " SET quantitàProdotta = ?," + "materialeUsato = ?," +
-				"kgRifiutiUsati = ? WHERE idServizio = ? AND idEvento = ? AND idProdotto = ?,";
+				"kgRifiutiUsati = ? WHERE idServizio = ? AND idProdotto = ?,";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setInt(1, updatedProduzione.getQuantitàProdotta());
 			statement.setString(2, updatedProduzione.getMaterialeUsato());
 			statement.setBigDecimal(3, updatedProduzione.getKgRifiutiUsati());
 			statement.setString(4, updatedProduzione.getIdServizio());
-			statement.setString(5, updatedProduzione.getIdEvento());
 			statement.setString(6, updatedProduzione.getIdProdotto());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
@@ -138,13 +132,11 @@ public class ProductionTable implements TableTriplePk<Production, String, String
 	}
 
 	@Override
-	public boolean delete(String idServizio, String idEvento, String idProdotto) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND idEvento = ? " +
-				"AND idProdotto = ?";
+	public boolean delete(String idServizio, String idProdotto) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND idProdotto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, idServizio);
-            statement.setString(2, idEvento);
-            statement.setString(3, idProdotto);
+            statement.setString(2, idProdotto);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableDoublePk;
+import db.Table;
 import model.Service;
 
-public class ServiceTable implements TableDoublePk<Service, String, String> {
+public class ServiceTable implements Table<Service, String> {
 
 	public static final String TABLE_NAME = "servizio";
 
@@ -35,13 +35,12 @@ public class ServiceTable implements TableDoublePk<Service, String, String> {
 		try (final Statement statement = this.connection.createStatement()) {
             statement.executeUpdate(
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+            			"idServizio CHAR(20) NOT NULL PRIMARY KEY," +
             			"idEvento CHAR(20) NOT NULL," +
-            			"idServizio CHAR(20) NOT NULL," +
             			"oraInizio TIME NOT NULL," +
             			"oraFine TIME NOT NULL," +
             			"tipo VARCHAR(45) NOT NULL," +
             			"idProgetto INT NULL DEFAULT NULL," +
-            			"PRIMARY KEY (idEvento, idServizio)," +
             			"FOREIGN KEY (idEvento) REFERENCES evento (idEvento)" +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (idProgetto) REFERENCES progetto (idProgetto) " +
@@ -54,11 +53,10 @@ public class ServiceTable implements TableDoublePk<Service, String, String> {
 	}
 
 	@Override
-	public Optional<Service> findByPrimaryKey(String idEvento, String idServizio) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ? AND idServizio = ?";
+	public Optional<Service> findByPrimaryKey(String idServizio) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idEvento);
-            statement.setString(2, idServizio);
+            statement.setString(1, idServizio);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -81,8 +79,8 @@ public class ServiceTable implements TableDoublePk<Service, String, String> {
 		final List<Service> servizi = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final String idEvento = resultSet.getString("idEvento");
 				final String idServizio = resultSet.getString("idServizio");
+				final String idEvento = resultSet.getString("idEvento");
 				final String tipo = resultSet.getString("tipo");
 				final Time oraInizio = resultSet.getTime("oraInizio");
 			    final Time oraFine = resultSet.getTime("oraFine");
@@ -98,10 +96,10 @@ public class ServiceTable implements TableDoublePk<Service, String, String> {
 	@Override
 	public boolean save(Service servizio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idEvento, idServizio, oraInizio, oraFine, tipo, idProgetto) VALUES (?,?,?,?,?,?)";
+				"(idServizio, idEvento, oraInizio, oraFine, tipo, idProgetto) VALUES (?,?,?,?,?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, servizio.getIdEvento());
-            statement.setString(2, servizio.getIdServizio());
+        	statement.setString(1, servizio.getIdServizio());
+            statement.setString(2, servizio.getIdEvento());
             statement.setTime(3, servizio.getOraInizio());
             statement.setTime(4, servizio.getOraFine());
             statement.setString(5, servizio.getTipo());
@@ -118,14 +116,14 @@ public class ServiceTable implements TableDoublePk<Service, String, String> {
 
 	@Override
 	public boolean update(Service updatedServizio) {
-		final String query = "UPDATE " + TABLE_NAME + " SET oraInizio = ?, oraFine = ?, tipo = ?, idProgetto = ? "
-				+ "WHERE idEvento = ? AND idServizio = ?";
+		final String query = "UPDATE " + TABLE_NAME + " SET idEvento = ?, oraInizio = ?, oraFine = ?, tipo = ?, idProgetto = ? "
+				+ "WHERE idServizio = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setTime(1, updatedServizio.getOraInizio());
-			statement.setTime(2, updatedServizio.getOraFine());
-			statement.setString(3, updatedServizio.getTipo());
-            statement.setInt(4, updatedServizio.getIdProgetto().orElse(null));
-            statement.setString(5, updatedServizio.getIdEvento());
+			statement.setString(1, updatedServizio.getIdEvento());
+			statement.setTime(2, updatedServizio.getOraInizio());
+			statement.setTime(3, updatedServizio.getOraFine());
+			statement.setString(4, updatedServizio.getTipo());
+            statement.setInt(5, updatedServizio.getIdProgetto().orElse(null));
             statement.setString(6, updatedServizio.getIdServizio());
 			return statement.executeUpdate() > 0;
 		} catch (final SQLException e) {
@@ -134,11 +132,10 @@ public class ServiceTable implements TableDoublePk<Service, String, String> {
 	}
 
 	@Override
-	public boolean delete(String idEvento, String idServizio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idEvento = ? AND idServizio = ?";
+	public boolean delete(String idServizio) {
+		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idEvento);
-            statement.setString(2, idServizio);
+            statement.setString(1, idServizio);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

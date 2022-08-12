@@ -49,27 +49,27 @@ public class ServiceTableTest {
     void updateTest() {
         assertFalse(serviceTable.update(this.service1));
         serviceTable.save(this.service2);
-        final Service updatedService2 = new Service("s2", "b1", Time.valueOf("19:00:00"), Time.valueOf("19:45:20"), "bg", Optional.of(2));
+        final Service updatedService2 = new Service("s2", "e2", Time.valueOf("19:00:00"), Time.valueOf("19:45:20"), "bg", Optional.of(2));
         assertTrue(serviceTable.update(updatedService2));
-        final Optional<Service> foundService = serviceTable.findByPrimaryKey(updatedService2.getIdEvento(), updatedService2.getIdServizio());
+        final Optional<Service> foundService = serviceTable.findByPrimaryKey(updatedService2.getIdServizio());
         assertFalse(foundService.isEmpty());
-        assertEquals(updatedService2.getIdProgetto(), foundService.get().getIdProgetto());
+        assertEquals(updatedService2.getOraInizio(), foundService.get().getOraInizio());
     }
 
     @Test
     void deleteTest() {
         serviceTable.save(this.service1);
-        assertTrue(serviceTable.delete(this.service1.getIdEvento(), this.service1.getIdServizio()));
-        assertFalse(serviceTable.delete(this.service1.getIdEvento(), this.service1.getIdServizio()));
-        assertTrue(serviceTable.findByPrimaryKey(this.service1.getIdEvento(), this.service1.getIdServizio()).isEmpty());
+        assertTrue(serviceTable.delete(this.service1.getIdServizio()));
+        assertFalse(serviceTable.delete(this.service1.getIdServizio()));
+        assertTrue(serviceTable.findByPrimaryKey(this.service1.getIdServizio()).isEmpty());
     }
 
     @Test
     void findByPrimaryKeyTest() {
         serviceTable.save(this.service1);
         serviceTable.save(this.service2);
-        assertEquals(this.service1, serviceTable.findByPrimaryKey(this.service1.getIdEvento(), this.service1.getIdServizio()).orElse(null));
-        assertEquals(this.service2, serviceTable.findByPrimaryKey(this.service2.getIdEvento(), this.service2.getIdServizio()).orElse(null));
+        assertEquals(this.service1, serviceTable.findByPrimaryKey(this.service1.getIdServizio()).orElse(null));
+        assertEquals(this.service2, serviceTable.findByPrimaryKey(this.service2.getIdServizio()).orElse(null));
     }
 
     @Test

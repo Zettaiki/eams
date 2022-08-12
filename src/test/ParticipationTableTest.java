@@ -22,8 +22,8 @@ public class ParticipationTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static ParticipationTable participationTable = new ParticipationTable(connectionProvider.getMySQLConnection());
 
-    final Participation participation1 = new Participation("AAAAAAAAAAAAAAAA", "1", "a1");
-    final Participation participation2 = new Participation("BBBBBBBBBBBBBBBB", "2", "b1");
+    final Participation participation1 = new Participation("AAAAAAAAAAAAAAAA", "s1");
+    final Participation participation2 = new Participation("BBBBBBBBBBBBBBBB", "s2");
 
     @BeforeEach
     void setUp() throws Exception {
@@ -46,18 +46,19 @@ public class ParticipationTableTest {
     
     @Test
     void updateTest() {
-        assertThrows(IllegalStateException.class, () -> participationTable.update(new Participation("AAAAAAAAAAAAAAAA", "1", "a1")));
+        assertThrows(IllegalStateException.class, () -> participationTable.update(new Participation("AAAAAAAAAAAAAAAA", "s1")));
     }
 
     @Test
     void deleteTest() {
 		participationTable.save(this.participation1);
 		assertTrue(participationTable.delete(this.participation1.getCodiceFiscaleVolontario(),
-				this.participation1.getIdServizio(), this.participation1.getIdEvento()));
+				this.participation1.getIdServizio()));
 		assertFalse(participationTable.delete(this.participation1.getCodiceFiscaleVolontario(),
-				this.participation1.getIdServizio(), this.participation1.getIdEvento()));
-		assertTrue(participationTable.findByPrimaryKey(this.participation1.getCodiceFiscaleVolontario(),
-				this.participation1.getIdServizio(), this.participation1.getIdEvento()).isEmpty());
+				this.participation1.getIdServizio()));
+		assertTrue(participationTable
+				.findByPrimaryKey(this.participation1.getCodiceFiscaleVolontario(), this.participation1.getIdServizio())
+				.isEmpty());
 	}
 
     @Test
@@ -66,10 +67,10 @@ public class ParticipationTableTest {
         participationTable.save(this.participation2);
 		assertEquals(this.participation1,
 				participationTable.findByPrimaryKey(this.participation1.getCodiceFiscaleVolontario(),
-						this.participation1.getIdServizio(), this.participation1.getIdEvento()).orElse(null));
+						this.participation1.getIdServizio()).orElse(null));
 		assertEquals(this.participation2,
 				participationTable.findByPrimaryKey(this.participation2.getCodiceFiscaleVolontario(),
-						this.participation2.getIdServizio(), this.participation2.getIdEvento()).orElse(null));
+						this.participation2.getIdServizio()).orElse(null));
 	}
 
     @Test

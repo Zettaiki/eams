@@ -23,8 +23,8 @@ public class ProductionTableTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static ProductionTable productionTable = new ProductionTable(connectionProvider.getMySQLConnection());
 
-    final Production production1 = new Production("s1", "e1", "2", 20, "carta", new BigDecimal("30.20"));
-    final Production production2 = new Production("s2", "e2", "21", 15, "plastica", new BigDecimal("220.10"));
+    final Production production1 = new Production("s1", "2", 20, "carta", new BigDecimal("30.20"));
+    final Production production2 = new Production("s2", "21", 15, "plastica", new BigDecimal("220.10"));
 
     @BeforeEach
     void setUp() throws Exception {
@@ -49,11 +49,10 @@ public class ProductionTableTest {
     void updateTest() {
         assertFalse(productionTable.update(this.production1));
         productionTable.save(this.production2);
-        final Production updatedProduction2 = new Production("s2", "e2", "21", 15, "plastica", new BigDecimal("200.00"));
+        final Production updatedProduction2 = new Production("s2", "21", 15, "plastica", new BigDecimal("200.00"));
         assertTrue(productionTable.update(updatedProduction2));
 		final Optional<Production> foundProduction = productionTable.findByPrimaryKey(
-				updatedProduction2.getIdServizio(), updatedProduction2.getIdEvento(),
-				updatedProduction2.getIdProdotto());
+				updatedProduction2.getIdServizio(), updatedProduction2.getIdProdotto());
 		assertFalse(foundProduction.isEmpty());
         assertEquals(updatedProduction2.getKgRifiutiUsati(), foundProduction.get().getKgRifiutiUsati());
     }
@@ -61,15 +60,9 @@ public class ProductionTableTest {
     @Test
     void deleteTest() {
         productionTable.save(this.production1);
-        assertTrue(productionTable.delete(
-        		this.production1.getIdServizio(), this.production1.getIdEvento(),
-        		this.production1.getIdProdotto()));
-        assertFalse(productionTable.delete(
-        		this.production1.getIdServizio(), this.production1.getIdEvento(),
-        		this.production1.getIdProdotto()));
-        assertTrue(productionTable.findByPrimaryKey(
-        		this.production1.getIdServizio(), this.production1.getIdEvento(),
-        		this.production1.getIdProdotto()).isEmpty());
+        assertTrue(productionTable.delete(this.production1.getIdServizio(), this.production1.getIdProdotto()));
+        assertFalse(productionTable.delete(this.production1.getIdServizio(), this.production1.getIdProdotto()));
+        assertTrue(productionTable.findByPrimaryKey(this.production1.getIdServizio(), this.production1.getIdProdotto()).isEmpty());
     }
 
     @Test
@@ -77,13 +70,9 @@ public class ProductionTableTest {
         productionTable.save(this.production1);
         productionTable.save(this.production2);
 		assertEquals(this.production1, productionTable
-				.findByPrimaryKey(this.production1.getIdEvento(), this.production1.getIdEvento(),
-		        		this.production1.getIdProdotto())
-				.orElse(null));
+				.findByPrimaryKey(this.production1.getIdServizio(), this.production1.getIdProdotto()).orElse(null));
 		assertEquals(this.production2, productionTable
-				.findByPrimaryKey(this.production2.getIdEvento(), this.production2.getIdServizio(),
-						this.production2.getIdProdotto())
-				.orElse(null));
+				.findByPrimaryKey(this.production2.getIdServizio(), this.production2.getIdProdotto()).orElse(null));
 	}
 
     @Test

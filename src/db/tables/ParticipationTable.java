@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import db.TableTriplePk;
+import db.TableDoublePk;
 import model.Participation;
 
-public class ParticipationTable implements TableTriplePk<Participation, String, String, String> {
+public class ParticipationTable implements TableDoublePk<Participation, String, String> {
 
 	public static final String TABLE_NAME = "partecipazione";
 
@@ -36,9 +36,8 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
             	"CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
             			"codiceFiscaleVolontario CHAR(16) NOT NULL," +
             			"idServizio CHAR(20) NOT NULL," +
-            			"idEvento CHAR(20) NOT NULL," +
-            			"PRIMARY KEY (codiceFiscaleVolontario, idServizio, idEvento)," +
-            			"FOREIGN KEY (idServizio, idEvento) REFERENCES servizio (idServizio, idEvento) " +
+            			"PRIMARY KEY (codiceFiscaleVolontario, idServizio)," +
+            			"FOREIGN KEY (idServizio) REFERENCES servizio (idServizio) " +
             			"ON DELETE CASCADE ON UPDATE CASCADE," +
             			"FOREIGN KEY (codiceFiscaleVolontario) REFERENCES volontario (codiceFiscale)" +
             			"ON DELETE CASCADE ON UPDATE CASCADE" +
@@ -51,13 +50,11 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 	}
 
 	@Override
-	public Optional<Participation> findByPrimaryKey(String codiceFiscaleVolontario, String idServizio, String idEvento) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ? AND " +
-				"idServizio = ? AND idEvento = ?";
+	public Optional<Participation> findByPrimaryKey(String codiceFiscaleVolontario, String idServizio) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ? AND idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleVolontario);
             statement.setString(2, idServizio);
-            statement.setString(3, idEvento);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
@@ -82,9 +79,8 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 			while (resultSet.next()) {
 				final String codiceFiscaleVolontario = resultSet.getString("codiceFiscaleVolontario");
 				final String idServizio = resultSet.getString("idServizio");
-				final String idEvento = resultSet.getString("idEvento");
 				
-				final Participation partecipazione = new Participation(codiceFiscaleVolontario, idServizio, idEvento);
+				final Participation partecipazione = new Participation(codiceFiscaleVolontario, idServizio);
 				partecipazioni.add(partecipazione);
 			}
 		} catch (final SQLException e) {}
@@ -94,11 +90,10 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 	@Override
 	public boolean save(Participation partecipazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(codiceFiscaleVolontario, idServizio, idEvento) VALUES (?,?,?)";
+				"(codiceFiscaleVolontario, idServizio, idEvento) VALUES (?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, partecipazione.getCodiceFiscaleVolontario());
             statement.setString(2, partecipazione.getIdServizio());
-            statement.setString(3, partecipazione.getIdEvento());
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -114,13 +109,12 @@ public class ParticipationTable implements TableTriplePk<Participation, String, 
 	}
 
 	@Override
-	public boolean delete(String codiceFiscaleVolontario, String idServizio, String idEvento) {
+	public boolean delete(String codiceFiscaleVolontario, String idServizio) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ?" +
 				"AND idServizio = ? AND idEvento = ?";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscaleVolontario);
             statement.setString(2, idServizio);
-            statement.setString(3, idEvento);
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);

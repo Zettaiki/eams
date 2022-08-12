@@ -23,8 +23,8 @@ public class GarbageCollectionTest {
     		ServerCredentials.PASSWORD.getString(), ServerCredentials.DBNAME.getString());
     final static GarbageCollectionTable garbageCollectionTable = new GarbageCollectionTable(connectionProvider.getMySQLConnection());
 
-    final GarbageCollection garbageCollection1 = new GarbageCollection("s1", "e1", "carta", new BigDecimal("30.20"));
-    final GarbageCollection garbageCollection2 = new GarbageCollection("s2", "e2", "plastica", new BigDecimal("220.10"));
+    final GarbageCollection garbageCollection1 = new GarbageCollection("s1", "carta", new BigDecimal("30.20"));
+    final GarbageCollection garbageCollection2 = new GarbageCollection("s2", "plastica", new BigDecimal("220.10"));
 
     @BeforeEach
     void setUp() throws Exception {
@@ -49,11 +49,10 @@ public class GarbageCollectionTest {
     void updateTest() {
         assertFalse(garbageCollectionTable.update(this.garbageCollection1));
         garbageCollectionTable.save(this.garbageCollection2);
-        final GarbageCollection updatedGarbageCollection2 = new GarbageCollection("s2", "e2", "plastica", new BigDecimal("200.00"));
+        final GarbageCollection updatedGarbageCollection2 = new GarbageCollection("s2", "plastica", new BigDecimal("200.00"));
         assertTrue(garbageCollectionTable.update(updatedGarbageCollection2));
 		final Optional<GarbageCollection> foundGarbageCollection = garbageCollectionTable.findByPrimaryKey(
-				updatedGarbageCollection2.getIdServizio(), updatedGarbageCollection2.getIdEvento(),
-				updatedGarbageCollection2.getMateriale());
+				updatedGarbageCollection2.getIdServizio(), updatedGarbageCollection2.getMateriale());
 		assertFalse(foundGarbageCollection.isEmpty());
         assertEquals(updatedGarbageCollection2.getKg(), foundGarbageCollection.get().getKg());
     }
@@ -62,14 +61,11 @@ public class GarbageCollectionTest {
     void deleteTest() {
         garbageCollectionTable.save(this.garbageCollection1);
         assertTrue(garbageCollectionTable.delete(
-        		this.garbageCollection1.getIdServizio(), this.garbageCollection1.getIdEvento(),
-        		this.garbageCollection1.getMateriale()));
+        		this.garbageCollection1.getIdServizio(), this.garbageCollection1.getMateriale()));
         assertFalse(garbageCollectionTable.delete(
-        		this.garbageCollection1.getIdServizio(), this.garbageCollection1.getIdEvento(),
-        		this.garbageCollection1.getMateriale()));
+        		this.garbageCollection1.getIdServizio(), this.garbageCollection1.getMateriale()));
         assertTrue(garbageCollectionTable.findByPrimaryKey(
-        		this.garbageCollection1.getIdServizio(), this.garbageCollection1.getIdEvento(),
-        		this.garbageCollection1.getMateriale()).isEmpty());
+        		this.garbageCollection1.getIdServizio(), this.garbageCollection1.getMateriale()).isEmpty());
     }
 
     @Test
@@ -77,12 +73,10 @@ public class GarbageCollectionTest {
         garbageCollectionTable.save(this.garbageCollection1);
         garbageCollectionTable.save(this.garbageCollection2);
 		assertEquals(this.garbageCollection1, garbageCollectionTable
-				.findByPrimaryKey(this.garbageCollection1.getIdEvento(), this.garbageCollection1.getIdEvento(),
-		        		this.garbageCollection1.getMateriale())
+				.findByPrimaryKey(this.garbageCollection1.getIdServizio(), this.garbageCollection1.getMateriale())
 				.orElse(null));
 		assertEquals(this.garbageCollection2, garbageCollectionTable
-				.findByPrimaryKey(this.garbageCollection2.getIdEvento(), this.garbageCollection2.getIdServizio(),
-						this.garbageCollection2.getMateriale())
+				.findByPrimaryKey(this.garbageCollection2.getIdServizio(), this.garbageCollection2.getMateriale())
 				.orElse(null));
 	}
 

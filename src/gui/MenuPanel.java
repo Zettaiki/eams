@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 
+import gui.agencies_menu.CommerceMenuPanel;
 import gui.events_menu.EventsMenuPanel;
 import gui.newsletter_menu.NewsletterMenuPanel;
 import gui.project_menu.ProjectDonationMenuPanel;
@@ -76,7 +77,8 @@ public class MenuPanel extends JPanel {
             c.gridy = 3;
             var commerceButton = new JButton("Area commercio");
             commerceButton.addActionListener(e -> {
-            	// TODO
+            	JFrame parent = JComponentLoader.getParentFrame(this);
+                JComponentLoader.load(parent, new CommerceMenuPanel());
             });
             b0.add(commerceButton, c);
             

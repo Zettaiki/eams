@@ -28,7 +28,7 @@ public class TableExtractorUtils {
 	}
 	
 	public static DefaultTableModel volunteerTable() {
-		// Requesting conection
+		// Requesting connection
 	    VolunteerTable volunteerTable = new VolunteerTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
@@ -43,7 +43,7 @@ public class TableExtractorUtils {
 	}
 	
 	public static DefaultTableModel projectTable() {
-		// Requesting conection
+		// Requesting connection
 		ProjectTable projectTable = new ProjectTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
@@ -58,7 +58,7 @@ public class TableExtractorUtils {
 	}
 	
 	public static DefaultTableModel donationTable() {
-		// Requesting conection
+		// Requesting connection
 		DonationTable donationTable = new DonationTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
@@ -73,7 +73,7 @@ public class TableExtractorUtils {
 	}
 
 	public static DefaultTableModel eventTable() {
-		// Requesting conection
+		// Requesting connection
 		EventTable eventTable = new EventTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
@@ -88,7 +88,7 @@ public class TableExtractorUtils {
 	}
 	
 	public static DefaultTableModel serviceTable() {
-		// Requesting conection
+		// Requesting connection
 		ServiceTable serviceTable = new ServiceTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
@@ -103,7 +103,7 @@ public class TableExtractorUtils {
 	}
 	
 	public static DefaultTableModel newsletterTable() {
-		// Requesting conection
+		// Requesting connection
 		NewsletterTable newsletterTable = new NewsletterTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
@@ -118,7 +118,7 @@ public class TableExtractorUtils {
 	}
 	
 	public static DefaultTableModel	saleTable() {
-		// Requesting conection
+		// Requesting connection
 		SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data

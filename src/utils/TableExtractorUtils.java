@@ -103,9 +103,11 @@ public class TableExtractorUtils {
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Newsletter> serviceList = newsletterTable.findAll();
 	    for( Newsletter x : serviceList ) {
-	    	Object[] temp = {x.getIdNewsletter(), x.getArgomento(), x.getDescrizione().toString()};
+	    	Object[] temp = {x.getIdNewsletter(), x.getArgomento(), x.getDescrizione()};
 	    	data.addRow(temp);
 	    }
 	    return data;
 	}
+	
+	
 }

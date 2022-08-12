@@ -250,3 +250,14 @@ VALUES ("DG56","S1-1","GNMRZN78A01B354R",1),
 ("F003","S1-1","CHRGTN88A01C352W",4);
 -- SELECT * FROM eams.vendita;
 
+-- -----------------------------------------------------
+-- UTENTE
+-- -----------------------------------------------------
+INSERT INTO utente (codiceFiscaleDipendente, username, password) 
+VALUES ("CLDMTR70A01G479X", "claudio", "claudio22"), 
+("GNMRZN78A01B354R", "gianmarco", "gianmarco22");
+-- SELECT * FROM eams.utente;
+
+
+
+

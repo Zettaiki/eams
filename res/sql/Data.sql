@@ -592,6 +592,32 @@ INSERT INTO `tesserasocio` VALUES ('SOC0000001','CHRGTN88A01C352W','2022-05-24')
 UNLOCK TABLES;
 
 --
+-- Table structure for table `utente`
+--
+
+DROP TABLE IF EXISTS `utente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `utente` (
+  `codiceFiscaleDipendente` char(16) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`codiceFiscaleDipendente`),
+  CONSTRAINT `fk_User_dipendente1` FOREIGN KEY (`codiceFiscaleDipendente`) REFERENCES `dipendente` (`codiceFiscale`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `utente`
+--
+
+LOCK TABLES `utente` WRITE;
+/*!40000 ALTER TABLE `utente` DISABLE KEYS */;
+INSERT INTO `utente` VALUES ('CLDMTR70A01G479X','claudio','claudio22'),('GNMRZN78A01B354R','gianmarco','gianmarco22');
+/*!40000 ALTER TABLE `utente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `vendita`
 --
 
@@ -661,4 +687,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-13  0:51:54
+-- Dump completed on 2022-08-13  1:13:23

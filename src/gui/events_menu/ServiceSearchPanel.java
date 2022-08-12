@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class ServiceSearchPanel extends JPanel {
 	private static final long serialVersionUID = 543534484180509595L;
@@ -67,17 +68,7 @@ public class ServiceSearchPanel extends JPanel {
 			a1.setBorder(BorderFactory.createTitledBorder("Risultati servizi cercati:"));
 			a1.setLayout(new GridLayout(0,1));
 			{
-				String[] columnNames = {"ID",
-			            "Ora inizio",
-			            "Ora fine",
-			            "Tipo",
-			            "ID progetto"};
-				
-				Object[][] data = {
-					    {"-", "-", "-", "-", "-"},
-					};
-
-				var donationTable = new JTable(data, columnNames);
+				var donationTable = new JTable(TableExtractorUtils.serviceTable());
 				donationTable.setEnabled(false);
 				donationTable.getTableHeader().setReorderingAllowed(false);
 				donationTable.getTableHeader().setEnabled(false);

@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class EventsListPanel extends JPanel {
 	private static final long serialVersionUID = 8776421810569801974L;
@@ -54,16 +55,7 @@ public class EventsListPanel extends JPanel {
 		a1.setBorder(BorderFactory.createTitledBorder("Eventi attivi:"));
 		a1.setLayout(new GridLayout(0,1));
 		{
-			String[] columnNames = {"ID",
-		            "Nome",
-		            "Data",
-		            "Descrizione"};
-			
-			Object[][] data = {
-				    {"-", "-", "-", "-"},
-				};
-			
-			var donationTable = new JTable(data, columnNames);
+			var donationTable = new JTable(TableExtractorUtils.eventTable());
 			donationTable.setEnabled(false);
 			donationTable.getTableHeader().setReorderingAllowed(false);
 			donationTable.getTableHeader().setEnabled(false);

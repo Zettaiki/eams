@@ -57,7 +57,10 @@ public class ServiceTable {
 				final String tipo = resultSet.getString("tipo");
 				final Time oraInizio = resultSet.getTime("oraInizio");
 			    final Time oraFine = resultSet.getTime("oraFine");
-			    final Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
+			    Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
+			    if(resultSet.wasNull()) {
+			    	idProgetto = Optional.empty();
+			    }
 				
 				final Service servizio = new Service(idEvento, idServizio, oraInizio, oraFine, tipo, idProgetto);
 				servizi.add(servizio);

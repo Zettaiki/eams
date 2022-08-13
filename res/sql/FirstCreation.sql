@@ -132,9 +132,10 @@ e l’implementazione di un programma di pesca sostenibile."),
 -- -----------------------------------------------------
 INSERT INTO donazione (importo, codiceFiscale, dataDonazione, idProgetto) 
 VALUES (20.00,"CHRGTN88A01C352W","2022-05-24",4), 
-(20.00,"CHRGTN88A01C352W","2022-06-24",4), 
+(20.00,"CHRGTN88A01C352W","2022-06-24",6), 
 (5.00,"PLABNL91S14I608D","2022-06-29",null), 
-(20.00,"CHRGTN88A01C352W","2022-07-24",4);
+(20.00,"CHRGTN88A01C352W","2022-07-24",6), 
+(35.00,"PLABNL91S14I608D","2022-06-29",1);
 -- SELECT * FROM eams.donazione;
 
 -- -----------------------------------------------------

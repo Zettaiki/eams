@@ -1,12 +1,15 @@
 -- 1	Controllo progetti attivi
 SELECT * FROM progetto p
 WHERE p.dataInizio >= current_date();
+
 -- 2	Mostra eventi attivi
 SELECT * FROM evento e
 WHERE e.data >= current_date();
+
 -- 3	Elenco servizi di un evento
 SELECT * FROM servizio s
 WHERE s.idEvento = ?; -- es. input "e3"
+
 -- 4	Cerca servizi attivi per tipo (mostra anche data evento)
 /*SELECT s.*, e.idEvento, e.data
 FROM servizio s
@@ -16,12 +19,21 @@ SELECT s.idServizio, s.oraInizio, s.oraFine, s.tipo, s.idProgetto, s.idEvento ,e
 FROM servizio s, evento e
 WHERE e.idEvento = s.idEvento 
 AND s.tipo = "Stand di vendita";
+
 -- 5	classifica delle newsletter più seguite
-SELECT *, COUNT(*) as iscritti
+SELECT i.idNewsletter, COUNT(*) as iscritti
 FROM iscrizione i
 GROUP BY i.idNewsletter
-ORDER BY Iscritti DESC;
+ORDER BY iscritti DESC;
+
+
+
+
+
+
+
 -- 7	volontario con > ore di servizio
+/********/
 /*SELECT *, COUNT(*) as oreServizioTot
 FROM partecipazione p
 GROUP BY p.idServizio
@@ -64,17 +76,35 @@ FROM (SELECT *, SUM(d.importo) AS maxDonato
 		FROM donazione d
 		WHERE d.dataDonazione BETWEEN DATE_SUB(NOW(),INTERVAL 1 YEAR) AND CURRENT_DATE()
 		GROUP BY d.codiceFiscale) as maxDonazione;
-        
-
-
 
 
 -- 9	elenco volontari per una certa sede
 SELECT * FROM volontario v
 WHERE v.sedeCittà = ?;
--- 10	percentuali e totale donazioni rivolte ad ogni progetto
--- 11	quantità venduta di un prodotto in un mese
 
+-- 10	percentuali e totale donazioni rivolte ad ogni progetto 
+SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, concat(round((SUM(d.importo)/(
+	SELECT SUM(d.importo) as totDonazioni
+	FROM donazione d
+    WHERE d.idProgetto IS NOT NULL
+) * 100 ),2),'%') AS Percentuale
+FROM donazione AS d JOIN progetto AS p ON d.idProgetto = p.idProgetto
+GROUP BY p.idProgetto
+ORDER BY Percentuale DESC;
+
+-- 10 bis (same but percentuale tot è dei progetti attivi)
+SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, concat(round((SUM(d.importo)/(
+	SELECT SUM(d.importo) as totDonazioni
+	FROM donazione d
+    WHERE d.idProgetto IS NOT NULL
+) * 100 ),2),'%') AS Percentuale
+FROM donazione AS d JOIN progetto AS p ON d.idProgetto = p.idProgetto
+WHERE p.dataInizio >= current_date()
+GROUP BY p.idProgetto
+ORDER BY Percentuale DESC;
+
+-- 11	quantità venduta di un prodotto in un mese
+/********/
 
 
 
@@ -84,10 +114,13 @@ WHERE v.sedeCittà = ?;
 SELECT DISTINCT d.codiceFiscale 
 FROM donazione d
 WHERE d.idProgetto = 4;
--- 16	acquisto prodotto (sconto su prezzo se socio acquista)
--- 17	media annuale quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
--- 18	sede con volontari più partecipativi
 
+-- 16	acquisto prodotto (sconto su prezzo se socio acquista)
+/********/
+-- 17	media annuale quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
+/********/
+-- 18	sede con volontari più partecipativi
+/********/
 
 
 

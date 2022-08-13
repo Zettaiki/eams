@@ -53,12 +53,13 @@ public class ProjectTable {
 		final List<Project> progetti = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
+				final Optional<Integer> idProgetto = Optional.of(resultSet.getInt("idProgetto"));
 			    final String obbiettivo = resultSet.getString("obbiettivo");
 			    final Date dataInizio = Utils.sqlDateToDate(resultSet.getDate("dataInizio"));
 			    final Integer durataMesi = resultSet.getInt("durataMesi");
 			    final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
 				
-				final Project progetto = new Project(obbiettivo, dataInizio, durataMesi, descrizione);
+				final Project progetto = new Project(idProgetto, obbiettivo, dataInizio, durataMesi, descrizione);
 				progetti.add(progetto);
 			}
 		} catch (final SQLException e) {}

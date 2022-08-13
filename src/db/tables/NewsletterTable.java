@@ -51,7 +51,7 @@ public class NewsletterTable {
 		final List<Newsletter> newsletters = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Integer idNewsletter = resultSet.getInt("idNewsletter");
+				final Optional<Integer> idNewsletter = Optional.of(resultSet.getInt("idNewsletter"));
 				final String argomento = resultSet.getString("argomento");
 			    final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
 			    

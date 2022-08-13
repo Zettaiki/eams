@@ -5,14 +5,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Project {
-	private final Integer idProgetto;
+	private final Optional<Integer> idProgetto;
     private final String obbiettivo;
     private final Date dataInizio;
     private final Integer durataMesi;
     private final Optional<String> descrizione;
     
-	public Project(String obbiettivo, Date dataInizio, Integer durataMesi, Optional<String> descrizione) {
-		this.idProgetto = 0;
+	public Project(Optional<Integer> idProgetto, String obbiettivo, Date dataInizio, Integer durataMesi, Optional<String> descrizione) {
+		this.idProgetto = idProgetto;
 		this.obbiettivo = obbiettivo;
 		this.dataInizio = dataInizio;
 		this.durataMesi = durataMesi;
@@ -20,7 +20,9 @@ public class Project {
 	}
 
 	public Integer getIdProgetto() {
-		return this.idProgetto;
+		if (this.idProgetto.isPresent())
+			return this.idProgetto.get();
+		return -1;
 	}
 
 	public String getObbiettivo() {

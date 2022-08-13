@@ -4,22 +4,24 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Newsletter {
-    private final Integer idNewsletter;
+    private final Optional<Integer> idNewsletter;
 	private final String argomento;
     private final Optional<String> descrizione;
     
-	public Newsletter(Integer idNewsletter, String argomento, Optional<String> descrizione) {
+	public Newsletter(Optional<Integer>  idNewsletter, String argomento, Optional<String> descrizione) {
 		this.idNewsletter = idNewsletter;
 		this.argomento = argomento;
 		this.descrizione = descrizione;
 	}
 	
-	public Newsletter(Integer idNewsletter, String argomento) {
+	public Newsletter(Optional<Integer>  idNewsletter, String argomento) {
 		this(idNewsletter, argomento, Optional.empty());
 	}
 	   
 	public Integer getIdNewsletter() {
-		return this.idNewsletter;
+		if (this.idNewsletter.isPresent())
+			return this.idNewsletter.get();
+		return -1;
 	}
 
 	public String getArgomento() {

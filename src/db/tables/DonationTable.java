@@ -54,12 +54,13 @@ public class DonationTable {
 		final List<Donation> donazioni = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
+				final Optional<Integer> idDonazione = Optional.of(resultSet.getInt("idDonazione"));
 				final BigDecimal importo = resultSet.getBigDecimal("importo");
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final Date dataDonazione = Utils.sqlDateToDate(resultSet.getDate("dataDonazione"));
 				final Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
 
-				final Donation donazione = new Donation(importo, codiceFiscale, dataDonazione,
+				final Donation donazione = new Donation(idDonazione, importo, codiceFiscale, dataDonazione,
 						idProgetto);
 				donazioni.add(donazione);
 			}

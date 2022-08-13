@@ -6,26 +6,28 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Donation {
-	private final Integer idDonazione;
+	private final Optional<Integer> idDonazione;
     private final BigDecimal importo;
     private final String codiceFiscale;
     private final Date dataDonazione;
     private final Optional<Integer> idProgetto;
     
-	public Donation(BigDecimal importo, String codiceFiscale, Date dataDonazione, Optional<Integer> idProgetto) {
-		this.idDonazione = 0;
+	public Donation(Optional<Integer> idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione, Optional<Integer> idProgetto) {
+		this.idDonazione = idDonazione;
 		this.importo = importo;
 		this.codiceFiscale = codiceFiscale;
 		this.dataDonazione = dataDonazione;
 		this.idProgetto = Objects.requireNonNull(idProgetto);
 	}
 	
-	public Donation(BigDecimal importo, String codiceFiscale, Date dataDonazione) {
-		this(importo, codiceFiscale, dataDonazione, Optional.empty());
+	public Donation(Optional<Integer> idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione) {
+		this(idDonazione, importo, codiceFiscale, dataDonazione, Optional.empty());
 	}
     
 	public Integer getIdDonazione() {
-		return this.idDonazione;
+		if (this.idDonazione.isPresent())
+			return this.idDonazione.get();
+		return -1;
 	}
 
 	public BigDecimal getImporto() {

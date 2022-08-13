@@ -47,11 +47,11 @@ public class TableExtractorUtils {
 		ProjectTable projectTable = new ProjectTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-	    String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Durata mesi"};	    
+	    String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Durata mesi", "Descrizione"};	    
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Project> projectList = projectTable.findAll();
 	    for( Project x : projectList ) {
-	    	Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDurataMesi()};
+	    	Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDurataMesi(), checkIfEmpty(x.getDescrizione())};
 	    	data.addRow(temp);
 	    }
 	    return data;

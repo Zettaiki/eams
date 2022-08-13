@@ -5,12 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-import utils.Utils;
+import db.tables.EventTable;
+import db.tables.ServiceTable;
+import model.Event;
+import model.Service;
 
 public class EventServiceQuery {
 	private final Connection connection;
@@ -20,24 +21,23 @@ public class EventServiceQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
-	public List<String> activeEvents() {
+	public List<Event> activeEvents() {
+		EventTable queryResultEventTable = new EventTable(connection);
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM evento e" +
             		"WHERE e.data >= current_date()");
-            try {
-    			while (resultSet.next()) {
-    				final String idEvento = resultSet.getString("idEvento");
-    				final String nome = resultSet.getString("nome");
-    				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
-    				final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
-    				
-    				queryResultTable.add(new StringBuilder().append(idEvento).append(" ")
-    						.append(nome).append(" ")
-    						.append(data).append(" ")
-    						.append(descrizione).toString());
-    			}
-    		} catch (final SQLException e) {}
-            return queryResultTable;
+            return queryResultEventTable.readFromResultSet(resultSet);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+	}
+	
+	public List<Service> eventServiceList() {
+		ServiceTable queryResultServiceTable = new ServiceTable(connection);
+		try (final Statement statement = this.connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery("SELECT * FROM servizio s" +
+            		"WHERE s.idEvento = ?");
+            	return queryResultServiceTable.readFromResultSet(resultSet);
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

@@ -58,8 +58,11 @@ public class DonationTable {
 				final BigDecimal importo = resultSet.getBigDecimal("importo");
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final Date dataDonazione = Utils.sqlDateToDate(resultSet.getDate("dataDonazione"));
-				final Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
-
+				Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
+			    if(resultSet.wasNull()) {
+			    	idProgetto = Optional.empty();
+			    }
+				
 				final Donation donazione = new Donation(idDonazione, importo, codiceFiscale, dataDonazione,
 						idProgetto);
 				donazioni.add(donazione);

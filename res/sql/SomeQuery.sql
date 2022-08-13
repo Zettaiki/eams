@@ -15,7 +15,7 @@ WHERE s.idEvento = ?; -- es. input "e3"
 FROM servizio s
 JOIN evento e ON (e.idEvento = s.idEvento)
 WHERE s.tipo = "Stand di vendita";*/
-SELECT s.idServizio, s.oraInizio, s.oraFine, s.tipo, s.idProgetto, s.idEvento ,e.data
+SELECT s.idServizio, s.oraInizio, s.oraFine, s.idProgetto, s.idEvento, e.data
 FROM servizio s, evento e
 WHERE e.idEvento = s.idEvento 
 AND s.tipo = "Stand di vendita";
@@ -25,12 +25,6 @@ SELECT i.idNewsletter, COUNT(*) as iscritti
 FROM iscrizione i
 GROUP BY i.idNewsletter
 ORDER BY iscritti DESC;
-
-
-
-
-
-
 
 -- 7	volontario con > ore di servizio
 /********/
@@ -58,25 +52,13 @@ WHERE p.idServizio IN (SELECT TIMEDIFF(s.oraFine,s.oraInizio) AS OreServizio
 GROUP BY p.codiceFiscaleVolontario
 ORDER BY OreServizioTot DESC;
 
-
-
-
-
-
-
-
-
-
-
-
 -- 8	donatore > quantità donata in un certo anno
 /********	TROVARE MODO MIGLIORE e se riesco mostrare anche nome donatore anziché solo cf **********/
-SELECT maxDonazione.codiceFiscale, MAX(maxDonazione.maxDonato)
+SELECT d.codiceFiscale, MAX(maxDonazione.maxDonato)
 FROM (SELECT *, SUM(d.importo) AS maxDonato
 		FROM donazione d
 		WHERE d.dataDonazione BETWEEN DATE_SUB(NOW(),INTERVAL 1 YEAR) AND CURRENT_DATE()
 		GROUP BY d.codiceFiscale) as maxDonazione;
-
 
 -- 9	elenco volontari per una certa sede
 SELECT * FROM volontario v
@@ -87,33 +69,29 @@ SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, concat(round((SUM(d.im
 	SELECT SUM(d.importo) as totDonazioni
 	FROM donazione d
     WHERE d.idProgetto IS NOT NULL
-) * 100 ),2),'%') AS Percentuale
+) * 100 ),2),'%') AS percentuale
 FROM donazione AS d JOIN progetto AS p ON d.idProgetto = p.idProgetto
 GROUP BY p.idProgetto
-ORDER BY Percentuale DESC;
+ORDER BY percentuale DESC;
 
 -- 10 bis (same but percentuale tot è dei progetti attivi)
 SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, concat(round((SUM(d.importo)/(
 	SELECT SUM(d.importo) as totDonazioni
 	FROM donazione d
     WHERE d.idProgetto IS NOT NULL
-) * 100 ),2),'%') AS Percentuale
+) * 100 ),2),'%') AS percentuale
 FROM donazione AS d JOIN progetto AS p ON d.idProgetto = p.idProgetto
 WHERE p.dataInizio >= current_date()
 GROUP BY p.idProgetto
-ORDER BY Percentuale DESC;
+ORDER BY percentuale DESC;
 
 -- 11	quantità venduta di un prodotto in un mese
 /********/
 
-
-
-
-
 -- 15	lista donatori di un progetto
-SELECT DISTINCT d.codiceFiscale 
-FROM donazione d
-WHERE d.idProgetto = 4;
+SELECT DISTINCT d.codiceFiscale, p.nome, p.cognome
+FROM donazione d JOIN persona AS p ON d.codiceFiscale = p.codiceFiscale
+WHERE d.idProgetto = ?;
 
 -- 16	acquisto prodotto (sconto su prezzo se socio acquista)
 /********/

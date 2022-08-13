@@ -55,8 +55,8 @@ public class DonationPanel extends JPanel {
 			donationTable.setEnabled(false);
 			donationTable.getTableHeader().setReorderingAllowed(false);
 			donationTable.getTableHeader().setEnabled(false);
-			JScrollPane projectListPanel = new JScrollPane(donationTable);
-		    a1.add(projectListPanel);
+			JScrollPane donationListPanel = new JScrollPane(donationTable);
+		    a1.add(donationListPanel);
 		}
 		this.add(a1, c);
 	}

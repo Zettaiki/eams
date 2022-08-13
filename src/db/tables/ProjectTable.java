@@ -17,7 +17,7 @@ import utils.Utils;
 
 public class ProjectTable {
 
-	public static final String TABLE_NAME = "donazione";
+	public static final String TABLE_NAME = "progetto";
 
 	private final Connection connection;
 

@@ -117,14 +117,14 @@ VALUES ("DG56","On the go","Bottiglia di acciaio blu",20.00,30,"Fornito",null),
 -- PROGETTO
 -- -----------------------------------------------------
 INSERT INTO progetto (obbiettivo, dataInizio, durataMesi, descrizione) 
-VALUES ("Creare un rifugio per animali",01/10/2022,6,null), 
-("Ecofishing",04/04/2021,12,"Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate 
+VALUES ("Creare un rifugio per animali","2022-10-01",6,null), 
+("Ecofishing","2021-04-04",12,"Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate 
 e l’implementazione di un programma di pesca sostenibile."), 
-("Rain-forest",10/08/2022,18,"Piano di reinforestazione delle aree più colpite dal disboscamento in Italia."), 
-("Città verde",17/01/2022,12,"Rendere più verdi le zone urbane."), 
-("Leopardo delle nevi",22/03/2022,12,"Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli."), 
-("Tour in bosco",01/09/2022,9,"Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie."),
-("Elefanti",22/08/2022,12,"Ridurre il bracconaggio.");
+("Rain-forest","2022-08-10",18,"Piano di reinforestazione delle aree più colpite dal disboscamento in Italia."), 
+("Città verde","2022-01-17",12,"Rendere più verdi le zone urbane."), 
+("Leopardo delle nevi","2022-03-22",12,"Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli."), 
+("Tour in bosco","2022-09-01",9,"Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie."),
+("Elefanti","2022-08-22",12,"Ridurre il bracconaggio.");
 -- SELECT * FROM eams.progetto;*/
 
 -- -----------------------------------------------------

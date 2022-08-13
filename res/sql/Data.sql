@@ -446,7 +446,7 @@ CREATE TABLE `progetto` (
 
 LOCK TABLES `progetto` WRITE;
 /*!40000 ALTER TABLE `progetto` DISABLE KEYS */;
-INSERT INTO `progetto` VALUES (1,'Creare un rifugio per animali','0000-00-00',6,NULL),(2,'Ecofishing','0000-00-00',12,'Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate \ne l’implementazione di un programma di pesca sostenibile.'),(3,'Rain-forest','0000-00-00',18,'Piano di reinforestazione delle aree più colpite dal disboscamento in Italia.'),(4,'Città verde','0000-00-00',12,'Rendere più verdi le zone urbane.'),(5,'Leopardo delle nevi','0000-00-00',12,'Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli.'),(6,'Tour in bosco','0000-00-00',9,'Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie.'),(7,'Elefanti','0000-00-00',12,'Ridurre il bracconaggio.');
+INSERT INTO `progetto` VALUES (1,'Creare un rifugio per animali','2022-10-01',6,NULL),(2,'Ecofishing','2021-04-04',12,'Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate \ne l’implementazione di un programma di pesca sostenibile.'),(3,'Rain-forest','2022-08-10',18,'Piano di reinforestazione delle aree più colpite dal disboscamento in Italia.'),(4,'Città verde','2022-01-17',12,'Rendere più verdi le zone urbane.'),(5,'Leopardo delle nevi','2022-03-22',12,'Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli.'),(6,'Tour in bosco','2022-09-01',9,'Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie.'),(7,'Elefanti','2022-08-22',12,'Ridurre il bracconaggio.');
 /*!40000 ALTER TABLE `progetto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -687,4 +687,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-13  1:13:23
+-- Dump completed on 2022-08-13 10:26:37

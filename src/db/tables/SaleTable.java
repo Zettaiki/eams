@@ -15,7 +15,7 @@ import model.Sale;
 
 public class SaleTable {
 
-	public static final String TABLE_NAME = "fornitura";
+	public static final String TABLE_NAME = "vendita";
 
 	private final Connection connection;
 

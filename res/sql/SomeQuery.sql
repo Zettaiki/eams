@@ -1,6 +1,6 @@
 -- 1	Controllo progetti attivi
 SELECT * FROM progetto p
-WHERE p.dataInizio >= current_date();
+WHERE current_date() BETWEEN p.dataInizio AND p.dataFine;
 
 -- 2	Mostra eventi attivi
 SELECT * FROM evento e

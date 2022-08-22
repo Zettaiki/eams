@@ -58,8 +58,9 @@ public class ProjectTable {
 			    final Date dataInizio = Utils.sqlDateToDate(resultSet.getDate("dataInizio"));
 			    final Integer durataMesi = resultSet.getInt("durataMesi");
 			    final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
+			    final Date dataFine = Utils.sqlDateToDate(resultSet.getDate("dataFine"));
 				
-				final Project progetto = new Project(idProgetto, obbiettivo, dataInizio, durataMesi, descrizione);
+				final Project progetto = new Project(idProgetto, obbiettivo, dataInizio, durataMesi, descrizione, dataFine);
 				progetti.add(progetto);
 			}
 		} catch (final SQLException e) {}

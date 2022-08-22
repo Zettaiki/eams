@@ -149,7 +149,7 @@ CREATE TABLE `donazione` (
   KEY `fk_donazione_persona1_idx` (`codiceFiscale`),
   CONSTRAINT `fk_donazione_persona1` FOREIGN KEY (`codiceFiscale`) REFERENCES `persona` (`codiceFiscale`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_donazione_progetto1` FOREIGN KEY (`idProgetto`) REFERENCES `progetto` (`idProgetto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +158,7 @@ CREATE TABLE `donazione` (
 
 LOCK TABLES `donazione` WRITE;
 /*!40000 ALTER TABLE `donazione` DISABLE KEYS */;
-INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24',4),(3,5.00,'PLABNL91S14I608D','2022-06-29',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24',4);
+INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24',6),(3,5.00,'PLABNL91S14I608D','2022-06-29',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24',6),(5,35.00,'PLABNL91S14I608D','2022-06-29',1);
 /*!40000 ALTER TABLE `donazione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,6 +436,7 @@ CREATE TABLE `progetto` (
   `dataInizio` date NOT NULL,
   `durataMesi` int NOT NULL,
   `descrizione` mediumtext,
+  `dataFine` date GENERATED ALWAYS AS (cast(concat_ws(_utf8mb4'-',(floor(((month(`dataInizio`) + `durataMesi`) / 12)) + year(`dataInizio`)),((month(`dataInizio`) + `durataMesi`) % 12),dayofmonth(`dataInizio`)) as date)) VIRTUAL,
   PRIMARY KEY (`idProgetto`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -446,7 +447,7 @@ CREATE TABLE `progetto` (
 
 LOCK TABLES `progetto` WRITE;
 /*!40000 ALTER TABLE `progetto` DISABLE KEYS */;
-INSERT INTO `progetto` VALUES (1,'Creare un rifugio per animali','2022-10-01',6,NULL),(2,'Ecofishing','2021-04-04',12,'Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate \ne l’implementazione di un programma di pesca sostenibile.'),(3,'Rain-forest','2022-08-10',18,'Piano di reinforestazione delle aree più colpite dal disboscamento in Italia.'),(4,'Città verde','2022-01-17',12,'Rendere più verdi le zone urbane.'),(5,'Leopardo delle nevi','2022-03-22',12,'Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli.'),(6,'Tour in bosco','2022-09-01',9,'Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie.'),(7,'Elefanti','2022-08-22',12,'Ridurre il bracconaggio.');
+INSERT INTO `progetto` (`idProgetto`, `obbiettivo`, `dataInizio`, `durataMesi`, `descrizione`) VALUES (1,'Creare un rifugio per animali','2022-10-01',6,NULL),(2,'Ecofishing','2021-04-04',12,'Programma di protezione dell’ambiente marino, attraverso la raccolta, il recupero e il riciclo delle reti da pesca abbandonate \ne l’implementazione di un programma di pesca sostenibile.'),(3,'Rain-forest','2022-08-10',18,'Piano di reinforestazione delle aree più colpite dal disboscamento in Italia.'),(4,'Città verde','2022-01-17',12,'Rendere più verdi le zone urbane.'),(5,'Leopardo delle nevi','2022-03-22',12,'Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli.'),(6,'Tour in bosco','2022-09-01',9,'Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie.'),(7,'Elefanti','2022-08-22',18,'Ridurre il bracconaggio.');
 /*!40000 ALTER TABLE `progetto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -687,4 +688,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-13 10:26:37
+-- Dump completed on 2022-08-22 15:13:28

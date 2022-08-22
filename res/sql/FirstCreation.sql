@@ -124,7 +124,7 @@ e l’implementazione di un programma di pesca sostenibile."),
 ("Città verde","2022-01-17",12,"Rendere più verdi le zone urbane."), 
 ("Leopardo delle nevi","2022-03-22",12,"Ridurre il bracconaggio dei leopardi delle nevi, ricostruzione di habitat favorevoli."), 
 ("Tour in bosco","2022-09-01",9,"Progetto di educazione ambientale tramite tour nei luoghi naturali più prossimi per le scuole elementari e medie."),
-("Elefanti","2022-08-22",12,"Ridurre il bracconaggio.");
+("Elefanti","2022-08-22",18,"Ridurre il bracconaggio.");
 -- SELECT * FROM eams.progetto;*/
 
 -- -----------------------------------------------------

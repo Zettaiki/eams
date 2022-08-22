@@ -10,13 +10,15 @@ public class Project {
     private final Date dataInizio;
     private final Integer durataMesi;
     private final Optional<String> descrizione;
+    private final Date dataFine;
     
-	public Project(Optional<Integer> idProgetto, String obbiettivo, Date dataInizio, Integer durataMesi, Optional<String> descrizione) {
+	public Project(Optional<Integer> idProgetto, String obbiettivo, Date dataInizio, Integer durataMesi, Optional<String> descrizione, Date dataFine) {
 		this.idProgetto = idProgetto;
 		this.obbiettivo = obbiettivo;
 		this.dataInizio = dataInizio;
 		this.durataMesi = durataMesi;
 		this.descrizione = descrizione;
+		this.dataFine = dataFine;
 	}
 
 	public Integer getIdProgetto() {
@@ -40,6 +42,10 @@ public class Project {
 	public Optional<String> getDescrizione() {
 		return this.descrizione;
 	}
+	
+	public Date getDataFine() {
+		return this.dataFine;
+	}
     
 	@Override
     public String toString() {
@@ -48,7 +54,8 @@ public class Project {
 			.append(obbiettivo).append(" ")
 			.append(dataInizio).append(" ")
 			.append(durataMesi).append(" ")
-			.append(descrizione).toString();
+			.append(descrizione).append(" ")
+			.append(dataFine).toString();
     }
 
     @Override
@@ -58,11 +65,12 @@ public class Project {
                 && ((Project) other).getObbiettivo().equals(this.getObbiettivo())
                 && ((Project) other).getDataInizio().equals(this.getDataInizio())
                 && ((Project) other).getDurataMesi().equals(this.getDurataMesi())
-                && ((Project) other).getDescrizione().equals(this.getDescrizione());
+                && ((Project) other).getDescrizione().equals(this.getDescrizione())
+                && ((Project) other).getDataInizio().equals(this.getDataFine());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.idProgetto, this.obbiettivo, this.dataInizio, this.durataMesi, this.descrizione);
+        return Objects.hash(this.idProgetto, this.obbiettivo, this.dataInizio, this.durataMesi, this.descrizione, this.dataFine);
     }
 }

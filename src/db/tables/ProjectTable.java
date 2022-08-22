@@ -84,21 +84,6 @@ public class ProjectTable {
         }
 	}
 
-	public boolean update(Project updatedProgetto) {
-		final String query = "UPDATE " + TABLE_NAME + " SET obbiettivo = ?, dataInizio = ?, durataMesi = ?,"
-				+ "descrizione = ? WHERE idProgetto = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedProgetto.getObbiettivo());
-			statement.setDate(2, Utils.dateToSqlDate(updatedProgetto.getDataInizio()));
-			statement.setInt(3, updatedProgetto.getDurataMesi());
-			statement.setString(4, updatedProgetto.getDescrizione().orElse(null));
-			statement.setInt(5, updatedProgetto.getIdProgetto());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
 	public boolean delete(Integer idProgetto) {
 		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProgetto = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

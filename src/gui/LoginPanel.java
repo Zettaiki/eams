@@ -70,7 +70,7 @@ public class LoginPanel extends JPanel {
         b1.addActionListener((e) -> {
         	String username = t1.getText();
         	String password = t2.getText();
-        	if(username.equals("eams") && password.equals("eams")) {
+        	if(username.equals("") && password.equals("")) {
         		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		        JComponentLoader.load(parentFrame, new MenuPanel());
         	} else {

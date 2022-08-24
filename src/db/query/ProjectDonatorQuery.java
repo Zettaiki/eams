@@ -15,7 +15,7 @@ import model.Project;
 
 public class ProjectDonatorQuery {
 	private final Connection connection;
-	private List<String> queryResultTable = new ArrayList<>();
+	private List<Object[]> queryResultTable = new ArrayList<>();
 
 	public ProjectDonatorQuery(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
@@ -89,7 +89,7 @@ public class ProjectDonatorQuery {
         }
 	}
 	
-	public Optional<List<String>> projectDonators(Integer idProgetto) {
+	public Optional<List<Object[]>> projectDonators(Integer idProgetto) {
 		final String query = "SELECT DISTINCT d.codiceFiscale, p.nome, p.cognome "
 				+ "FROM donazione d JOIN persona AS p ON d.codiceFiscale = p.codiceFiscale "
 				+ "WHERE d.idProgetto = ?";
@@ -102,9 +102,9 @@ public class ProjectDonatorQuery {
     				final String nome = resultSet.getString("nome");
     				final String cognome = resultSet.getString("cognome");
     				
-    				queryResultTable.add(new StringBuilder().append(codiceFiscale).append(" ")
-    						.append(nome).append(" ")
-    						.append(cognome).toString());
+    				Object[] data = {codiceFiscale, nome, cognome};
+    				
+    				queryResultTable.add(data);
     			}
     		} catch (final SQLException e) {}
             return Optional.ofNullable(queryResultTable);

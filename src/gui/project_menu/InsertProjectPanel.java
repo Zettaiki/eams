@@ -35,14 +35,13 @@ public class InsertProjectPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         this.add(new JLabel("Ecological Association Management System - Inserimento donazione"), c);
         
-        // First column
+        // First section
         c.gridx = 0;
         c.gridy = 1;
         var a1 = new JTextArea(1, 20);
         c.fill = GridBagConstraints.BOTH;
         a1.setBorder(BorderFactory.createTitledBorder("Nome progetto:"));
         this.add(a1, c);
-        
         
         var a2 = new JPanel();
         a2.setLayout(new GridLayout());
@@ -88,7 +87,7 @@ public class InsertProjectPanel extends JPanel {
         a3.setBorder(BorderFactory.createTitledBorder("Obiettivo progetto:"));
         this.add(a3, c);
         
-        // End panel
+        // End section
         
         c.gridx = 0;
         c.gridy = 5;
@@ -96,8 +95,19 @@ public class InsertProjectPanel extends JPanel {
 	    c.insets = new Insets(10, 0, 10, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         var b0 = new JButton("Crea progetto");
+        this.add(b0, c);
+        
+        c.gridx = 0;
+        c.gridy = 6;
+	    c.insets = new Insets(10, 0, 10, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        var b1 = new JButton("Ritorna");
+        this.add(b1, c);
+        
+        // Action listeners
+        
         b0.addActionListener(e -> {
-	        Project progetto = new Project(null, a1.getText(), model.getValue(), Integer.parseInt(textAreaDuringDays.getText()), Optional.of(a3.getText()));
+	        Project progetto = new Project(null, a1.getText(), model.getValue(), Integer.parseInt(textAreaDuringDays.getText()), Optional.of(a3.getText()), null);
 	        ProjectTable table = new ProjectTable(ConnectionProvider.getMySQLConnection());
 	        if(!table.save(progetto)) {
         		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Project error", JOptionPane.ERROR_MESSAGE);
@@ -107,17 +117,10 @@ public class InsertProjectPanel extends JPanel {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
         });
-        this.add(b0, c);
         
-        c.gridx = 0;
-        c.gridy = 6;
-	    c.insets = new Insets(10, 0, 10, 0);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        var b1 = new JButton("Ritorna");
         b1.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
         });
-        this.add(b1, c);
     }
 }

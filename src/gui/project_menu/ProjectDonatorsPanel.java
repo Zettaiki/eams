@@ -3,9 +3,9 @@ package gui.project_menu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,8 +17,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+import db.tables.ProjectTable;
 import gui.GUI;
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class ProjectDonatorsPanel extends JPanel {
 
@@ -35,71 +39,56 @@ public class ProjectDonatorsPanel extends JPanel {
     	a0.setFont(new Font("SansSerif", Font.BOLD, 20));
         this.add(a0, BorderLayout.PAGE_START);
         
+        // Upper panel
         var b0 = new JPanel();
-        b0.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        {
-        	// First column
-        	c.gridx = 0;
-        	c.gridy = 0;
-        	c.fill = GridBagConstraints.HORIZONTAL;
-        	var b1 = new JPanel();
-            b1.setBorder(BorderFactory.createTitledBorder("Scelta progetto:"));
-            b1.setLayout(new GridLayout(1,2));
-            {
-                String[] projectList = {"Progetto1", "Progetto2", "Progetto3"};
-            	
-                var projectPicker = new JComboBox<String>(projectList);
-                projectPicker.setSelectedIndex(0);
-                projectPicker.addActionListener(e -> {
-                	// TODO
-                });
-                b1.add(projectPicker);
-                
-                var projectSearch = new JButton("Cerca");
-                projectSearch.setLayout(null);
-                projectSearch.addActionListener(e -> {
-                	// TODO
-                });
-                b1.add(projectSearch);
-            }
-            b0.add(b1, c);
-            
-            // Second column
-            c.gridx = 0;
-            c.gridy = 1;
-            c.fill = GridBagConstraints.VERTICAL;
+        b0.setLayout(new BorderLayout());
+        
+	     	// Upper buttons
+	    	var b1 = new JPanel();
+	        b1.setBorder(BorderFactory.createTitledBorder("Scelta progetto:"));
+	        b1.setLayout(new GridLayout(1,0));
+	        
+	        	ProjectTable projectTable = new ProjectTable(ConnectionProvider.getMySQLConnection());
+	        	List<String> projectFilterList = projectTable.findAll().stream().map((x) -> x.getObbiettivo()).collect(Collectors.toList());
+	        	Object[] projectList = projectFilterList.toArray();
+	        	
+	            var projectPicker = new JComboBox<Object>(projectList);
+	            projectPicker.setSelectedIndex(0);
+	            b1.add(projectPicker);
+	            
+	            var projectSearch = new JButton("Cerca");
+	            b1.add(projectSearch);
+	        
+	        b0.add(b1, BorderLayout.PAGE_START);
+    	
+        	// Table
             var b2 = new JPanel();
     		b2.setBorder(BorderFactory.createTitledBorder("Donatori progetto scelto:"));
     		b2.setLayout(new GridLayout(0,1));
-    		{
-    			String[] columnNames = {"ID",
-    		            "Importo",
-    		            "Codice fiscale",
-    		            "Data donazione",
-    		            "ID progetto"};
             	
-            	Object[][] data = {
-            		    {"-", "-", "-", "-", "-"}
-            		};
-            	
-            	var donatorsTable = new JTable(data, columnNames);
+            	var donatorsTable = new JTable(TableExtractorUtils.donationTable());
             	donatorsTable.setEnabled(false);
             	donatorsTable.getTableHeader().setReorderingAllowed(false);
             	donatorsTable.getTableHeader().setEnabled(false);
             	JScrollPane projectListPanel = new JScrollPane(donatorsTable);
                 b2.add(projectListPanel);
-    		}
-            b0.add(b2, c);
-        }
+    		
+            b0.add(b2, BorderLayout.CENTER);
+            
         this.add(b0, BorderLayout.CENTER);
         
         // End panel
         var c0 = new JButton("Ritorna all'area progetti e donazioni");
+        this.add(c0, BorderLayout.PAGE_END);
+        
+        // Action listeners
+        projectSearch.addActionListener(e -> {
+        	donatorsTable.setModel(TableExtractorUtils.projectDonatorsQuery(projectPicker.getSelectedIndex()+1));
+        });
+        
         c0.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
         });
-        this.add(c0, BorderLayout.PAGE_END);
     }
 }

@@ -64,11 +64,10 @@ public class NewsletterTable {
 
 	public boolean save(Newsletter newsletter) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idNewsletter, argomento, descrizione) VALUES (?,?,?)";
+				"(argomento, descrizione) VALUES (?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, newsletter.getIdNewsletter());
-            statement.setString(2, newsletter.getArgomento());
-            statement.setString(3, newsletter.getDescrizione().orElse(null));
+            statement.setString(1, newsletter.getArgomento());
+            statement.setString(2, newsletter.getDescrizione().orElse(null));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {

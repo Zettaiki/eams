@@ -1,7 +1,6 @@
 package gui.events_menu;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,19 +15,14 @@ import utils.TableExtractorUtils;
 
 public class EventsListPanel extends JPanel {
 	private static final long serialVersionUID = 8776421810569801974L;
-    public final GridBagConstraints c;
 	
 	public EventsListPanel() {
-		this.c = new GridBagConstraints();
-		this.setLayout(new GridBagLayout());
+        this.setLayout(new BorderLayout());
 		
 		// First column 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
 		var a0 = new JPanel();
 		a0.setBorder(BorderFactory.createTitledBorder("Opzioni:"));
-		a0.setLayout(new GridLayout(1,2));
+		a0.setLayout(new GridLayout(1,0));
 		{
 			var registerEventButton = new JButton("Registrare evento");
 			registerEventButton.addActionListener(e -> {
@@ -44,13 +38,9 @@ public class EventsListPanel extends JPanel {
 		    });
 		    a0.add(registerServiceButton);
 		}
-		this.add(a0, c);
+		this.add(a0, BorderLayout.PAGE_START);
 		
 		// Second column
-		c.gridx = 0;
-        c.gridy = 1;
-        c.gridheight = 4;
-        c.fill = GridBagConstraints.HORIZONTAL;
 		var a1 = new JPanel();
 		a1.setBorder(BorderFactory.createTitledBorder("Eventi attivi:"));
 		a1.setLayout(new GridLayout(0,1));
@@ -62,6 +52,6 @@ public class EventsListPanel extends JPanel {
 			JScrollPane projectListPanel = new JScrollPane(donationTable);
 		    a1.add(projectListPanel);
 		}
-		this.add(a1, c);
+		this.add(a1, BorderLayout.CENTER);
     }
 }

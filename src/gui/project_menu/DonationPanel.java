@@ -7,19 +7,15 @@ import utils.TableExtractorUtils;
 
 public class DonationPanel extends JPanel {
 	private static final long serialVersionUID = 7637300465466931816L;
-    public final GridBagConstraints c;
 
 	public DonationPanel() {
-        this.c = new GridBagConstraints();
-		this.setLayout(new GridBagLayout());
+		this.setLayout(new BorderLayout());
 		
 		// First column 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.VERTICAL;
+		
 		var a0 = new JPanel();
 		a0.setBorder(BorderFactory.createTitledBorder("Opzioni:"));
-		a0.setLayout(new GridLayout(0,1));
+		a0.setLayout(new GridLayout(1,0));
 		{
 			var registerButton = new JButton("Registrare donazione");
 			registerButton.addActionListener(e -> {
@@ -40,13 +36,10 @@ public class DonationPanel extends JPanel {
 		    });
 		    a0.add(maxDonatorButton);
 		}
-		this.add(a0, c);
+		this.add(a0, BorderLayout.PAGE_START);
 		
 		// Second column
-		c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth = 4;
-        c.fill = GridBagConstraints.VERTICAL;
+		
 		var a1 = new JPanel();
 		a1.setBorder(BorderFactory.createTitledBorder("Donazioni registrate:"));
 		a1.setLayout(new GridLayout(0,1));
@@ -58,6 +51,6 @@ public class DonationPanel extends JPanel {
 			JScrollPane donationListPanel = new JScrollPane(donationTable);
 		    a1.add(donationListPanel);
 		}
-		this.add(a1, c);
+		this.add(a1, BorderLayout.CENTER);
 	}
 }

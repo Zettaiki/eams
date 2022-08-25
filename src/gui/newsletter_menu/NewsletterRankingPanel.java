@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 
 import gui.GUI;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class NewsletterRankingPanel extends JPanel {
 	private static final long serialVersionUID = -6403648875952568006L;
@@ -32,15 +33,7 @@ public class NewsletterRankingPanel extends JPanel {
         this.add(a0, BorderLayout.PAGE_START);
         
         // Centro
-		String[] columnNames = {"ID",
-                "Argomento",
-                "Descrizione"};
-    	
-    	Object[][] data = {
-    		    {"-", "-", "-"}
-    		};
-    	
-    	var volunteeringTable = new JTable(data, columnNames);
+    	var volunteeringTable = new JTable(TableExtractorUtils.rankNewsletterQuery());
     	volunteeringTable.setEnabled(false);
     	volunteeringTable.getTableHeader().setReorderingAllowed(false);
     	volunteeringTable.getTableHeader().setEnabled(false);

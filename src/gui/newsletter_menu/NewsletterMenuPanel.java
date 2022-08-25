@@ -3,8 +3,6 @@ package gui.newsletter_menu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -36,62 +34,57 @@ public class NewsletterMenuPanel extends JPanel {
     	a0.setFont(new Font("SansSerif", Font.BOLD, 20));
         this.add(a0, BorderLayout.PAGE_START);
         
+        // Upper panel
         var b0 = new JPanel();
-        b0.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        {
-        	// First column
-        	c.gridx = 0;
-        	c.gridy = 0;
-        	c.fill = GridBagConstraints.HORIZONTAL;
+        b0.setLayout(new BorderLayout());
+        
+        	// Upper buttons
         	var b1 = new JPanel();
             b1.setBorder(BorderFactory.createTitledBorder("Opzioni:"));
-            b1.setLayout(new GridLayout(1,2));
-            {
+            b1.setLayout(new GridLayout(1,0));
+            
                 var registerButton = new JButton("Aggiungere newsletter");
-                registerButton.setLayout(null);
-                registerButton.addActionListener(e -> {
-                	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        	        JComponentLoader.load(parentFrame, new InsertNewsletterPanel());
-                });
                 b1.add(registerButton);
                 
-                var officeFilter = new JButton("Classifica newsletter");
-                officeFilter.setLayout(null);
-                officeFilter.addActionListener(e -> {
-                	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        	        JComponentLoader.load(parentFrame, new NewsletterRankingPanel());
-                });
-                b1.add(officeFilter);
-            }
-            b0.add(b1, c);
+                var newsletterRankingButton = new JButton("Classifica newsletter");
+                b1.add(newsletterRankingButton);
             
-            // Second column
-            c.gridx = 0;
-            c.gridy = 1;
-            c.gridheight = 4;
-            c.fill = GridBagConstraints.HORIZONTAL;
+            b0.add(b1, BorderLayout.PAGE_START);
+            
+            // Bottom panel
             var b2 = new JPanel();
     		b2.setBorder(BorderFactory.createTitledBorder("Newsletter:"));
     		b2.setLayout(new GridLayout(0,1));
-    		{
+    		
             	var volunteeringTable = new JTable(TableExtractorUtils.newsletterTable());
             	volunteeringTable.setEnabled(false);
             	volunteeringTable.getTableHeader().setReorderingAllowed(false);
             	volunteeringTable.getTableHeader().setEnabled(false);
             	JScrollPane volunteeringListPanel = new JScrollPane(volunteeringTable);
                 b2.add(volunteeringListPanel);
-    		}
-            b0.add(b2, c);
-        }
+    		
+            b0.add(b2, BorderLayout.CENTER);
+        
         this.add(b0, BorderLayout.CENTER);
         
         // End panel
         var c0 = new JButton("Ritorna al menu");
+        this.add(c0, BorderLayout.PAGE_END);
+        
+        // Action listener
+        registerButton.addActionListener(e -> {
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new InsertNewsletterPanel());
+        });
+        
+        newsletterRankingButton.addActionListener(e -> {
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new NewsletterRankingPanel());
+        });
+        
         c0.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new MenuPanel());
         });
-        this.add(c0, BorderLayout.PAGE_END);
     }
 }

@@ -10,13 +10,13 @@ import java.util.Objects;
 
 public class NewsletterQuery {
 	private final Connection connection;
-	private List<String> queryResultTable = new ArrayList<>();
+	private List<Object[]> queryResultTable = new ArrayList<>();
 
 	public NewsletterQuery(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
     }
 	
-	public List<String> rank() {
+	public List<Object[]> rank() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT i.idNewsletter, " +
             		"COUNT(*) as iscritti " +
@@ -28,8 +28,9 @@ public class NewsletterQuery {
     				final Integer idNewsletter = resultSet.getInt("idNewsletter");
     				final Integer iscritti = resultSet.getInt("iscritti");
     				
-    				queryResultTable.add(new StringBuilder().append(idNewsletter).append(" ")
-    						.append(iscritti).toString());
+    				Object[] temp = {idNewsletter, iscritti};
+    				
+    				queryResultTable.add(temp);
     			}
     		} catch (final SQLException e) {}
             return queryResultTable;

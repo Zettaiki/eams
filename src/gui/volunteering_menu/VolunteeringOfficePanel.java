@@ -3,9 +3,10 @@ package gui.volunteering_menu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,8 +18,11 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import db.tables.OfficeTable;
 import gui.GUI;
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
+import utils.TableExtractorUtils;
 
 public class VolunteeringOfficePanel extends JPanel {
 	private static final long serialVersionUID = 1697847872341064830L;
@@ -34,76 +38,63 @@ public class VolunteeringOfficePanel extends JPanel {
     	a0.setFont(new Font("SansSerif", Font.BOLD, 20));
         this.add(a0, BorderLayout.PAGE_START);
         
+        // Upper panel
         var b0 = new JPanel();
-        b0.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        {
-        	// First column
-        	c.gridx = 0;
-        	c.gridy = 0;
-        	c.fill = GridBagConstraints.HORIZONTAL;
+        b0.setLayout(new BorderLayout());
+        
+        	// Upper buttons
         	var b1 = new JPanel();
             b1.setBorder(BorderFactory.createTitledBorder("Scelta sede:"));
-            b1.setLayout(new GridLayout(1,2));
-            {
-                String[] officeList = {"Forli", "Cesena", "Rimini"};
+            b1.setLayout(new GridLayout(1,0));
+                            
+                OfficeTable officeTable = new OfficeTable(ConnectionProvider.getMySQLConnection());
+            	List<String> officeFilterList = officeTable.findAll().stream().map((x) -> x.getCittà()).collect(Collectors.toList());
+                Object[] officeList = officeFilterList.toArray();
             	
-                var officePicker = new JComboBox<String>(officeList);
+                var officePicker = new JComboBox<Object>(officeList);
                 officePicker.setSelectedIndex(0);
-                officePicker.addActionListener(e -> {
-                	// TODO
-                });
                 b1.add(officePicker);
                 
                 var officeFilter = new JButton("Cerca");
-                officeFilter.setLayout(null);
-                officeFilter.addActionListener(e -> {
-                	// TODO
-                });
                 b1.add(officeFilter);
                 
                 var mostVolunteersOffice = new JButton("Sede piu attiva");
-                mostVolunteersOffice.setLayout(null);
-                mostVolunteersOffice.addActionListener(e -> {
-                	// TODO
-                });
                 b1.add(mostVolunteersOffice);
-            }
-            b0.add(b1, c);
             
-            // Second column
-            c.gridx = 0;
-            c.gridy = 1;
-            c.fill = GridBagConstraints.VERTICAL;
+            b0.add(b1, BorderLayout.PAGE_START);
+            
+            // Bottom panel
             var b2 = new JPanel();
     		b2.setBorder(BorderFactory.createTitledBorder("Volontari registrati nella sede scelta:"));
     		b2.setLayout(new GridLayout(0,1));
-    		{
-    			String[] columnNames = {"Codice fiscale",
-                        "Sede",
-                        "Data inscrizione"};
-            	
-            	Object[][] data = {
-            		    {"-", "-", "-"}
-            		};
-            	
-            	var volunteeringTable = new JTable(data, columnNames);
+    		
+            	var volunteeringTable = new JTable(TableExtractorUtils.volunteerTable());
             	volunteeringTable.setEnabled(false);
             	volunteeringTable.getTableHeader().setReorderingAllowed(false);
             	volunteeringTable.getTableHeader().setEnabled(false);
             	JScrollPane volunteeringListPanel = new JScrollPane(volunteeringTable);
                 b2.add(volunteeringListPanel);
-    		}
-            b0.add(b2, c);
-        }
+    		
+            b0.add(b2, BorderLayout.CENTER);
+        
         this.add(b0, BorderLayout.CENTER);
         
         // End panel
         var c0 = new JButton("Ritorna all'area volontariato");
+        this.add(c0, BorderLayout.PAGE_END);
+        
+        // Action listener
+        officeFilter.addActionListener(e -> {
+        	volunteeringTable.setModel(TableExtractorUtils.volunteersInOfficeQuery(officePicker.getSelectedItem().toString()));
+        });
+        
+        mostVolunteersOffice.addActionListener(e -> {
+        	// TODO
+        });
+        
         c0.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new VolunteeringMenuPanel());
         });
-        this.add(c0, BorderLayout.PAGE_END);
     }
 }

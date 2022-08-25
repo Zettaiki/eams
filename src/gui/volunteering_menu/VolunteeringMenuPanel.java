@@ -22,69 +22,64 @@ public class VolunteeringMenuPanel extends JPanel {
     	a0.setFont(new Font("SansSerif", Font.BOLD, 20));
         this.add(a0, BorderLayout.PAGE_START);
         
+        // Upper panel
         var b0 = new JPanel();
-        b0.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        {
-        	// First column
-        	c.gridx = 0;
-        	c.gridy = 0;
-        	c.fill = GridBagConstraints.VERTICAL;
-        	var b1 = new JPanel();
-            b1.setBorder(BorderFactory.createTitledBorder("Opzioni:"));
-            b1.setLayout(new GridLayout(0,1));
-            {
-                var registerButton = new JButton("Registro volontario");
-                registerButton.setLayout(null);
-                registerButton.addActionListener(e -> {
-                	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        	        JComponentLoader.load(parentFrame, new VolunteerRegisterPanel());
-                });
-                b1.add(registerButton);
-                
-                var officeFilter = new JButton("Controllo per sedi");
-                officeFilter.setLayout(null);
-                officeFilter.addActionListener(e -> {
-                	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        	        JComponentLoader.load(parentFrame, new VolunteeringOfficePanel());
-                });
-                b1.add(officeFilter);
-
-                var mostActiveButton = new JButton("Volontario piu attivo");
-                mostActiveButton.setLayout(null);
-                mostActiveButton.addActionListener(e -> {
-                	// TODO
-                });
-                b1.add(mostActiveButton);
-            }
-            b0.add(b1, c);
-            
-            // Second column
-            c.gridx = 1;
-            c.gridy = 0;
-            c.gridwidth = 4;
-            c.fill = GridBagConstraints.VERTICAL;
-            var b2 = new JPanel();
-    		b2.setBorder(BorderFactory.createTitledBorder("Volontari registrati:"));
-    		b2.setLayout(new GridLayout(0,1));
-    		{
-            	var volunteeringTable = new JTable(TableExtractorUtils.volunteerTable());
-            	volunteeringTable.setEnabled(false);
-            	volunteeringTable.getTableHeader().setReorderingAllowed(false);
-            	volunteeringTable.getTableHeader().setEnabled(false);
-            	JScrollPane volunteeringListPanel = new JScrollPane(volunteeringTable);
-                b2.add(volunteeringListPanel);
-    		}
-            b0.add(b2, c);
-        }
-        this.add(b0, BorderLayout.CENTER);
+        b0.setLayout(new BorderLayout());
         
+        	// Upper buttons
+        	var b1 = new JPanel();
+	        b1.setBorder(BorderFactory.createTitledBorder("Opzioni:"));
+	        b1.setLayout(new GridLayout(1,0));
+	        
+		        var registerButton = new JButton("Registro volontario");
+		        b1.add(registerButton);
+		        
+		        var officeFilter = new JButton("Controllo per sedi");
+		        b1.add(officeFilter);
+		
+		        var mostActiveButton = new JButton("Volontario piu attivo");
+		        b1.add(mostActiveButton);
+	            
+		b0.add(b1, BorderLayout.PAGE_START);
+	        
+        // Bottom panel
+        var b2 = new JPanel();
+		b2.setBorder(BorderFactory.createTitledBorder("Volontari registrati:"));
+		b2.setLayout(new GridLayout(0,1));
+		
+        	var volunteeringTable = new JTable(TableExtractorUtils.volunteerTable());
+        	volunteeringTable.setEnabled(false);
+        	volunteeringTable.getTableHeader().setReorderingAllowed(false);
+        	volunteeringTable.getTableHeader().setEnabled(false);
+        	JScrollPane volunteeringListPanel = new JScrollPane(volunteeringTable);
+        
+        b0.add(volunteeringListPanel, BorderLayout.CENTER);
+			
+	    this.add(b0, BorderLayout.CENTER);
+                
         // End panel
         var c0 = new JButton("Ritorna al menu");
+        this.add(c0, BorderLayout.PAGE_END);
+        
+        // Action listener
+        
+        registerButton.addActionListener(e -> {
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new VolunteerRegisterPanel());
+        });
+        
+        officeFilter.addActionListener(e -> {
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new VolunteeringOfficePanel());
+        });
+        
+        mostActiveButton.addActionListener(e -> {
+        	// TODO
+        });
+        
         c0.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new MenuPanel());
         });
-        this.add(c0, BorderLayout.PAGE_END);
     }
 }

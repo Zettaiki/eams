@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import javax.swing.table.DefaultTableModel;
 
+import db.query.NewsletterQuery;
+import db.query.ProjectDonatorQuery;
+import db.query.VolunteerQuery;
 import db.tables.DonationTable;
 import db.tables.EventTable;
 import db.tables.NewsletterTable;
@@ -27,6 +30,65 @@ public class TableExtractorUtils {
 		return o.get().toString();
 	}
 	
+	public static DefaultTableModel activeProjectsQuery() {
+		// Requesting connection
+		ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting the data
+		String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Data fine", "Durata mesi", "Descrizione"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		List<Project> projectList = projectDonatorQuery.activeProjects();
+		for( Project x : projectList ) {
+			Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDataFine(), x.getDurataMesi(), checkIfEmpty(x.getDescrizione())};
+			data.addRow(temp);
+		}
+		return data;
+	}
+	
+	public static DefaultTableModel projectDonatorsQuery(int index) {
+		// Requesting connection
+		ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting the data
+		String[] columnNames = {"Codice fiscale", "Nome", "Cognome"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> projectDonatorsList = projectDonatorQuery.projectDonators(index);
+		if(projectDonatorsList.isEmpty()) return data;
+		for( Object[] x : projectDonatorsList.get()) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
+	public static DefaultTableModel volunteersInOfficeQuery(String sedeCittà) {
+		// Requesting connection
+		VolunteerQuery volunteerQuery = new VolunteerQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting the data
+		String[] columnNames = {"Codice fiscale", "Sede", "Data inscrizione"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		List<Volunteer> officeVolunteerList = volunteerQuery.officeVolunteer(sedeCittà);
+		for( Volunteer x : officeVolunteerList ) {
+			Object[] temp = {x.getCodiceFiscale(), x.getSedeCittà(), x.getDataIscrizione()};
+			data.addRow(temp);
+		}
+		return data;
+	}
+	
+	public static DefaultTableModel rankNewsletterQuery() {
+		// Requesting connection
+		NewsletterQuery newsletterQuery = new NewsletterQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting the data
+		String[] columnNames = {"ID", "Numero iscritti"};	    
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		List<Object[]> rankNewsletterList = newsletterQuery.rank();
+		for( Object[] x : rankNewsletterList ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
 	public static DefaultTableModel volunteerTable() {
 		// Requesting connection
 	    VolunteerTable volunteerTable = new VolunteerTable(ConnectionProvider.getMySQLConnection());
@@ -47,11 +109,11 @@ public class TableExtractorUtils {
 		ProjectTable projectTable = new ProjectTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-	    String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Durata mesi", "Descrizione"};	    
+	    String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Data fine", "Durata mesi", "Descrizione"};	    
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Project> projectList = projectTable.findAll();
 	    for( Project x : projectList ) {
-	    	Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDurataMesi(), checkIfEmpty(x.getDescrizione())};
+	    	Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDataFine(), x.getDurataMesi(), checkIfEmpty(x.getDescrizione())};
 	    	data.addRow(temp);
 	    }
 	    return data;

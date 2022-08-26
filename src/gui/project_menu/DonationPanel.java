@@ -1,7 +1,12 @@
 package gui.project_menu;
 
 import javax.swing.*;
+
+import db.query.ProjectDonatorQuery;
+
 import java.awt.*;
+
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
 import utils.TableExtractorUtils;
 
@@ -32,7 +37,9 @@ public class DonationPanel extends JPanel {
 		    
 		    var maxDonatorButton = new JButton("Donatore maggior quantita");
 		    maxDonatorButton.addActionListener(e -> {
-		    	// TODO
+		    	ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
+		    	projectDonatorQuery.bestDonator().get().toString();
+        		JOptionPane.showMessageDialog(getParent(), "Donatore con maggiore quantita:\n" + projectDonatorQuery.bestDonator().get().get(0).toString(), "Informazione", JOptionPane.INFORMATION_MESSAGE);
 		    });
 		    a0.add(maxDonatorButton);
 		}

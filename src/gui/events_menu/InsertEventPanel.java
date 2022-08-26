@@ -48,12 +48,18 @@ public class InsertEventPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         var a0 = new JTextArea(1, 16);
-        a0.setBorder(BorderFactory.createTitledBorder("Nome evento:"));
+        a0.setBorder(BorderFactory.createTitledBorder("ID evento:"));
         this.add(a0, c);
         
         c.gridx = 0;
         c.gridy = 2;
-        var a1 = new JPanel();
+        var a1 = new JTextArea(1, 16);
+        a1.setBorder(BorderFactory.createTitledBorder("Nome evento"));
+        this.add(a1, c);
+        
+        c.gridx = 0;
+        c.gridy = 3;
+        var a2 = new JPanel();
         SqlDateModel model = new SqlDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
@@ -61,25 +67,36 @@ public class InsertEventPanel extends JPanel {
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
-        a1.add(datePicker);
-        a1.setBorder(BorderFactory.createTitledBorder("Data evento:"));
-        this.add(a1, c);
+        a2.add(datePicker);
+        a2.setBorder(BorderFactory.createTitledBorder("Data evento:"));
+        this.add(a2, c);
         
         c.gridx = 0;
-        c.gridy = 3;
-        var a2 = new JTextArea(4, 20);
-        a2.setBorder(BorderFactory.createTitledBorder("Descrizione:"));
-        this.add(a2, c);
+        c.gridy = 4;
+        var a3 = new JTextArea(4, 20);
+        a3.setBorder(BorderFactory.createTitledBorder("Descrizione:"));
+        this.add(a3, c);
         
         // End panel
         
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
 	    c.insets = new Insets(10, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
         var b0 = new JButton("Registra evento");
+        this.add(b0, c);
+        
+        c.gridx = 0;
+        c.gridy = 6;
+	    c.insets = new Insets(10, 0, 0, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        var b1 = new JButton("Ritorna");
+        this.add(b1, c);
+        
+        // Action listeners
+        
         b0.addActionListener(e -> {
-	        Event event = new Event(null, a0.getText(), model.getValue(), Optional.of(a2.getText()));
+	        Event event = new Event(a0.getText(), a1.getText(), model.getValue(), Optional.of(a3.getText()));
 	        EventTable table = new EventTable(ConnectionProvider.getMySQLConnection());
 	        if(!table.save(event)) {
         		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Project error", JOptionPane.ERROR_MESSAGE);
@@ -89,17 +106,10 @@ public class InsertEventPanel extends JPanel {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new EventsMenuPanel());
         });
-        this.add(b0, c);
         
-        c.gridx = 0;
-        c.gridy = 5;
-	    c.insets = new Insets(10, 0, 0, 10);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        var b1 = new JButton("Ritorna");
         b1.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new EventsMenuPanel());
         });
-        this.add(b1, c);
     }
 }

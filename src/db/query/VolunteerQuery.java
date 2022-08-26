@@ -62,4 +62,30 @@ public class VolunteerQuery {
         }
 	}
 	
+	// 18
+	public Optional<List<Object[]>> mostActiveOffice() {
+		final String query = "SELECT v.sedeCittà, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio "
+				+ "FROM partecipazione p, servizio s, volontario v "
+				+ "WHERE p.idServizio = s.idServizio AND p.codiceFiscaleVolontario = v.codiceFiscale "
+				+ "GROUP BY v.sedeCittà "
+				+ "ORDER BY oreServizio DESC";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+			final ResultSet resultSet = statement.executeQuery();
+			try {
+				while (resultSet.next()) {
+					final String sedeCittà = resultSet.getString("sedeCittà");
+					final Time oreServizio = resultSet.getTime("oreServizio");
+
+					Object[] data = { sedeCittà, oreServizio };
+
+					queryResultTable.add(data);
+				}
+			} catch (final SQLException e) {
+			}
+			return Optional.ofNullable(queryResultTable);
+		} catch (final SQLException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 }

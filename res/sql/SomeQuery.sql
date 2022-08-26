@@ -27,30 +27,22 @@ GROUP BY i.idNewsletter
 ORDER BY iscritti DESC;
 
 -- 7	volontario con > ore di servizio
-/********/
-/*SELECT *, COUNT(*) as oreServizioTot
-FROM partecipazione p
-GROUP BY p.idServizio
-ORDER BY oreServizioTot DESC;*/
+SELECT pa.codiceFiscaleVolontario, pe.nome, pe.cognome, MAX(classificaVolontari.oreServizio) AS oreServizio
+FROM partecipazione pa, persona pe, (SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio
+FROM partecipazione p, servizio s
+WHERE p.idServizio = s.idServizio
+GROUP BY p.codiceFiscaleVolontario) as classificaVolontari
+WHERE pa.codiceFiscaleVolontario = classificaVolontari.codiceFiscaleVolontario 
+AND  pa.codiceFiscaleVolontario = pe.codiceFiscale;
 
-/*SELECT *
-FROM partecipazione p
-GROUP BY p.codiceFiscaleVolontario IN (SELECT *
-									   FROM
-									   )*/
-
-/********** ore di servizio per ogni servizio
-
-SELECT *, TIMEDIFF(s.oraFine,s.oraInizio) AS OreServizio
-FROM servizio s*/
-
-SELECT p.codiceFiscaleVolontario, COUNT(*) AS OreServizioTot
-FROM partecipazione p
-WHERE p.idServizio IN (SELECT TIMEDIFF(s.oraFine,s.oraInizio) AS OreServizio
-						FROM servizio s
-                        WHERE p.idServizio = s.idServizio)
-GROUP BY p.codiceFiscaleVolontario
-ORDER BY OreServizioTot DESC;
+/* ore di servizio per ogni servizio*/
+SELECT *, TIMEDIFF(s.oraFine,s.oraInizio) AS oreServizio
+FROM servizio s;
+/* ore di servizio tot per ogni volontario */
+SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio
+FROM partecipazione p, servizio s
+WHERE p.idServizio = s.idServizio
+GROUP BY p.codiceFiscaleVolontario;
 
 -- 8	donatore > quantità donata nell'ultimo anno
 SELECT maxDonazione.codiceFiscale, p.nome, p.cognome, MAX(maxDonazione.maxDonato) AS importoMaxDonato
@@ -124,7 +116,17 @@ FROM sconto;
 
 
 -- 18	sede con volontari più partecipativi
-/********/
+SELECT v.sedeCittà, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio
+FROM partecipazione p, servizio s, volontario v
+WHERE p.idServizio = s.idServizio AND p.codiceFiscaleVolontario = v.codiceFiscale
+GROUP BY v.sedeCittà
+ORDER BY oreServizio DESC;
+
+/* ore di servizio tot per ogni volontario */
+SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio
+FROM partecipazione p, servizio s
+WHERE p.idServizio = s.idServizio
+GROUP BY p.codiceFiscaleVolontario;
 
 
 

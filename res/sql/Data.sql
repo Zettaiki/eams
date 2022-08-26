@@ -184,7 +184,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
-INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.');
+INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.'),('e8','Green day','2022-09-09',NULL);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -507,6 +507,19 @@ INSERT INTO `rifiuto` VALUES ('Carta','Riciclabile',154.65,NULL),('Plastiche ter
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `sconto`
+--
+
+DROP TABLE IF EXISTS `sconto`;
+/*!50001 DROP VIEW IF EXISTS `sconto`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `sconto` AS SELECT 
+ 1 AS `codiceFiscale`,
+ 1 AS `sconto`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `sede`
 --
 
@@ -561,7 +574,7 @@ CREATE TABLE `servizio` (
 
 LOCK TABLES `servizio` WRITE;
 /*!40000 ALTER TABLE `servizio` DISABLE KEYS */;
-INSERT INTO `servizio` VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e1','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S4-1','e7','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e7','15:00:00','17:00:00','Fabbricazione prodotti',NULL),('S5-1','e4','16:30:00','19:00:00','Raccolta fondi',NULL);
+INSERT INTO `servizio` VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e1','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S2-2','e3','15:00:00','18:30:00','Stand di vendita',NULL),('S4-1','e7','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e7','15:00:00','17:00:00','Fabbricazione prodotti',NULL),('S5-1','e4','16:30:00','19:00:00','Raccolta fondi',NULL),('S6-1','e8','15:00:00','18:30:00','Stand di vendita',NULL);
 /*!40000 ALTER TABLE `servizio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -645,7 +658,7 @@ CREATE TABLE `vendita` (
 
 LOCK TABLES `vendita` WRITE;
 /*!40000 ALTER TABLE `vendita` DISABLE KEYS */;
-INSERT INTO `vendita` VALUES ('DG56','S1-1','GNMRZN78A01B354R',1),('DG56','S1-1','NDRCSD00A01C573B',1),('EC51','S1-1','CLDMTR70A01G479X',2),('F003','S1-1','CHRGTN88A01C352W',4);
+INSERT INTO `vendita` VALUES ('DG56','S1-1','GNMRZN78A01B354R',1),('DG56','S1-1','NDRCSD00A01C573B',1),('EC51','S1-1','CLDMTR70A01G479X',2),('F003','S1-1','CHRGTN88A01C352W',4),('DG56','S2-2','CLDMTR70A01G479X',1),('DG56','S6-1','GNMRZN78A01B354R',2);
 /*!40000 ALTER TABLE `vendita` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -677,6 +690,24 @@ LOCK TABLES `volontario` WRITE;
 INSERT INTO `volontario` VALUES ('NDRCSD00A01C573B','Forlì','2021-05-17'),('PLABNL91S14I608D','Pesaro','2020-02-21');
 /*!40000 ALTER TABLE `volontario` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `sconto`
+--
+
+/*!50001 DROP VIEW IF EXISTS `sconto`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `sconto` AS select distinct `p`.`codiceFiscale` AS `codiceFiscale`,ifnull((select 20.00 from DUAL  where `p`.`codiceFiscale` in (select `tesserasocio`.`codiceFiscale` from `tesserasocio`)),0.00) AS `sconto` from (`persona` `p` join `tesserasocio` `ts`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -687,4 +718,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-22 15:13:28
+-- Dump completed on 2022-08-27  0:14:52

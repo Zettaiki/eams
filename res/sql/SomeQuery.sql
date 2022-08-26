@@ -77,8 +77,16 @@ WHERE p.dataInizio >= current_date()
 GROUP BY p.idProgetto
 ORDER BY percentuale DESC;
 
--- 11	quantità venduta di un prodotto in un mese
+-- 11	quantità venduta di un prodotto nell'ultimo mese
 /********/
+
+/* qnt venduta di 1 prodotto in 1 mese */
+SELECT v.idProdotto, v.idServizio, v.codiceFiscaleCliente, SUM(v.quantità) AS quantità
+FROM vendita v, servizio s, evento e
+WHERE v.idProdotto = "DG56" 
+AND v.idServizio = s.idServizio 
+AND s.idEvento = e.idEvento 
+AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 MONTH) AND CURRENT_DATE();
 
 -- 15	lista donatori di un progetto
 SELECT DISTINCT d.codiceFiscale, p.nome, p.cognome
@@ -116,6 +124,7 @@ FROM sconto;
 
 
 -- 18	sede con volontari più partecipativi
+/* aggiungere volontario stessa sede per test */ 
 SELECT v.sedeCittà, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio
 FROM partecipazione p, servizio s, volontario v
 WHERE p.idServizio = s.idServizio AND p.codiceFiscaleVolontario = v.codiceFiscale
@@ -127,11 +136,3 @@ SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS T
 FROM partecipazione p, servizio s
 WHERE p.idServizio = s.idServizio
 GROUP BY p.codiceFiscaleVolontario;
-
-
-
-
-
-
-
-

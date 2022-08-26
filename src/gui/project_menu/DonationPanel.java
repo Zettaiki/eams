@@ -38,8 +38,12 @@ public class DonationPanel extends JPanel {
 		    var maxDonatorButton = new JButton("Donatore maggior quantita");
 		    maxDonatorButton.addActionListener(e -> {
 		    	ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
-		    	projectDonatorQuery.bestDonator().get().toString();
-        		JOptionPane.showMessageDialog(getParent(), "Donatore con maggiore quantita:\n" + projectDonatorQuery.bestDonator().get().get(0).toString(), "Informazione", JOptionPane.INFORMATION_MESSAGE);
+        		JOptionPane.showMessageDialog(getParent(), "Donatore con maggiore quantita:\n" +
+		    	"Codice fiscale: " + projectDonatorQuery.bestDonator().get().get(0)[0].toString() +
+		    	"\nNome: " + projectDonatorQuery.bestDonator().get().get(0)[1].toString() +
+		    	"\nCognome: " + projectDonatorQuery.bestDonator().get().get(0)[2].toString() +
+		    	"\nValue: " + projectDonatorQuery.bestDonator().get().get(0)[3].toString(), 
+        		"Informazione", JOptionPane.INFORMATION_MESSAGE);
 		    });
 		    a0.add(maxDonatorButton);
 		}

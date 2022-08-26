@@ -1,10 +1,15 @@
 package gui.volunteering_menu;
 
 import javax.swing.*;
+
+import db.query.ProjectDonatorQuery;
+import db.query.VolunteerQuery;
+
 import java.awt.*;
 
 import gui.GUI;
 import gui.MenuPanel;
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
 import utils.TableExtractorUtils;
 
@@ -74,7 +79,13 @@ public class VolunteeringMenuPanel extends JPanel {
         });
         
         mostActiveButton.addActionListener(e -> {
-        	// TODO
+        	VolunteerQuery projectDonatorQuery = new VolunteerQuery(ConnectionProvider.getMySQLConnection());
+    		JOptionPane.showMessageDialog(getParent(), "Volontario piu attivo:\n" +
+	    	"Codice fiscale: " + projectDonatorQuery.mostActiveVolunteer().get().get(0)[0].toString() +
+	    	"\nNome: " + projectDonatorQuery.mostActiveVolunteer().get().get(0)[1].toString() +
+	    	"\nCognome: " + projectDonatorQuery.mostActiveVolunteer().get().get(0)[2].toString() +
+	    	"\nOre servizio: " + projectDonatorQuery.mostActiveVolunteer().get().get(0)[3].toString(), 
+    		"Informazione", JOptionPane.INFORMATION_MESSAGE);
         });
         
         c0.addActionListener(e -> {

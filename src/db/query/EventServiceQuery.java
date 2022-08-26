@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,12 +15,11 @@ import db.tables.EventTable;
 import db.tables.ServiceTable;
 import model.Event;
 import model.Service;
-import utils.Utils;
 
 public class EventServiceQuery {
 	private final Connection connection;
-	private List<String> queryResultTable = new ArrayList<>();
-
+	private List<Object[]> queryResultTable = new ArrayList<>();
+	
 	public EventServiceQuery(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
     }
@@ -49,7 +47,7 @@ public class EventServiceQuery {
         }
 	}
 	
-	public Optional<List<String>> activeEventsType(String tipo) {
+	public Optional<List<Object[]>> activeEventsType(String tipo) {
 		final String query = "SELECT s.idServizio, s.oraInizio, s.oraFine, s.idProgetto, s.idEvento, e.data " +
 				"FROM servizio s, evento e " +
 				"WHERE e.idEvento = s.idEvento " +
@@ -64,14 +62,9 @@ public class EventServiceQuery {
     				final Time oraFine = resultSet.getTime("oraFine");
     				final Integer idProgetto = resultSet.getInt("idProgetto");
     				final String idEvento = resultSet.getString("idEvento");
-    				final Date data = Utils.sqlDateToDate(resultSet.getDate("data"));
     				
-    				queryResultTable.add(new StringBuilder().append(idServizio).append(" ")
-    						.append(oraInizio).append(" ")
-    						.append(oraFine).append(" ")
-    						.append(idProgetto).append(" ")
-    						.append(idEvento).append(" ")
-    						.append(data).toString());
+    				Object[] temp = {idEvento, idServizio, oraInizio, oraFine, tipo, idProgetto};
+    				queryResultTable.add(temp);
     			}
     		} catch (final SQLException e) {}
             return Optional.ofNullable(queryResultTable);

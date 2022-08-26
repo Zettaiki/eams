@@ -132,7 +132,7 @@ public class ProjectDonatorQuery {
     			while (resultSet.next()) {
     				final String codiceFiscale = resultSet.getString("codiceFiscale");
     				final String nome = resultSet.getString("nome");
-    				final String cognome = resultSet.getString("percentuale");
+    				final String cognome = resultSet.getString("cognome");
     				final BigDecimal importoMaxDonato = resultSet.getBigDecimal("importoMaxDonato");
 
 					Object[] data = { codiceFiscale, nome, cognome, importoMaxDonato };

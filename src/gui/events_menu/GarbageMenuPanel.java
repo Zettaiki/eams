@@ -101,7 +101,6 @@ public class GarbageMenuPanel extends JPanel {
 	        } else {
 	        	GarbageCollection garbageCollection = new GarbageCollection(serviceTextbox.getText(), materialPicker.getSelectedItem().toString(), BigDecimal.valueOf(Double.parseDouble(massTextbox.getText())));
 	        	GarbageCollectionTable garbageCollectionTable = new GarbageCollectionTable(ConnectionProvider.getMySQLConnection());
-	        	System.out.print(materialPicker.getSelectedItem().toString());
 	        	if(!garbageCollectionTable.save(garbageCollection)) {
 		        	JOptionPane.showMessageDialog(getParent(), "Errore registro: dati erronei.", "Errore", JOptionPane.ERROR_MESSAGE);
 	        	} else {

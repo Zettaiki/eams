@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 
-import gui.agencies_menu.CommerceMenuPanel;
+import gui.commerce_menu.CommerceMenuPanel;
 import gui.events_menu.EventsMenuPanel;
 import gui.newsletter_menu.NewsletterMenuPanel;
 import gui.project_menu.ProjectDonationMenuPanel;

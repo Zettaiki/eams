@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.swing.table.DefaultTableModel;
 
+import db.query.EventServiceQuery;
 import db.query.NewsletterQuery;
 import db.query.ProjectDonatorQuery;
 import db.query.VolunteerQuery;
@@ -89,6 +90,39 @@ public class TableExtractorUtils {
 		return data;
 	}
 	
+	public static DefaultTableModel serviceSearchByID(String ID) {
+		// Requesting connection
+		EventServiceQuery eventServiceQuery = new EventServiceQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting the data
+		String[] columnNames = {"ID evento", "ID servizio", "Ora inizio", "Ora fine", "Tipo", "ID progetto"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Service>> serviceList = eventServiceQuery.eventServiceList(ID);
+		if(serviceList.isEmpty()) return data;
+		for( Service x : serviceList.get() ) {
+			Object[] temp = {x.getIdEvento(), x.getIdServizio(), x.getOraInizio(), x.getOraFine(), x.getTipo(), checkIfEmpty(x.getIdProgetto())};
+			data.addRow(temp);
+		}
+		return data;
+	}
+	
+	public static DefaultTableModel serviceSearchByType(String type) {
+		// Requesting connection
+		EventServiceQuery eventServiceQuery = new EventServiceQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting the data
+		String[] columnNames = {"ID evento", "ID servizio", "Ora inizio", "Ora fine", "Tipo", "ID progetto"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> serviceList = eventServiceQuery.activeEventsType(type);
+		if(serviceList.isEmpty()) return data;
+		for( Object[] x : serviceList.get() ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
+	// STANDARD TABLES
+	
 	public static DefaultTableModel volunteerTable() {
 		// Requesting connection
 	    VolunteerTable volunteerTable = new VolunteerTable(ConnectionProvider.getMySQLConnection());
@@ -154,11 +188,11 @@ public class TableExtractorUtils {
 		ServiceTable serviceTable = new ServiceTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-		String[] columnNames = {"ID", "Ora inizio", "Ora fine", "Tipo", "ID progetto"};
+		String[] columnNames = {"ID evento", "ID servizio", "Ora inizio", "Ora fine", "Tipo", "ID progetto"};
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Service> serviceList = serviceTable.findAll();
 	    for( Service x : serviceList ) {
-	    	Object[] temp = {x.getIdServizio(), x.getOraInizio(), x.getOraInizio(), x.getTipo(), checkIfEmpty(x.getIdProgetto())};
+	    	Object[] temp = {x.getIdEvento(), x.getIdServizio(), x.getOraInizio(), x.getOraInizio(), x.getTipo(), checkIfEmpty(x.getIdProgetto())};
 	    	data.addRow(temp);
 	    }
 	    return data;

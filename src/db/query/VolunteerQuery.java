@@ -4,16 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import db.tables.VolunteerTable;
 import model.Volunteer;
 
 public class VolunteerQuery {
 	private final Connection connection;
-	private List<String> queryResultTable = new ArrayList<>();
+	private List<Object[]> queryResultTable = new ArrayList<>();
 
 	public VolunteerQuery(final Connection connection) {
         this.connection = Objects.requireNonNull(connection);
@@ -31,4 +33,33 @@ public class VolunteerQuery {
             throw new IllegalStateException(e);
         }
 	}
+	
+	// 7
+	public Optional<List<Object[]>> mostActiveVolunteer() {
+		final String query = "SELECT pa.codiceFiscaleVolontario, pe.nome, pe.cognome, MAX(classificaVolontari.oreServizio) AS oreServizio "
+				+ "FROM partecipazione pa, persona pe, (SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) "
+				+ "AS oreServizio FROM partecipazione p, servizio WHERE p.idServizio = s.idServizio "
+				+ "GROUP BY p.codiceFiscaleVolontario) as classificaVolontari "
+				+ "WHERE pa.codiceFiscaleVolontario = classificaVolontari.codiceFiscaleVolontario "
+				+ "AND  pa.codiceFiscaleVolontario = pe.codiceFiscale";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+        	final ResultSet resultSet = statement.executeQuery();
+        	try {
+    			while (resultSet.next()) {
+    				final String codiceFiscaleVolontario = resultSet.getString("codiceFiscaleVolontario");
+    				final String nome = resultSet.getString("nome");
+    				final String cognome = resultSet.getString("cognome");
+    				final Time oreServizio = resultSet.getTime("oreServizio");
+    				
+    				Object[] data = { codiceFiscaleVolontario, nome, cognome, oreServizio };
+    				
+    				queryResultTable.add(data);
+    			}
+    		} catch (final SQLException e) {}
+            return Optional.ofNullable(queryResultTable);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+	}
+	
 }

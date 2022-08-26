@@ -52,7 +52,7 @@ WHERE p.idServizio IN (SELECT TIMEDIFF(s.oraFine,s.oraInizio) AS OreServizio
 GROUP BY p.codiceFiscaleVolontario
 ORDER BY OreServizioTot DESC;
 
--- 8	donatore > quantità donata in un certo anno
+-- 8	donatore > quantità donata nell'ultimo anno
 SELECT maxDonazione.codiceFiscale, p.nome, p.cognome, MAX(maxDonazione.maxDonato) AS importoMaxDonato
 FROM (SELECT *, SUM(d.importo) AS maxDonato
 		FROM donazione d
@@ -119,10 +119,10 @@ AND s.codiceFiscale = v.codiceFiscaleCliente;
 SELECT *
 FROM sconto;
 
-
-
 -- 17	media annuale quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
 /********/
+
+
 -- 18	sede con volontari più partecipativi
 /********/
 

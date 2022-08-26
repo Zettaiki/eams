@@ -1,5 +1,6 @@
 package db.query;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,7 @@ public class ProjectDonatorQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
+	// 1
 	public List<Project> activeProjects() {
 		ProjectTable queryResultProjectTable = new ProjectTable(connection);
 		try (final Statement statement = this.connection.createStatement()) {
@@ -32,6 +34,7 @@ public class ProjectDonatorQuery {
         }
 	}
 	
+	// 10
 	public Optional<List<Object[]>> donationPerProject() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, "
@@ -60,6 +63,7 @@ public class ProjectDonatorQuery {
         }
 	}
 	
+	// 10 bis
 	public Optional<List<Object[]>> donationPerActiveProject() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, "
@@ -89,6 +93,7 @@ public class ProjectDonatorQuery {
         }
 	}
 	
+	// 15
 	public Optional<List<Object[]>> projectDonators(Integer idProgetto) {
 		final String query = "SELECT DISTINCT d.codiceFiscale, p.nome, p.cognome "
 				+ "FROM donazione d JOIN persona AS p ON d.codiceFiscale = p.codiceFiscale "
@@ -113,11 +118,37 @@ public class ProjectDonatorQuery {
         }
 	}
 	
+	// 8
+	public Optional<List<Object[]>> bestDonator() {
+		try (final Statement statement = this.connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery("SELECT maxDonazione.codiceFiscale, p.nome, p.cognome, "
+            		+ "MAX(maxDonazione.maxDonato) AS importoMaxDonato "
+            		+ "FROM (SELECT *, SUM(d.importo) AS maxDonato FROM donazione d "
+            		+ "WHERE d.dataDonazione BETWEEN DATE_SUB(NOW(),INTERVAL 1 YEAR) AND CURRENT_DATE() "
+            		+ "GROUP BY d.codiceFiscale) as maxDonazione, persona p "
+            		+ "WHERE p.codiceFiscale = maxDonazione.codiceFiscale"
+            		);
+            try {
+    			while (resultSet.next()) {
+    				final String codiceFiscale = resultSet.getString("codiceFiscale");
+    				final String nome = resultSet.getString("nome");
+    				final String cognome = resultSet.getString("percentuale");
+    				final BigDecimal importoMaxDonato = resultSet.getBigDecimal("importoMaxDonato");
+
+					Object[] data = { codiceFiscale, nome, cognome, importoMaxDonato };
+
+    				queryResultTable.add(data);
+    			}
+    		} catch (final SQLException e) {}
+            return Optional.ofNullable(queryResultTable);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+	}
 	
 	
 	
-	
-	
+
 	
 	
 }

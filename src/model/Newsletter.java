@@ -8,13 +8,13 @@ public class Newsletter {
 	private final String argomento;
     private final Optional<String> descrizione;
     
-	public Newsletter(Optional<Integer>  idNewsletter, String argomento, Optional<String> descrizione) {
+	public Newsletter(Optional<Integer> idNewsletter, String argomento, Optional<String> descrizione) {
 		this.idNewsletter = idNewsletter;
 		this.argomento = argomento;
 		this.descrizione = descrizione;
 	}
 	
-	public Newsletter(Optional<Integer>  idNewsletter, String argomento) {
+	public Newsletter(Optional<Integer> idNewsletter, String argomento) {
 		this(idNewsletter, argomento, Optional.empty());
 	}
 	   

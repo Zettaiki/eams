@@ -630,7 +630,6 @@ CREATE TABLE `vendita` (
   `idServizio` char(20) NOT NULL,
   `codiceFiscaleCliente` char(16) NOT NULL,
   `quantità` int NOT NULL,
-  PRIMARY KEY (`idProdotto`,`codiceFiscaleCliente`,`idServizio`),
   KEY `fk_persona_has_prodotto_persona1_idx` (`codiceFiscaleCliente`),
   KEY `fk_vendita_servizio1_idx` (`idServizio`),
   KEY `fk_vendita_prodotto1_idx` (`idProdotto`),

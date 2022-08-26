@@ -1,8 +1,26 @@
 package gui.project_menu;
 
 import javax.swing.*;
+
+import org.jdatepicker.impl.DateComponentFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
+
+import db.tables.DonationTable;
+import db.tables.PersonTable;
+import db.tables.ProjectTable;
+
 import java.awt.*;
+import java.math.BigDecimal;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
 import gui.GUI;
+import gui.InsertPersonPanel;
+import model.Donation;
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
 
 public class InsertDonationPanel extends JPanel {
@@ -31,53 +49,107 @@ public class InsertDonationPanel extends JPanel {
         
         c.gridx = 0;
         c.gridy = 2;
-        var a1 = new JTextArea(1, 16);
-        a1.setBorder(BorderFactory.createTitledBorder("Importo:"));
-        this.add(a1, c);
+        var a1 = new JPanel();
         
-        String[] proyectList = {"Progetto1", "Progetto2", "Progetto3"};
+	        SqlDateModel model = new SqlDateModel();
+			Properties p = new Properties();
+			p.put("text.today", "Today");
+			p.put("text.month", "Month");
+			p.put("text.year", "Year");
+			JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+			JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
+	        a1.add(datePicker);
+	        a1.setBorder(BorderFactory.createTitledBorder("Data donazione:"));
+	        
+        this.add(a1, c);
         
         c.gridx = 0;
         c.gridy = 3;
-	    c.insets = new Insets(10, 0, 0, 10);
-        var a2 = new JComboBox<String>(proyectList);
-        a2.setSelectedIndex(0);
-        a2.addActionListener(e -> {
-	        // TODO
-        });
+        var a2 = new JTextArea(1, 16);
+        a2.setBorder(BorderFactory.createTitledBorder("Importo:"));
         this.add(a2, c);
         
         c.gridx = 0;
         c.gridy = 4;
+        var a3 = new JPanel();
+        a3.setLayout(new GridLayout(1,0));
+        
+        	var projectCheck = new JCheckBox("Donazione rivolta a progetto");
+        	projectCheck.setSelected(false);
+        	a3.add(projectCheck);
+        
+	        ProjectTable projectTable = new ProjectTable(ConnectionProvider.getMySQLConnection());
+	        Object[] projectList = projectTable.findAll().stream().map((x) -> x.getIdProgetto()).collect(Collectors.toList()).toArray();
+	        
+	        var projectPicker = new JComboBox<Object>(projectList);
+	        projectPicker.setBorder(BorderFactory.createTitledBorder("ID progetto:"));
+	        projectPicker.setEnabled(false);
+	        projectPicker.setSelectedIndex(0);
+	        a3.add(projectPicker);
+	        
 	    c.insets = new Insets(10, 0, 0, 10);
-        var a3 = new JCheckBox("Donazione periodica");
-        a3.setSelected(false);
-        a3.addActionListener(e -> {
-        	// TODO
-        });
+        this.add(a3, c);
+        
+        c.gridx = 0;
+        c.gridy = 5;
+	    c.insets = new Insets(10, 0, 0, 10);
+        var a4 = new JCheckBox("Donazione periodica");
+        a4.setSelected(false);
         this.add(a3, c);
         
         // End panel
         
         c.gridx = 0;
-        c.gridy = 5;
-	    c.insets = new Insets(10, 0, 0, 10);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        var b0 = new JButton("Registra donazione");
-        b0.addActionListener(e -> {
-	        // TODO
-        });
-        this.add(b0, c);
-        
-        c.gridx = 0;
         c.gridy = 6;
 	    c.insets = new Insets(10, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
+        var b0 = new JButton("Registra donazione");
+        this.add(b0, c);
+        
+        c.gridx = 0;
+        c.gridy = 7;
+	    c.insets = new Insets(10, 0, 0, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
         var b1 = new JButton("Ritorna");
+        this.add(b1, c);
+        
+        // Action listeners
+        
+        projectCheck.addActionListener(e -> {
+    		if(projectCheck.isSelected()) {
+    			projectPicker.setEnabled(true);
+    		} else {
+    			projectPicker.setEnabled(false);
+    		}
+    	});
+        
+        b0.addActionListener(e -> {
+	        PersonTable personTable = new PersonTable(ConnectionProvider.getMySQLConnection());
+	        if(personTable.findByPrimaryKey(a0.getText()).isEmpty()) {
+	        	JOptionPane.showMessageDialog(getParent(), "Utente non registrato.\nPer favore registrare l'utente.", "Errore", JOptionPane.ERROR_MESSAGE);
+	        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		        JComponentLoader.load(parentFrame, new InsertPersonPanel());
+	        } else {
+	        	Donation donation;
+	        	if(projectCheck.isSelected()) {
+	        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a2.getText())), a0.getText(), model.getValue(), Optional.of(Integer.parseInt(projectPicker.getSelectedItem().toString())));
+	        	} else {
+	        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a2.getText())), a0.getText(), model.getValue(), Optional.empty()); // DA CORREGGERE
+	        	}
+	        	DonationTable donationTable = new DonationTable(ConnectionProvider.getMySQLConnection());
+	        	if(!donationTable.save(donation)) {
+	        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Error", JOptionPane.ERROR_MESSAGE);
+	        	} else {
+	        		JOptionPane.showMessageDialog(getParent(), "Donazione registrata", "Risultato donazione", JOptionPane.INFORMATION_MESSAGE);
+	        	}
+        		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
+	        };
+        });
+        
         b1.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
         });
-        this.add(b1, c);
     }
 }

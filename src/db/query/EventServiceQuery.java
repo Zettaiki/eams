@@ -24,6 +24,7 @@ public class EventServiceQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
+	// 2
 	public List<Event> activeEvents() {
 		EventTable queryResultEventTable = new EventTable(connection);
 		try (final Statement statement = this.connection.createStatement()) {
@@ -35,6 +36,7 @@ public class EventServiceQuery {
         }
 	}
 	
+	// 3
 	public Optional<List<Service>> eventServiceList(String idServizio) {
 		ServiceTable queryResultServiceTable = new ServiceTable(connection);
 		final String query = "SELECT * FROM servizio s WHERE s.idEvento = ?";
@@ -47,6 +49,7 @@ public class EventServiceQuery {
         }
 	}
 	
+	// 4
 	public Optional<List<Object[]>> activeEventsType(String tipo) {
 		final String query = "SELECT s.idServizio, s.oraInizio, s.oraFine, s.idProgetto, s.idEvento, e.data " +
 				"FROM servizio s, evento e " +

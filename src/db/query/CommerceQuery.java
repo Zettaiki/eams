@@ -17,6 +17,7 @@ public class CommerceQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
+	// 16 bis
 	public Optional<List<Object[]>> showProductSalePrice() {
 		final String query = "SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) "
 				+ "AS prezzoVendita, s.sconto, "

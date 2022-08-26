@@ -65,6 +65,7 @@ public class EventTable {
 		return eventi;
 	}
 
+	// 12
 	public boolean save(Event evento) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idEvento, nome, data, descrizione) VALUES (?,?,?,?)";

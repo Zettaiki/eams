@@ -66,6 +66,7 @@ public class SaleTable {
 		return vendite;
 	}
 
+	// 16
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idProdotto, idServizio, codiceFiscaleCliente, quantità) " +

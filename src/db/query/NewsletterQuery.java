@@ -16,6 +16,7 @@ public class NewsletterQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
+	// 5
 	public List<Object[]> rank() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT i.idNewsletter, " +

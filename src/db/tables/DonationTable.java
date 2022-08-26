@@ -72,6 +72,7 @@ public class DonationTable {
 		return donazioni;
 	}
 
+	// 19
 	public boolean save(Donation donazione) {
 		final String query = "INSERT INTO " + TABLE_NAME
 				+ "(importo, codiceFiscale, dataDonazione, idProgetto) VALUES (?,?,?,?)";

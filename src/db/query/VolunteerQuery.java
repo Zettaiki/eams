@@ -19,6 +19,7 @@ public class VolunteerQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
+	// 9
 	public List<Volunteer> officeVolunteer(String sedeCittà) {
 		VolunteerTable queryResultVolunteerTable = new VolunteerTable(connection);
 		final String query = "SELECT * FROM volontario v WHERE v.sedeCittà = ?";

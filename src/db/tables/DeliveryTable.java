@@ -69,6 +69,7 @@ public class DeliveryTable {
 		return consegne;
 	}
 
+	// 6
 	public boolean save(Delivery consegna) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(materiale, partitaIVA, data, kgConsegnati) VALUES (?,?,?,?)";

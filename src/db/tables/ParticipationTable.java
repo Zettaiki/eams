@@ -62,6 +62,7 @@ public class ParticipationTable {
 		return partecipazioni;
 	}
 
+	// 13
 	public boolean save(Participation partecipazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(codiceFiscaleVolontario, idServizio) VALUES (?,?)";

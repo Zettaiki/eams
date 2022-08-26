@@ -165,8 +165,8 @@ public class InsertServicePanel extends JPanel {
 		        		} else {
 		        			@SuppressWarnings("deprecation")
 							Service service = new Service(
-				        			eventIdArea.getText(), 
 				        			serviceIdArea.getText(), 
+				        			eventIdArea.getText(), 
 				        			new Time((int) hourStartBox.getSelectedItem(), (int) minuteStartBox.getSelectedItem(), 0),
 				        			new Time((int) hourFinishBox.getSelectedItem(), (int) minuteFinishBox.getSelectedItem(), 0),
 				        			a3.getText(),
@@ -185,8 +185,8 @@ public class InsertServicePanel extends JPanel {
 		        	} else {
 		        		@SuppressWarnings("deprecation")
 						Service service = new Service(
-			        			eventIdArea.getText(), 
-			        			serviceIdArea.getText(), 
+			        			serviceIdArea.getText(),
+			        			eventIdArea.getText(),
 			        			new Time((int) hourStartBox.getSelectedItem(), (int) minuteStartBox.getSelectedItem(), 0),
 			        			new Time((int) hourFinishBox.getSelectedItem(), (int) minuteFinishBox.getSelectedItem(), 0),
 			        			a3.getText()

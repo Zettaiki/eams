@@ -12,7 +12,7 @@ public class Service {
     private final String tipo;
     private final Optional<Integer> idProgetto;
     
-	public Service(String idEvento, String idServizio, Time oraInizio, Time oraFine, String tipo, Optional<Integer> idProgetto) {
+	public Service(String idServizio, String idEvento, Time oraInizio, Time oraFine, String tipo, Optional<Integer> idProgetto) {
 		this.idEvento = idEvento;
 		this.idServizio = idServizio;
 		this.oraInizio = oraInizio;
@@ -21,15 +21,15 @@ public class Service {
 		this.idProgetto = Objects.requireNonNull(idProgetto);
 	}
     
-	public Service(String idEvento, String idServizio, Time oraInizio, Time oraFine, String tipo) {
-		this(idEvento, idServizio, oraInizio, oraFine, tipo, Optional.empty());
-	}
-
-	public String getIdEvento() {
-		return this.idEvento;
+	public Service(String idServizio, String idEvento, Time oraInizio, Time oraFine, String tipo) {
+		this(idServizio, idEvento, oraInizio, oraFine, tipo, Optional.empty());
 	}
 	
 	public String getIdServizio() {
+		return this.idServizio;
+	}
+
+	public String getIdEvento() {
 		return this.idEvento;
 	}
 

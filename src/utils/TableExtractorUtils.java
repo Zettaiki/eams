@@ -188,11 +188,11 @@ public class TableExtractorUtils {
 		ServiceTable serviceTable = new ServiceTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-		String[] columnNames = {"ID evento", "ID servizio", "Ora inizio", "Ora fine", "Tipo", "ID progetto"};
+		String[] columnNames = {"ID servizio", "ID evento", "Ora inizio", "Ora fine", "Tipo", "ID progetto"};
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Service> serviceList = serviceTable.findAll();
 	    for( Service x : serviceList ) {
-	    	Object[] temp = {x.getIdEvento(), x.getIdServizio(), x.getOraInizio(), x.getOraInizio(), x.getTipo(), checkIfEmpty(x.getIdProgetto())};
+	    	Object[] temp = {x.getIdServizio(), x.getIdEvento(), x.getOraInizio(), x.getOraFine(), x.getTipo(), checkIfEmpty(x.getIdProgetto())};
 	    	data.addRow(temp);
 	    }
 	    return data;

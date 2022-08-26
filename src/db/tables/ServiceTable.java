@@ -54,15 +54,15 @@ public class ServiceTable {
 			while (resultSet.next()) {
 				final String idServizio = resultSet.getString("idServizio");
 				final String idEvento = resultSet.getString("idEvento");
-				final String tipo = resultSet.getString("tipo");
 				final Time oraInizio = resultSet.getTime("oraInizio");
 			    final Time oraFine = resultSet.getTime("oraFine");
+				final String tipo = resultSet.getString("tipo");
 			    Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
 			    if(resultSet.wasNull()) {
 			    	idProgetto = Optional.empty();
 			    }
 				
-				final Service servizio = new Service(idEvento, idServizio, oraInizio, oraFine, tipo, idProgetto);
+				final Service servizio = new Service(idServizio, idEvento, oraInizio, oraFine, tipo, idProgetto);
 				servizi.add(servizio);
 			}
 		} catch (final SQLException e) {}

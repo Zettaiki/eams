@@ -1,7 +1,6 @@
-package gui.agencies_menu;
+package gui.commerce_menu;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -17,53 +16,47 @@ import utils.TableExtractorUtils;
 
 public class ProductPanel extends JPanel {
 	private static final long serialVersionUID = 1848260251020024164L;
-    public final GridBagConstraints c;
 
 	public ProductPanel() {
-        this.c = new GridBagConstraints();
-		this.setLayout(new GridBagLayout());
+        this.setLayout(new BorderLayout());
 		
-		// First column 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
+		// Upper panel
 		var a0 = new JPanel();
 		a0.setBorder(BorderFactory.createTitledBorder("Operazioni disponibili:"));
-		a0.setLayout(new GridLayout(1,2));
-		{
+		a0.setLayout(new GridLayout(1,0));
+		
 			var registerButton = new JButton("Registrare prodotto");
-			registerButton.addActionListener(e -> {
-				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		        JComponentLoader.load(parentFrame, new ProductRegisterPanel());
-		    });
 			a0.add(registerButton);
 		    
 		    var buyButton = new JButton("Acquisto prodotto");
-		    buyButton.addActionListener(e -> {
-		    	//JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		        //JComponentLoader.load(parentFrame, new InsertDonationPanel());
-		    });
 		    a0.add(buyButton);
-		}
-		this.add(a0, c);
 		
-		// Second column
-		c.gridx = 0;
-        c.gridy = 1;
-        c.gridheight = 4;
-        c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(a0, BorderLayout.PAGE_START);
+		
+		// Bottom panel
 		var a1 = new JPanel();
 		a1.setBorder(BorderFactory.createTitledBorder("Lista prodotti e quantita vendute:"));
 		a1.setLayout(new GridLayout(0,1));
-		{
+		
 			var productTable = new JTable(TableExtractorUtils.saleTable());
 			productTable.setEnabled(false);
 			productTable.getTableHeader().setReorderingAllowed(false);
 			productTable.getTableHeader().setEnabled(false);
 			JScrollPane productListPanel = new JScrollPane(productTable);
 		    a1.add(productListPanel);
-		}
-		this.add(a1, c);
+		
+		this.add(a1, BorderLayout.CENTER);
+		
+		// Action listeners 
+		
+		registerButton.addActionListener(e -> {
+			JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new InsertProductPanel());
+	    });
+		
+		buyButton.addActionListener(e -> {
+	    	// TODO
+	    });
 	}
 	
 }

@@ -1,4 +1,4 @@
-package gui.agencies_menu;
+package gui.commerce_menu;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

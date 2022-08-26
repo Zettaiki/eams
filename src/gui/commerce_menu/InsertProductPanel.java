@@ -1,4 +1,4 @@
-package gui.agencies_menu;
+package gui.commerce_menu;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -18,11 +18,11 @@ import javax.swing.SwingUtilities;
 import gui.GUI;
 import utils.JComponentLoader;
 
-public class ProductRegisterPanel extends JPanel {
+public class InsertProductPanel extends JPanel {
 	private static final long serialVersionUID = -1162203922311957656L;
     public final GridBagConstraints c;
 	
-	public ProductRegisterPanel() {        
+	public InsertProductPanel() {        
         this.c = new GridBagConstraints();
         this.setName("EAMS - New product");
         this.setPreferredSize(new Dimension(GUI.getMinScreenSize(), GUI.getMinScreenSize()*3/4));
@@ -41,22 +41,18 @@ public class ProductRegisterPanel extends JPanel {
         var a0 = new JPanel();
         a0.setLayout(new GridLayout(1,2));
         a0.setBorder(BorderFactory.createTitledBorder("Categoria prodotto:"));
-        {
+        
             String[] proyectList = {"Categoria1", "Categoria2", "Categoria3"};
 
+            
+            
         	var categoryPick = new JComboBox<String>(proyectList);
         	categoryPick.setSelectedIndex(0);
-        	categoryPick.addActionListener(e -> {
-		        // TODO
-	        });
         	a0.add(categoryPick);
         	
         	var addCategoryButton = new JButton("Nuova categoria");
-        	addCategoryButton.addActionListener(e -> {
-		        // TODO
-	        });
         	a0.add(addCategoryButton);
-        }
+        
         this.add(a0, c);
         
         c.gridx = 0;
@@ -103,5 +99,11 @@ public class ProductRegisterPanel extends JPanel {
 	        JComponentLoader.load(parentFrame, new CommerceMenuPanel());
         });
         this.add(b1, c);
+        
+        // Action listeners
+        
+    	addCategoryButton.addActionListener(e -> {
+	        // TODO
+        });
     }
 }

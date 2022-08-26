@@ -1,4 +1,4 @@
-package gui.agencies_menu;
+package gui.commerce_menu;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

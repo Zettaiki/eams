@@ -3,8 +3,8 @@ package gui.commerce_menu;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,7 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import db.tables.CategoryTable;
 import gui.GUI;
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
 
 public class InsertProductPanel extends JPanel {
@@ -36,23 +38,14 @@ public class InsertProductPanel extends JPanel {
         
         // First column
         
+        CategoryTable categoryTable = new CategoryTable(ConnectionProvider.getMySQLConnection());
+        Object[] categoryList = categoryTable.findAll().stream().map((x) -> x.getNome()).collect(Collectors.toList()).toArray();
+        
         c.gridx = 0;
         c.gridy = 1;
-        var a0 = new JPanel();
-        a0.setLayout(new GridLayout(1,2));
-        a0.setBorder(BorderFactory.createTitledBorder("Categoria prodotto:"));
-        
-            String[] proyectList = {"Categoria1", "Categoria2", "Categoria3"};
-
-            
-            
-        	var categoryPick = new JComboBox<String>(proyectList);
-        	categoryPick.setSelectedIndex(0);
-        	a0.add(categoryPick);
-        	
-        	var addCategoryButton = new JButton("Nuova categoria");
-        	a0.add(addCategoryButton);
-        
+    	var a0 = new JComboBox<Object>(categoryList);
+    	a0.setSelectedIndex(0);
+        a0.setBorder(BorderFactory.createTitledBorder("Categoria prodotto:"));        
         this.add(a0, c);
         
         c.gridx = 0;
@@ -66,15 +59,13 @@ public class InsertProductPanel extends JPanel {
         var a2 = new JTextArea(1, 16);
         a2.setBorder(BorderFactory.createTitledBorder("Prezzo:"));
         this.add(a2, c);
-                
-        c.gridx = 0;
-        c.gridy = 3;
-        var a3 = new JTextArea(1, 16);
-        a3.setBorder(BorderFactory.createTitledBorder("Prezzo:"));
-        this.add(a3, c);
         
         /*
          * TODO: mancano molti campi da aggiungere.
+         * > id prodotto (?)
+         * > quantita immagazzinata
+         * > provenienza
+         * > descrizione
          */
         
         // End panel
@@ -84,9 +75,6 @@ public class InsertProductPanel extends JPanel {
 	    c.insets = new Insets(10, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
         var b0 = new JButton("Registra prodotto");
-        b0.addActionListener(e -> {
-	        // TODO
-        });
         this.add(b0, c);
         
         c.gridx = 0;
@@ -94,16 +82,21 @@ public class InsertProductPanel extends JPanel {
 	    c.insets = new Insets(10, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
         var b1 = new JButton("Ritorna");
-        b1.addActionListener(e -> {
-	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-	        JComponentLoader.load(parentFrame, new CommerceMenuPanel());
-        });
         this.add(b1, c);
         
         // Action listeners
         
-    	addCategoryButton.addActionListener(e -> {
+    	a0.addActionListener(e -> {
 	        // TODO
+        });
+    	
+    	b0.addActionListener(e -> {
+	        // TODO
+        });
+    	
+    	b1.addActionListener(e -> {
+	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new CommerceMenuPanel());
         });
     }
 }

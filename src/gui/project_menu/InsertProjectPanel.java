@@ -110,7 +110,7 @@ public class InsertProjectPanel extends JPanel {
 	        Project progetto = new Project(null, a1.getText(), model.getValue(), Integer.parseInt(textAreaDuringDays.getText()), Optional.of(a3.getText()), null);
 	        ProjectTable table = new ProjectTable(ConnectionProvider.getMySQLConnection());
 	        if(!table.save(progetto)) {
-        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Project error", JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Error", JOptionPane.ERROR_MESSAGE);
 	        } else {
         		JOptionPane.showMessageDialog(getParent(), "Progetto registrato!.", "Register result", JOptionPane.INFORMATION_MESSAGE);
 	        };

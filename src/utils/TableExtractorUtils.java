@@ -121,6 +121,21 @@ public class TableExtractorUtils {
 		return data;
 	}
 	
+	public static DefaultTableModel donationStatistics() {
+		// Requesting connection
+		ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collectiong the data
+		String[] columnNames = {"ID progetto", "Donazioni progetto", "Percentuale"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> donationStatisticList = projectDonatorQuery.donationPerProject();
+		if(donationStatisticList.isEmpty()) return data;
+		for( Object[] x : donationStatisticList.get() ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
 	// STANDARD TABLES
 	
 	public static DefaultTableModel volunteerTable() {

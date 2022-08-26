@@ -53,12 +53,12 @@ GROUP BY p.codiceFiscaleVolontario
 ORDER BY OreServizioTot DESC;
 
 -- 8	donatore > quantità donata in un certo anno
-/********	TROVARE MODO MIGLIORE e se riesco mostrare anche nome donatore anziché solo cf **********/
-SELECT d.codiceFiscale, MAX(maxDonazione.maxDonato)
+SELECT maxDonazione.codiceFiscale, p.nome, p.cognome, MAX(maxDonazione.maxDonato) AS importoMaxDonato
 FROM (SELECT *, SUM(d.importo) AS maxDonato
 		FROM donazione d
 		WHERE d.dataDonazione BETWEEN DATE_SUB(NOW(),INTERVAL 1 YEAR) AND CURRENT_DATE()
-		GROUP BY d.codiceFiscale) as maxDonazione;
+		GROUP BY d.codiceFiscale) as maxDonazione, persona p
+WHERE p.codiceFiscale = maxDonazione.codiceFiscale;
 
 -- 9	elenco volontari per una certa sede
 SELECT * FROM volontario v
@@ -94,7 +94,33 @@ FROM donazione d JOIN persona AS p ON d.codiceFiscale = p.codiceFiscale
 WHERE d.idProgetto = ?;
 
 -- 16	acquisto prodotto (sconto su prezzo se socio acquista)
-/********/
+/**** è  la save quindi già fatta ****/
+/*SELECT IFNULL((SELECT 20.00 WHERE 'CHRGTN88A01C352W' IN (SELECT codiceFiscale FROM tesserasocio)),0.00);
+SELECT IFNULL((SELECT 20.00 WHERE 'NDRCSD00A01C573B' IN (SELECT codiceFiscale FROM tesserasocio)),0.00);
+
+-- IF tesserasocio.codiceFiscale = vendita.codiceFiscaleCliente THEN 20.00 ELSE 00.00;
+
+SELECT (CASE WHEN (tesserasocio.codiceFiscale = vendita.codiceFiscaleCliente) 
+ THEN
+      20.00 
+ ELSE
+      00.00 
+ END) AS bo
+ FROM vendita as v, tesserasocio as ts;*/
+
+-- 16 bis mostra vendite con prezzo di vendita (uso query perché non ci serve memo nel db e view perché non sono riuscita diverso)
+-- prezzo di vendita senza sconto, sconto e prezzo scontato
+SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) AS prezzoVendita, s.sconto, 
+(((p.prezzo / 100) * (100-s.sconto))*v.quantità) AS prezzoScontato
+FROM vendita v, prodotto p, sconto s
+WHERE p.idProdotto = v.idProdotto
+AND s.codiceFiscale = v.codiceFiscaleCliente;
+
+SELECT *
+FROM sconto;
+
+
+
 -- 17	media annuale quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
 /********/
 -- 18	sede con volontari più partecipativi

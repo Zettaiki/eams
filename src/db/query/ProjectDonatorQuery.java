@@ -32,7 +32,7 @@ public class ProjectDonatorQuery {
         }
 	}
 	
-	public List<String> donationPerProject() {
+	public Optional<List<Object[]>> donationPerProject() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, "
             		+ "concat(round((SUM(d.importo)/(SELECT SUM(d.importo) as totDonazioni "
@@ -49,18 +49,18 @@ public class ProjectDonatorQuery {
     				final Integer donazioniProgetto = resultSet.getInt("donazioniProgetto");
     				final Float percentuale = resultSet.getFloat("percentuale");
     				
-    				queryResultTable.add(new StringBuilder().append(idProgetto).append(" ")
-    						.append(donazioniProgetto).append(" ")
-    						.append(percentuale).toString());
+    				Object[] data = { idProgetto, donazioniProgetto, percentuale };
+
+    				queryResultTable.add(data);
     			}
     		} catch (final SQLException e) {}
-            return queryResultTable;
+            return Optional.ofNullable(queryResultTable);
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
 	}
 	
-	public List<String> donationPerActiveProject() {
+	public Optional<List<Object[]>> donationPerActiveProject() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, "
             		+ "concat(round((SUM(d.importo)/(SELECT SUM(d.importo) as totDonazioni "
@@ -77,13 +77,13 @@ public class ProjectDonatorQuery {
     				final Integer idProgetto = resultSet.getInt("idProgetto");
     				final Integer donazioniProgetto = resultSet.getInt("donazioniProgetto");
     				final Float percentuale = resultSet.getFloat("percentuale");
-    				
-    				queryResultTable.add(new StringBuilder().append(idProgetto).append(" ")
-    						.append(donazioniProgetto).append(" ")
-    						.append(percentuale).toString());
+
+					Object[] data = { idProgetto, donazioniProgetto, percentuale };
+
+    				queryResultTable.add(data);
     			}
     		} catch (final SQLException e) {}
-            return queryResultTable;
+            return Optional.ofNullable(queryResultTable);
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

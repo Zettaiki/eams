@@ -49,7 +49,7 @@ public class ProjectDonatorQuery {
             try {
     			while (resultSet.next()) {
     				final Integer idProgetto = resultSet.getInt("idProgetto");
-    				final Integer donazioniProgetto = resultSet.getInt("donazioniProgetto");
+    				final BigDecimal donazioniProgetto = resultSet.getBigDecimal("donazioniProgetto");
     				final Float percentuale = resultSet.getFloat("percentuale");
     				
     				Object[] data = { idProgetto, donazioniProgetto, percentuale };

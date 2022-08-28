@@ -30,15 +30,18 @@ public class ProductPanel extends JPanel {
 		    
 		    var buyButton = new JButton("Acquisto prodotto");
 		    a0.add(buyButton);
+		    
+		    var listButton = new JButton("Lista acquisti");
+		    a0.add(listButton);
 		
 		this.add(a0, BorderLayout.PAGE_START);
 		
 		// Bottom panel
 		var a1 = new JPanel();
-		a1.setBorder(BorderFactory.createTitledBorder("Lista prodotti e quantita vendute:"));
+		a1.setBorder(BorderFactory.createTitledBorder("Listino prodotti:"));
 		a1.setLayout(new GridLayout(0,1));
 		
-			var productTable = new JTable(TableExtractorUtils.saleTable());
+			var productTable = new JTable(TableExtractorUtils.productTable());
 			productTable.setEnabled(false);
 			productTable.getTableHeader().setReorderingAllowed(false);
 			productTable.getTableHeader().setEnabled(false);
@@ -57,6 +60,11 @@ public class ProductPanel extends JPanel {
 		buyButton.addActionListener(e -> {
 	    	// TODO
 	    });
+		
+		listButton.addActionListener(e -> {
+			JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new SalesPanel());
+		});
 	}
 	
 }

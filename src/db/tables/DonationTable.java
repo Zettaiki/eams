@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,7 +81,11 @@ public class DonationTable {
 			statement.setBigDecimal(1, donazione.getImporto());
 			statement.setString(2, donazione.getCodiceFiscale());
 			statement.setDate(3, Utils.dateToSqlDate(donazione.getDataDonazione()));
-			statement.setInt(4, donazione.getIdProgetto().orElse(null));
+			if(donazione.getIdProgetto().isEmpty()) {
+                statement.setNull(4, Types.INTEGER);
+            } else {
+                statement.setInt(4, donazione.getIdProgetto().get());
+            }
 			statement.executeUpdate();
 			return true;
 		} catch (final SQLIntegrityConstraintViolationException e) {

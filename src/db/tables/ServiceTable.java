@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -78,7 +79,11 @@ public class ServiceTable {
             statement.setTime(3, servizio.getOraInizio());
             statement.setTime(4, servizio.getOraFine());
             statement.setString(5, servizio.getTipo());
-            statement.setInt(6, servizio.getIdProgetto().orElse(null));
+            if(servizio.getIdProgetto().isEmpty()) {
+                statement.setNull(6, Types.INTEGER);
+            } else {
+                statement.setInt(6, servizio.getIdProgetto().get());
+            }
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {

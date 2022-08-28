@@ -2,7 +2,6 @@ package gui.volunteering_menu;
 
 import javax.swing.*;
 
-import db.query.ProjectDonatorQuery;
 import db.query.VolunteerQuery;
 
 import java.awt.*;

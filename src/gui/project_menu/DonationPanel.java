@@ -56,7 +56,8 @@ public class DonationPanel extends JPanel {
 	    });
 		
 		reportButton.addActionListener(e -> {
-	    	// TODO
+			JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new DonationStatisticsPanel());
 	    });
 		
 		maxDonatorButton.addActionListener(e -> {

@@ -110,9 +110,9 @@ public class VolunteerRegisterPanel extends JPanel {
 	        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Error", JOptionPane.ERROR_MESSAGE);
 	        	} else {
 	        		JOptionPane.showMessageDialog(getParent(), "Volontario registrato", "Registro volontario", JOptionPane.INFORMATION_MESSAGE);
+	        		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+			        JComponentLoader.load(parentFrame, new VolunteeringMenuPanel());
 	        	}
-	        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		        JComponentLoader.load(parentFrame, new VolunteeringMenuPanel());
 	        }
         });
         

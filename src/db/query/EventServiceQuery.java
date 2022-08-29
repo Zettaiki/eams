@@ -1,5 +1,6 @@
 package db.query;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,4 +76,32 @@ public class EventServiceQuery {
             throw new IllegalStateException(e);
         }
 	}
+	
+	// 17
+	public Optional<List<Object[]>> avgCollectedGarbagePerYear() {
+		final String query = "SELECT r.materiale, FORMAT(AVG(r.kg), 2) AS mediaKgRaccolti "
+				+ "FROM raccolta r, servizio s, evento e "
+				+ "WHERE r.idServizio = s.idServizio "
+				+ "AND s.idEvento = e.idEvento "
+				+ "AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 YEAR) AND CURRENT_DATE() "
+				+ "GROUP BY r.materiale";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+			final ResultSet resultSet = statement.executeQuery();
+			try {
+				while (resultSet.next()) {
+					final String materiale = resultSet.getString("materiale");
+					final BigDecimal mediaKgRaccolti = resultSet.getBigDecimal("mediaKgRaccolti");
+
+					Object[] data = { materiale, mediaKgRaccolti };
+
+					queryResultTable.add(data);
+				}
+			} catch (final SQLException e) {
+			}
+			return Optional.ofNullable(queryResultTable);
+		} catch (final SQLException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 }

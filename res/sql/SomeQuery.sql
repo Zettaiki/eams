@@ -52,11 +52,11 @@ FROM (SELECT *, SUM(d.importo) AS maxDonato
 		GROUP BY d.codiceFiscale) as maxDonazione, persona p
 WHERE p.codiceFiscale = maxDonazione.codiceFiscale;
 
--- 9	elenco volontari per una certa sede
+-- 9 elenco volontari per una certa sede
 SELECT * FROM volontario v
 WHERE v.sedeCittà = ?;
 
--- 10	percentuali e totale donazioni rivolte ad ogni progetto 
+-- 10 percentuali e totale donazioni rivolte ad ogni progetto 
 SELECT p.idProgetto, SUM(d.importo) AS donazioniProgetto, concat(round((SUM(d.importo)/(
 	SELECT SUM(d.importo) as totDonazioni
 	FROM donazione d
@@ -78,15 +78,18 @@ GROUP BY p.idProgetto
 ORDER BY percentuale DESC;
 
 -- 11	quantità venduta di un prodotto nell'ultimo mese
-/********/
-
-/* qnt venduta di 1 prodotto in 1 mese */
-SELECT v.idProdotto, v.idServizio, v.codiceFiscaleCliente, SUM(v.quantità) AS quantità
+SELECT v.idProdotto, SUM(v.quantità) AS quantità
 FROM vendita v, servizio s, evento e
 WHERE v.idProdotto = "DG56" 
 AND v.idServizio = s.idServizio 
 AND s.idEvento = e.idEvento 
-AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 MONTH) AND CURRENT_DATE();
+AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 MONTH) AND CURRENT_DATE()
+GROUP BY v.idProdotto;
+/* qnt venduta di 1 prodotto */
+SELECT v.idProdotto, v.idServizio, v.codiceFiscaleCliente, SUM(v.quantità) AS quantità
+FROM vendita v
+WHERE v.idProdotto = "DG56" ;
+-- AND .dataDonazione BETWEEN DATE_SUB(NOW(),INTERVAL 1 MONTH) AND CURRENT_DATE();
 
 -- 15	lista donatori di un progetto
 SELECT DISTINCT d.codiceFiscale, p.nome, p.cognome
@@ -119,9 +122,13 @@ AND s.codiceFiscale = v.codiceFiscaleCliente;
 SELECT *
 FROM sconto;
 
--- 17	media annuale quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
-/********/
-
+-- 17	media nell'ultimo anno quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
+SELECT r.materiale, FORMAT(AVG(r.kg), 2) AS mediaKgRaccolti
+FROM raccolta r, servizio s, evento e
+WHERE r.idServizio = s.idServizio 
+AND s.idEvento = e.idEvento
+AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 YEAR) AND CURRENT_DATE()
+GROUP BY r.materiale;
 
 -- 18	sede con volontari più partecipativi
 /* aggiungere volontario stessa sede per test */ 

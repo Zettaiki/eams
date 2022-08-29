@@ -22,7 +22,7 @@ public class CommerceQuery {
 	public Optional<List<Object[]>> showProductSalePrice() {
 		final String query = "SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) "
 				+ "AS prezzoVendita, s.sconto, "
-				+ "(((p.prezzo / 100) * (100-s.sconto))*v.quantità) AS prezzoScontato "
+				+ "FORMAT((((p.prezzo / 100) * (100-s.sconto))*v.quantità), 2) AS prezzoScontato "
 				+ "FROM vendita v, prodotto p, sconto s WHERE p.idProdotto = v.idProdotto "
 				+ "AND s.codiceFiscale = v.codiceFiscaleCliente";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {

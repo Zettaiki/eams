@@ -47,9 +47,9 @@ public class CommerceQuery {
 	// 11
 	public Optional<List<Object[]>> amountProductSoldLastMonth(String idProdotto) {
 		final String query = "SELECT v.idProdotto, SUM(v.quantità) AS quantità "
-				+ "FROM vendita v, servizio s, evento e " + "WHERE v.idProdotto = ? "
-				+ "AND v.idServizio = s.idServizio " + "AND s.idEvento = e.idEvento "
-				+ "AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 MONTH) AND CURRENT_DATE() " + "GROUP BY v.idProdotto";
+				+ "FROM vendita v, servizio s, evento e WHERE v.idProdotto = ? "
+				+ "AND v.idServizio = s.idServizio AND s.idEvento = e.idEvento "
+				+ "AND e.data BETWEEN DATE_SUB(NOW(),INTERVAL 1 MONTH) AND CURRENT_DATE() GROUP BY v.idProdotto";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setString(1, idProdotto);
 			final ResultSet resultSet = statement.executeQuery();

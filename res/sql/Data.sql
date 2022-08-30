@@ -184,7 +184,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
-INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.'),('e8','Green day','2022-09-09',NULL);
+INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.'),('e8','Green day','2022-08-27',NULL);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -476,7 +476,7 @@ CREATE TABLE `raccolta` (
 
 LOCK TABLES `raccolta` WRITE;
 /*!40000 ALTER TABLE `raccolta` DISABLE KEYS */;
-INSERT INTO `raccolta` VALUES ('S4-1','Carta',25.30),('S4-1','Plastiche termoindurenti',30.40),('S4-1','Termoplastiche',10.02),('S4-2','Carta',25.73),('S4-2','Termoplastiche',18.02),('S4-2','Vetro',20.92);
+INSERT INTO `raccolta` VALUES ('S4-1','Carta',25.30),('S4-1','Plastiche termoindurenti',30.40),('S4-1','Termoplastiche',10.02),('S4-2','Carta',25.73),('S4-2','Termoplastiche',18.02),('S4-2','Vetro',20.92),('S6-2','Termoplastiche',45.41),('S6-2','Vetro',32.46),('S6-3','Termoplastiche',28.36);
 /*!40000 ALTER TABLE `raccolta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -574,7 +574,7 @@ CREATE TABLE `servizio` (
 
 LOCK TABLES `servizio` WRITE;
 /*!40000 ALTER TABLE `servizio` DISABLE KEYS */;
-INSERT INTO `servizio` VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e1','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S2-2','e3','15:00:00','18:30:00','Stand di vendita',NULL),('S4-1','e7','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e7','15:00:00','17:00:00','Fabbricazione prodotti',NULL),('S5-1','e4','16:30:00','19:00:00','Raccolta fondi',NULL),('S6-1','e8','15:00:00','18:30:00','Stand di vendita',NULL);
+INSERT INTO `servizio` VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e1','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S2-2','e3','15:00:00','18:30:00','Stand di vendita',NULL),('S4-1','e7','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e7','15:00:00','17:00:00','Fabbricazione prodotti',NULL),('S5-1','e4','16:30:00','19:00:00','Raccolta fondi',NULL),('S6-1','e8','15:00:00','18:30:00','Stand di vendita',NULL),('S6-2','e8','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S6-3','e8','15:00:00','18:00:00','Raccolta rifiuti',NULL);
 /*!40000 ALTER TABLE `servizio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -718,4 +718,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-27  0:14:52
+-- Dump completed on 2022-08-30 16:36:46

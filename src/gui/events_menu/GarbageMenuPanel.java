@@ -112,7 +112,8 @@ public class GarbageMenuPanel extends JPanel {
         });
         
         garbageStatisticsButton.addActionListener(e -> {
-	        // TODO
+        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new GarbageStatisticsPanel());
         });
     }
 }

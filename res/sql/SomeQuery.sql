@@ -143,3 +143,9 @@ SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS T
 FROM partecipazione p, servizio s
 WHERE p.idServizio = s.idServizio
 GROUP BY p.codiceFiscaleVolontario;
+
+-- 14 volontari che partecipano a un servizio
+SELECT p.codiceFiscaleVolontario, pe.nome, pe.cognome
+FROM partecipazione p, persona pe
+WHERE p.idServizio = "S5-1"
+AND p.codiceFiscaleVolontario = pe.codiceFiscale;

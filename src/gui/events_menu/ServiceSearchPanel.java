@@ -60,7 +60,15 @@ public class ServiceSearchPanel extends JPanel {
 			
 			// Bottom panel
 			
-			var a2 = new JButton("Iscrivere volontario ad un servizio");
+			var a2 = new JPanel();
+			a2.setLayout(new GridLayout(1,2));
+			
+				var volunteerButton = new JButton("Iscrivere volontario ad un servizio");
+				a2.add(volunteerButton);
+				
+				var serviceListButton = new JButton("Lista volontari per servizio");
+				a2.add(serviceListButton);
+				
 			this.add(a2, BorderLayout.PAGE_END);
 			
 			// Action listeners
@@ -73,9 +81,14 @@ public class ServiceSearchPanel extends JPanel {
 				}
 		    });
 			
-			a2.addActionListener(e -> {
+			volunteerButton.addActionListener(e -> {
 				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		        JComponentLoader.load(parentFrame, new VolunteerRegisterServicePanel());
 		    });
+			
+			serviceListButton.addActionListener(e -> {
+				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		        JComponentLoader.load(parentFrame, new ServiceVolunteerSearchPanel());
+			});
 	    }
 }

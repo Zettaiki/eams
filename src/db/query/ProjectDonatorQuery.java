@@ -50,7 +50,7 @@ public class ProjectDonatorQuery {
     			while (resultSet.next()) {
     				final Integer idProgetto = resultSet.getInt("idProgetto");
     				final BigDecimal donazioniProgetto = resultSet.getBigDecimal("donazioniProgetto");
-    				final Float percentuale = resultSet.getFloat("percentuale");
+    				final String percentuale = resultSet.getString("percentuale");
     				
     				Object[] data = { idProgetto, donazioniProgetto, percentuale };
 
@@ -80,7 +80,7 @@ public class ProjectDonatorQuery {
     			while (resultSet.next()) {
     				final Integer idProgetto = resultSet.getInt("idProgetto");
     				final Integer donazioniProgetto = resultSet.getInt("donazioniProgetto");
-    				final Float percentuale = resultSet.getFloat("percentuale");
+    				final String percentuale = resultSet.getString("percentuale");
 
 					Object[] data = { idProgetto, donazioniProgetto, percentuale };
 

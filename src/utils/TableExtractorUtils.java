@@ -126,7 +126,7 @@ public class TableExtractorUtils {
 		// Requesting connection
 		ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
 		
-		// Ordering and collectiong the data
+		// Ordering and collecting the data
 		String[] columnNames = {"ID progetto", "Donazioni progetto", "Percentuale"};
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		Optional<List<Object[]>> donationStatisticList = projectDonatorQuery.donationPerProject();
@@ -141,7 +141,7 @@ public class TableExtractorUtils {
 		// Requesting connection
 		ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
 		
-		// Ordering and collectiong the data
+		// Ordering and collecting the data
 		String[] columnNames = {"ID progetto", "Donazioni progetto", "Percentuale"};
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		Optional<List<Object[]>> donationStatisticList = projectDonatorQuery.donationPerActiveProject();
@@ -156,12 +156,27 @@ public class TableExtractorUtils {
 		// Requesting connection
 		CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
 		
-		// Ordering and collectiong the data
+		// Ordering and collecting the data
 		String[] columnNames = {"ID prodotto", "Prezzo", "Sconto", "Prezzo scontato"};
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		Optional<List<Object[]>> productList = commerceQuery.showProductSalePrice();
 		if(productList.isEmpty()) return data;
 		for( Object[] x : productList.get() ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
+	public static DefaultTableModel garbageYearStatistics() {
+		// Requesting connection
+		EventServiceQuery eventServiceQuery = new EventServiceQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collecting
+		String[] columnNames = {"Materiale", "Media Kg raccolti"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> statistics = eventServiceQuery.avgCollectedGarbagePerYear();
+		if(statistics.isEmpty()) return data;
+		for( Object[] x : statistics.get() ) {
 			data.addRow(x);
 		}
 		return data;

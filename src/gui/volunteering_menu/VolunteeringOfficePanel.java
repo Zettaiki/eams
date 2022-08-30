@@ -12,12 +12,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import db.query.VolunteerQuery;
 import db.tables.OfficeTable;
 import gui.GUI;
 import utils.ConnectionProvider;
@@ -89,7 +91,11 @@ public class VolunteeringOfficePanel extends JPanel {
         });
         
         mostVolunteersOffice.addActionListener(e -> {
-        	// TODO
+        	VolunteerQuery volunteerQuery = new VolunteerQuery(ConnectionProvider.getMySQLConnection());
+    		JOptionPane.showMessageDialog(getParent(), "Donatore con maggiore quantita:\n" +
+	    	"Nome sede: " + volunteerQuery.mostActiveOffice().get().get(0)[0].toString() +
+	    	"\nOre servizio: " + volunteerQuery.mostActiveOffice().get().get(0)[1].toString(),
+    		"Informazione", JOptionPane.INFORMATION_MESSAGE);
         });
         
         c0.addActionListener(e -> {

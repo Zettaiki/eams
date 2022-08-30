@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.swing.table.DefaultTableModel;
 
+import db.query.CommerceQuery;
 import db.query.EventServiceQuery;
 import db.query.NewsletterQuery;
 import db.query.ProjectDonatorQuery;
@@ -12,15 +13,15 @@ import db.query.VolunteerQuery;
 import db.tables.DonationTable;
 import db.tables.EventTable;
 import db.tables.NewsletterTable;
+import db.tables.ProductTable;
 import db.tables.ProjectTable;
-import db.tables.SaleTable;
 import db.tables.ServiceTable;
 import db.tables.VolunteerTable;
 import model.Donation;
 import model.Event;
 import model.Newsletter;
+import model.Product;
 import model.Project;
-import model.Sale;
 import model.Service;
 import model.Volunteer;
 
@@ -136,6 +137,36 @@ public class TableExtractorUtils {
 		return data;
 	}
 	
+	public static DefaultTableModel activeDonationStatistics() {
+		// Requesting connection
+		ProjectDonatorQuery projectDonatorQuery = new ProjectDonatorQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collectiong the data
+		String[] columnNames = {"ID progetto", "Donazioni progetto", "Percentuale"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> donationStatisticList = projectDonatorQuery.donationPerActiveProject();
+		if(donationStatisticList.isEmpty()) return data;
+		for( Object[] x : donationStatisticList.get() ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
+	public static DefaultTableModel productSaleList() {
+		// Requesting connection
+		CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collectiong the data
+		String[] columnNames = {"ID prodotto", "Prezzo", "Sconto", "Prezzo scontato"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> productList = commerceQuery.showProductSalePrice();
+		if(productList.isEmpty()) return data;
+		for( Object[] x : productList.get() ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
 	// STANDARD TABLES
 	
 	public static DefaultTableModel volunteerTable() {
@@ -228,16 +259,16 @@ public class TableExtractorUtils {
 	    return data;
 	}
 	
-	public static DefaultTableModel	saleTable() {
+	public static DefaultTableModel	productTable() {
 		// Requesting connection
-		SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
+		ProductTable productTable = new ProductTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-		String[] columnNames = {"ID", "ID servizio", "Codice Fiscale Cliente", "Quantità"};	    
+		String[] columnNames = {"ID", "Categoria", "Nome", "Prezzo", "Quantita", "Provenienza", "Descrizione"};	    
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
-	    List<Sale> saleList = saleTable.findAll();
-	    for( Sale x : saleList ) {
-	    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità()};
+	    List<Product> saleList = productTable.findAll();
+	    for( Product x : saleList ) {
+	    	Object[] temp = {x.getIdProdotto(), x.getCategoria(), x.getNome(), x.getPrezzo(), x.getQuantitàImmagazzinata(), x.getProvenienza(), checkIfEmpty(x.getDescrizione())};
 	    	data.addRow(temp);
 	    }
 	    return data;

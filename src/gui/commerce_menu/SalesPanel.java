@@ -27,26 +27,29 @@ public class SalesPanel extends JPanel {
         this.setLayout(new BorderLayout());
         
         // Titolo schermata
-        var a0 = new JLabel("Ecological Association Management System - Vendite");
+        var a0 = new JLabel("Ecological Association Management System - Listino vendite");
         a0.setHorizontalAlignment(SwingConstants.CENTER);
     	a0.setFont(new Font("SansSerif", Font.BOLD, 20));
         this.add(a0, BorderLayout.PAGE_START);
         
         // Centro
-    	var volunteeringTable = new JTable(TableExtractorUtils.productSaleList());
-    	volunteeringTable.setEnabled(false);
-    	volunteeringTable.getTableHeader().setReorderingAllowed(false);
-    	volunteeringTable.getTableHeader().setEnabled(false);
-    	JScrollPane b0 = new JScrollPane(volunteeringTable);
-        b0.setBorder(BorderFactory.createTitledBorder("Vendite e vendite scontate:"));
-    	this.add(b0, BorderLayout.CENTER);
+    	var listTable = new JTable(TableExtractorUtils.productSaleList());
+    	listTable.setEnabled(false);
+    	listTable.getTableHeader().setReorderingAllowed(false);
+    	listTable.getTableHeader().setEnabled(false);
+    	JScrollPane b0 = new JScrollPane(listTable);
+    	b0.setBorder(BorderFactory.createTitledBorder("Listino vendite e vendite prodotti:"));
+	    this.add(b0, BorderLayout.CENTER);
 
         // End panel
         var c0 = new JButton("Ritorna al pannello commercio");
+        this.add(c0, BorderLayout.PAGE_END);
+        
+        // Action listeners
         c0.addActionListener(e -> {
 	        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new CommerceMenuPanel());
         });
-        this.add(c0, BorderLayout.PAGE_END);
+        
 	}
 }

@@ -32,16 +32,16 @@ public class ProductPanel extends JPanel {
 			var upperButtons = new JPanel();
 			upperButtons.setLayout(new GridLayout(1,0));
 		    
-			    var buyButton = new JButton("Acquisto prodotto");
+			    var buyButton = new JButton("Vendita prodotto");
 			    upperButtons.add(buyButton);
 			    
-			    var listButton = new JButton("Lista acquisti");
+			    var listButton = new JButton("Listino vendite");
 			    upperButtons.add(listButton);
 			    
 			a0.add(upperButtons);
 		    
 		    var searchPanel = new JPanel();
-		    searchPanel.setBorder(BorderFactory.createTitledBorder("Ricerca quantita venduta di un prodotto attraverso ID:"));
+		    searchPanel.setBorder(BorderFactory.createTitledBorder("Ricerca quantita venduta di un prodotto attraverso ID nell'ultimo mese:"));
 		    searchPanel.setLayout(new GridLayout(1,0));
 		    
 			    var searchBar = new JTextField(16);
@@ -84,7 +84,7 @@ public class ProductPanel extends JPanel {
 			CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
     		JOptionPane.showMessageDialog(getParent(),
     		"ID prodotto: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[0] +
-	    	"Quantità: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[1],
+	    	"\nQuantità: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[1],
     		"Informazione", JOptionPane.INFORMATION_MESSAGE);
 		});
 	}

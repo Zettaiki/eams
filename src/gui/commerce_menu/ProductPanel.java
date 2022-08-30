@@ -6,11 +6,15 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import db.query.CommerceQuery;
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
 import utils.TableExtractorUtils;
 
@@ -23,16 +27,30 @@ public class ProductPanel extends JPanel {
 		// Upper panel
 		var a0 = new JPanel();
 		a0.setBorder(BorderFactory.createTitledBorder("Operazioni disponibili:"));
-		a0.setLayout(new GridLayout(1,0));
+		a0.setLayout(new GridLayout(0,1));
 		
-			var registerButton = new JButton("Registrare prodotto");
-			a0.add(registerButton);
+			var upperButtons = new JPanel();
+			upperButtons.setLayout(new GridLayout(1,0));
 		    
-		    var buyButton = new JButton("Acquisto prodotto");
-		    a0.add(buyButton);
+			    var buyButton = new JButton("Acquisto prodotto");
+			    upperButtons.add(buyButton);
+			    
+			    var listButton = new JButton("Lista acquisti");
+			    upperButtons.add(listButton);
+			    
+			a0.add(upperButtons);
 		    
-		    var listButton = new JButton("Lista acquisti");
-		    a0.add(listButton);
+		    var searchPanel = new JPanel();
+		    searchPanel.setBorder(BorderFactory.createTitledBorder("Ricerca quantita venduta di un prodotto attraverso ID:"));
+		    searchPanel.setLayout(new GridLayout(1,0));
+		    
+			    var searchBar = new JTextField(16);
+			    searchPanel.add(searchBar);
+			    
+			    var searchButton = new JButton("Cerca");
+			    searchPanel.add(searchButton);
+			
+			a0.add(searchPanel);
 		
 		this.add(a0, BorderLayout.PAGE_START);
 		
@@ -52,18 +70,22 @@ public class ProductPanel extends JPanel {
 		
 		// Action listeners 
 		
-		registerButton.addActionListener(e -> {
-			JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-	        JComponentLoader.load(parentFrame, new InsertProductPanel());
-	    });
-		
 		buyButton.addActionListener(e -> {
-	    	// TODO
+			JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new InsertBuyPanel());
 	    });
 		
 		listButton.addActionListener(e -> {
 			JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	        JComponentLoader.load(parentFrame, new SalesPanel());
+		});
+		
+		searchButton.addActionListener(e -> {
+			CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
+    		JOptionPane.showMessageDialog(getParent(),
+    		"ID prodotto: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[0] +
+	    	"Quantità: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[1],
+    		"Informazione", JOptionPane.INFORMATION_MESSAGE);
 		});
 	}
 	

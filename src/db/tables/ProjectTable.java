@@ -40,6 +40,7 @@ public class ProjectTable {
         }
 	}
 
+	// show
 	public List<Project> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -67,6 +68,7 @@ public class ProjectTable {
 		return progetti;
 	}
 
+	// query
 	public boolean save(Project progetto) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(obbiettivo, dataInizio, durataMesi, descrizione) VALUES (?,?,?,?)";
@@ -83,15 +85,4 @@ public class ProjectTable {
             throw new IllegalStateException(e);
         }
 	}
-
-	public boolean delete(Integer idProgetto) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idProgetto = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idProgetto);
-            return statement.executeUpdate() > 0;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
 }

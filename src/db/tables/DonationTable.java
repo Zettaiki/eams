@@ -31,17 +31,7 @@ public class DonationTable {
 		return TABLE_NAME;
 	}
 
-	public Optional<Donation> findByPrimaryKey(Integer idDonazione) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idDonazione = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setInt(1, idDonazione);
-			final ResultSet resultSet = statement.executeQuery();
-			return readFromResultSet(resultSet).stream().findFirst();
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
+	// show
 	public List<Donation> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
 			final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -94,31 +84,6 @@ public class DonationTable {
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);
 		}
-	}
-
-	public boolean update(Donation updatedDonazione) {
-		final String query = "UPDATE " + TABLE_NAME + " SET " + "importo = ?," + "codiceFiscale = ?, "
-				+ "dataDonazione = ?, " + "idProgetto = ? " + "WHERE idDonazione = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setBigDecimal(1, updatedDonazione.getImporto());
-			statement.setString(2, updatedDonazione.getCodiceFiscale());
-			statement.setDate(3, Utils.dateToSqlDate(updatedDonazione.getDataDonazione()));
-			statement.setInt(4, updatedDonazione.getIdProgetto().orElse(null));
-			statement.setInt(5, updatedDonazione.getIdDonazione());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	public boolean delete(Integer idDonazione) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idDonazione = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idDonazione);
-            return statement.executeUpdate() > 0;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
 	}
 
 }

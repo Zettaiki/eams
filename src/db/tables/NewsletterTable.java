@@ -27,17 +27,7 @@ public class NewsletterTable {
 		return TABLE_NAME;
 	}
 
-	public Optional<Newsletter> findByPrimaryKey(Integer idNewsletter) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idNewsletter = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idNewsletter);
-            final ResultSet resultSet = statement.executeQuery();
-            return readFromResultSet(resultSet).stream().findFirst();
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
+	// show
 	public List<Newsletter> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -62,6 +52,7 @@ public class NewsletterTable {
 		return newsletters;
 	}
 
+	// query
 	public boolean save(Newsletter newsletter) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(argomento, descrizione) VALUES (?,?)";
@@ -76,38 +67,5 @@ public class NewsletterTable {
             throw new IllegalStateException(e);
         }
 	}
-
-	public boolean update(Newsletter updatedNewsletter) {
-		final String query = "UPDATE " + TABLE_NAME + " SET argomento = ?," + "descrizione = ? "
-				+ "WHERE idNewsletter = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedNewsletter.getArgomento());
-			statement.setString(2, updatedNewsletter.getDescrizione().orElse(null));
-			statement.setInt(3, updatedNewsletter.getIdNewsletter());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	public boolean delete(Integer idNewsletter) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idNewsletter = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, idNewsletter);
-            return statement.executeUpdate() > 0;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
 	
-	public boolean dropTable() {
-		try (final Statement statement = this.connection.createStatement()) {			
-			statement.executeUpdate("SET foreign_key_checks = 0;");
-			statement.executeUpdate("DROP TABLE IF EXISTS " + TABLE_NAME);            
-            statement.executeUpdate("SET foreign_key_checks = 1;");
-            return true;
-        } catch (final SQLException e) {
-            return false;
-        }
-	}
 }

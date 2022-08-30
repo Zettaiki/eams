@@ -62,6 +62,7 @@ public class PlanningTable {
 		return organizzazioni;
 	}
 
+	// 
 	public boolean save(Planning organizzazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				" (codiceFiscaleDipendente, idEvento) VALUES (?,?)";
@@ -76,16 +77,4 @@ public class PlanningTable {
             throw new IllegalStateException(e);
         }
 	}
-
-	public boolean delete(String codiceFiscaleDipendente, String idEvento) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleDipendente = ? AND idEvento = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscaleDipendente);
-            statement.setString(2, idEvento);
-            return statement.executeUpdate() > 0;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
 }

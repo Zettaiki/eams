@@ -40,6 +40,7 @@ public class VolunteerTable {
         }
 	}
 
+	// show
 	public List<Volunteer> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -75,29 +76,6 @@ public class VolunteerTable {
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
             return false;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public boolean update(Volunteer updatedVolontario) {
-		final String query = "UPDATE " + TABLE_NAME + " SET sedeCittà = ?," + "dataIscrizione = ? "
-				+ "WHERE codiceFiscale = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedVolontario.getSedeCittà());
-			statement.setDate(2, Utils.dateToSqlDate(updatedVolontario.getDataIscrizione()));
-			statement.setString(3, updatedVolontario.getCodiceFiscale());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	public boolean delete(String codiceFiscale) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscale);
-            return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

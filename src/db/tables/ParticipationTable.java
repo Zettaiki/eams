@@ -27,41 +27,6 @@ public class ParticipationTable {
 		return TABLE_NAME;
 	}
 
-	public Optional<Participation> findByPrimaryKey(String codiceFiscaleVolontario, String idServizio) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ? AND idServizio = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscaleVolontario);
-            statement.setString(2, idServizio);
-            final ResultSet resultSet = statement.executeQuery();
-            return readFromResultSet(resultSet).stream().findFirst();
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public List<Participation> findAll() {
-		try (final Statement statement = this.connection.createStatement()) {
-            final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
-            return readFromResultSet(resultSet);
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public List<Participation> readFromResultSet(ResultSet resultSet) {
-		final List<Participation> partecipazioni = new ArrayList<>();
-		try {
-			while (resultSet.next()) {
-				final String codiceFiscaleVolontario = resultSet.getString("codiceFiscaleVolontario");
-				final String idServizio = resultSet.getString("idServizio");
-				
-				final Participation partecipazione = new Participation(codiceFiscaleVolontario, idServizio);
-				partecipazioni.add(partecipazione);
-			}
-		} catch (final SQLException e) {}
-		return partecipazioni;
-	}
-
 	// 13
 	public boolean save(Participation partecipazione) {
 		final String query = "INSERT INTO " + TABLE_NAME +
@@ -73,18 +38,6 @@ public class ParticipationTable {
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
             return false;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public boolean delete(String codiceFiscaleVolontario, String idServizio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscaleVolontario = ?" +
-				"AND idServizio = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscaleVolontario);
-            statement.setString(2, idServizio);
-            return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

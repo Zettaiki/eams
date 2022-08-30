@@ -29,6 +29,7 @@ public class ServiceTable {
 		return TABLE_NAME;
 	}
 
+	// query
 	public Optional<Service> findByPrimaryKey(String idServizio) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -40,6 +41,7 @@ public class ServiceTable {
         }
 	}
 
+	// show
 	public List<Service> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -70,6 +72,7 @@ public class ServiceTable {
 		return servizi;
 	}
 
+	// query
 	public boolean save(Service servizio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idServizio, idEvento, oraInizio, oraFine, tipo, idProgetto) VALUES (?,?,?,?,?,?)";
@@ -89,32 +92,6 @@ public class ServiceTable {
         } catch (final SQLIntegrityConstraintViolationException e) {
         	System.out.println(e.toString());
             return false;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public boolean update(Service updatedServizio) {
-		final String query = "UPDATE " + TABLE_NAME + " SET idEvento = ?, oraInizio = ?, oraFine = ?, tipo = ?, idProgetto = ? "
-				+ "WHERE idServizio = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedServizio.getIdEvento());
-			statement.setTime(2, updatedServizio.getOraInizio());
-			statement.setTime(3, updatedServizio.getOraFine());
-			statement.setString(4, updatedServizio.getTipo());
-            statement.setInt(5, updatedServizio.getIdProgetto().orElse(null));
-            statement.setString(6, updatedServizio.getIdServizio());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	public boolean delete(String idServizio) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idServizio);
-            return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

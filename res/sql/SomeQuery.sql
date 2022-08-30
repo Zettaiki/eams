@@ -114,7 +114,7 @@ SELECT (CASE WHEN (tesserasocio.codiceFiscale = vendita.codiceFiscaleCliente)
 -- 16 bis mostra vendite con prezzo di vendita (uso query perché non ci serve memo nel db e view perché non sono riuscita diverso)
 -- prezzo di vendita senza sconto, sconto e prezzo scontato
 SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) AS prezzoVendita, s.sconto, 
-(((p.prezzo / 100) * (100-s.sconto))*v.quantità) AS prezzoScontato
+FORMAT ((((p.prezzo / 100) * (100-s.sconto))*v.quantità), 2) AS prezzoScontato
 FROM vendita v, prodotto p, sconto s
 WHERE p.idProdotto = v.idProdotto
 AND s.codiceFiscale = v.codiceFiscaleCliente;

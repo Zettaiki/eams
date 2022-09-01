@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,15 +32,6 @@ public class PersonTable {
             statement.setString(1, codiceFiscale);
             final ResultSet resultSet = statement.executeQuery();
             return readFromResultSet(resultSet).stream().findFirst();
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public List<Person> findAll() {
-		try (final Statement statement = this.connection.createStatement()) {
-            final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
-            return readFromResultSet(resultSet);
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
@@ -112,16 +102,6 @@ public class PersonTable {
             return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
         	System.out.println(e.toString());
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public boolean delete(String codiceFiscale) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, codiceFiscale);
-            return statement.executeUpdate() > 0;
-        } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
 	}

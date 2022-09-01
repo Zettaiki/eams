@@ -1,16 +1,10 @@
 package db.tables;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import model.GarbageCollection;
 
@@ -28,42 +22,7 @@ public class GarbageCollectionTable {
 		return TABLE_NAME;
 	}
 
-	public Optional<GarbageCollection> findByPrimaryKey(String idServizio, String materiale) {
-		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idServizio);
-            statement.setString(2, materiale);
-            final ResultSet resultSet = statement.executeQuery();
-            return readFromResultSet(resultSet).stream().findFirst();
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public List<GarbageCollection> findAll() {
-		try (final Statement statement = this.connection.createStatement()) {
-            final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
-            return readFromResultSet(resultSet);
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public List<GarbageCollection> readFromResultSet(ResultSet resultSet) {
-		final List<GarbageCollection> raccolte = new ArrayList<>();
-		try {
-			while (resultSet.next()) {
-				final String idServizio = resultSet.getString("idServizio");
-				final String materiale = resultSet.getString("materiale");
-				final BigDecimal kg = resultSet.getBigDecimal("kg");
-				
-				final GarbageCollection raccolta = new GarbageCollection(idServizio, materiale, kg);
-				raccolte.add(raccolta);
-			}
-		} catch (final SQLException e) {}
-		return raccolte;
-	}
-
+	// 6 credo
 	public boolean save(GarbageCollection raccolta) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(idServizio, materiale, kg) VALUES (?,?,?)";
@@ -75,30 +34,6 @@ public class GarbageCollectionTable {
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
             return false;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public boolean update(GarbageCollection updatedRaccolta) {
-		final String query = "UPDATE " + TABLE_NAME + " SET kg = ? "
-				+ "WHERE idServizio = ? AND materiale = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setBigDecimal(1, updatedRaccolta.getKg());
-			statement.setString(2, updatedRaccolta.getIdServizio());
-			statement.setString(3, updatedRaccolta.getMateriale());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	public boolean delete(String idServizio, String materiale) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idServizio = ? AND materiale = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idServizio);
-			statement.setString(2, materiale);
-            return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

@@ -29,6 +29,7 @@ public class EventTable {
 		return TABLE_NAME;
 	}
 
+	// ricerca per id
 	public Optional<Event> findByPrimaryKey(String idEvento) {
 		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE idEvento = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -40,6 +41,7 @@ public class EventTable {
         }
 	}
 
+	// show
 	public List<Event> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
@@ -78,30 +80,6 @@ public class EventTable {
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {
             return false;
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}
-
-	public boolean update(Event updatedEvento) {
-		final String query = "UPDATE " + TABLE_NAME + " SET nome = ?," + "data = ?," + "descrizione = ? "
-				+ "WHERE idEvento = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedEvento.getNome());
-			statement.setDate(2, Utils.dateToSqlDate(updatedEvento.getData()));
-			statement.setString(3, updatedEvento.getDescrizione().orElse(null));
-			statement.setString(4, updatedEvento.getIdEvento());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	public boolean delete(String idEvento) {
-		final String query = "DELETE FROM " + TABLE_NAME + " WHERE idEvento = ?";
-        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, idEvento);
-            return statement.executeUpdate() > 0;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

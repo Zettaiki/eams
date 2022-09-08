@@ -79,7 +79,6 @@ public class DonationTable {
 			statement.executeUpdate();
 			return true;
 		} catch (final SQLIntegrityConstraintViolationException e) {
-			System.out.println(e.toString());
 			return false;
 		} catch (final SQLException e) {
 			throw new IllegalStateException(e);

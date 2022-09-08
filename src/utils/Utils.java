@@ -1,7 +1,9 @@
 package utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -16,14 +18,27 @@ public final class Utils {
         return date == null ? null : new java.sql.Date(date.getTime());
     }
     
-    public static Optional<java.util.Date> buildDate(final int day, final int month, final int year) {
+    public static Optional<String> buildDate(Date myDate) {
+    	Optional<String> date = Optional.empty();
         try {
-            final String dateFormatString = "dd/MM/yyyy";
-            final String dateString = day + "/" + month + "/" + year;
-            final java.util.Date date = new SimpleDateFormat(dateFormatString, Locale.ITALIAN).parse(dateString);
-            return Optional.of(date);
-        } catch (final ParseException e) {
-            return Optional.empty();
-        }
+        	date = getMyDate(myDate.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return date;
     }
+
+    private static Optional<String> getMyDate(String myDate) {
+    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	Date date = null;
+    	Optional<String> returnValue = Optional.of("");
+    	try {
+    		date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(myDate);
+    		returnValue = Optional.of(dateFormat.format(date));
+    	} catch (ParseException e) {
+    		returnValue = Optional.of(myDate);
+    	}
+    	return returnValue;
+    }
+
 }

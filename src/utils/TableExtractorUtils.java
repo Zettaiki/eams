@@ -40,8 +40,10 @@ public class TableExtractorUtils {
 		String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Data fine", "Durata mesi", "Descrizione"};
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		List<Project> projectList = projectDonatorQuery.activeProjects();
-		for( Project x : projectList ) {
-			Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDataFine(), x.getDurataMesi(), checkIfEmpty(x.getDescrizione())};
+		for (Project x : projectList) {
+			Object[] temp = { x.getIdProgetto(), x.getObbiettivo(), checkIfEmpty(Utils.buildDate(x.getDataInizio())),
+					checkIfEmpty(Utils.buildDate(x.getDataFine())), x.getDurataMesi(),
+					checkIfEmpty(x.getDescrizione()) };
 			data.addRow(temp);
 		}
 		return data;
@@ -71,7 +73,7 @@ public class TableExtractorUtils {
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		List<Volunteer> officeVolunteerList = volunteerQuery.officeVolunteer(sedeCittà);
 		for( Volunteer x : officeVolunteerList ) {
-			Object[] temp = {x.getCodiceFiscale(), x.getSedeCittà(), x.getDataIscrizione()};
+			Object[] temp = {x.getCodiceFiscale(), x.getSedeCittà(), checkIfEmpty(Utils.buildDate(x.getDataIscrizione()))};
 			data.addRow(temp);
 		}
 		return data;
@@ -193,7 +195,7 @@ public class TableExtractorUtils {
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Volunteer> volunteerList = volunteerTable.findAll();
 	    for( Volunteer x : volunteerList ) {
-	    	Object[] temp = {x.getCodiceFiscale(), x.getSedeCittà(), x.getDataIscrizione()};
+	    	Object[] temp = {x.getCodiceFiscale(), x.getSedeCittà(), checkIfEmpty(Utils.buildDate(x.getDataIscrizione()))};
 	    	data.addRow(temp);
 	    }
 	    return data;
@@ -207,9 +209,11 @@ public class TableExtractorUtils {
 	    String[] columnNames = {"ID", "Obbiettivo", "Data inizio", "Data fine", "Durata mesi", "Descrizione"};	    
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Project> projectList = projectTable.findAll();
-	    for( Project x : projectList ) {
-	    	Object[] temp = {x.getIdProgetto(), x.getObbiettivo(), x.getDataInizio(), x.getDataFine(), x.getDurataMesi(), checkIfEmpty(x.getDescrizione())};
-	    	data.addRow(temp);
+		for (Project x : projectList) {
+			Object[] temp = { x.getIdProgetto(), x.getObbiettivo(), checkIfEmpty(Utils.buildDate(x.getDataInizio())),
+					checkIfEmpty(Utils.buildDate(x.getDataFine())), x.getDurataMesi(),
+					checkIfEmpty(x.getDescrizione()) };
+			data.addRow(temp);
 	    }
 	    return data;
 	}
@@ -223,8 +227,9 @@ public class TableExtractorUtils {
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Donation> donationList = donationTable.findAll();
 	    for( Donation x : donationList ) {
-	    	Object[] temp = {x.getIdDonazione(), x.getImporto(), x.getCodiceFiscale(), x.getDataDonazione(), checkIfEmpty(x.getIdProgetto())};
-	    	data.addRow(temp);
+			Object[] temp = { x.getIdDonazione(), x.getImporto(), x.getCodiceFiscale(),
+					checkIfEmpty(Utils.buildDate(x.getDataDonazione())), checkIfEmpty(x.getIdProgetto()) };
+			data.addRow(temp);
 	    }
 	    return data;
 	}
@@ -238,7 +243,7 @@ public class TableExtractorUtils {
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Event> eventList = eventTable.findAll();
 	    for( Event x : eventList ) {
-	    	Object[] temp = {x.getIdEvento(), x.getNome(), x.getData(), checkIfEmpty(x.getDescrizione())};
+	    	Object[] temp = {x.getIdEvento(), x.getNome(), checkIfEmpty(Utils.buildDate(x.getData())), checkIfEmpty(x.getDescrizione())};
 	    	data.addRow(temp);
 	    }
 	    return data;

@@ -143,6 +143,7 @@ CREATE TABLE `donazione` (
   `importo` decimal(11,2) NOT NULL,
   `codiceFiscale` char(16) NOT NULL,
   `dataDonazione` date NOT NULL,
+  `tipo` VARCHAR(45) NOT NULL,
   `idProgetto` int DEFAULT NULL,
   PRIMARY KEY (`idDonazione`),
   KEY `fk_donazione_progetto1_idx` (`idProgetto`),
@@ -158,7 +159,7 @@ CREATE TABLE `donazione` (
 
 LOCK TABLES `donazione` WRITE;
 /*!40000 ALTER TABLE `donazione` DISABLE KEYS */;
-INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24',6),(3,5.00,'PLABNL91S14I608D','2022-06-29',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24',6),(5,35.00,'PLABNL91S14I608D','2022-06-29',1);
+INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24','periodica',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24','periodica',6),(3,5.00,'PLABNL91S14I608D','2022-06-29','singola',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24','periodica',6),(5,35.00,'PLABNL91S14I608D','2022-06-29','singola',1);
 /*!40000 ALTER TABLE `donazione` ENABLE KEYS */;
 UNLOCK TABLES;
 

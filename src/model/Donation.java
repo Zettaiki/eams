@@ -10,18 +10,20 @@ public class Donation {
     private final BigDecimal importo;
     private final String codiceFiscale;
     private final Date dataDonazione;
+    private final String tipo;
     private final Optional<Integer> idProgetto;
     
-	public Donation(Optional<Integer> idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione, Optional<Integer> idProgetto) {
+	public Donation(Optional<Integer> idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione, String tipo, Optional<Integer> idProgetto) {
 		this.idDonazione = idDonazione;
 		this.importo = importo;
 		this.codiceFiscale = codiceFiscale;
 		this.dataDonazione = dataDonazione;
+		this.tipo = tipo;
 		this.idProgetto = Objects.requireNonNull(idProgetto);
 	}
 	
-	public Donation(Optional<Integer> idDonazione, BigDecimal importo, String codiceFiscale, Date dataDonazione) {
-		this(idDonazione, importo, codiceFiscale, dataDonazione, Optional.empty());
+	public Donation(Optional<Integer> idDonazione, BigDecimal importo, String codiceFiscale, String tipo, Date dataDonazione) {
+		this(idDonazione, importo, codiceFiscale, dataDonazione, tipo, Optional.empty());
 	}
     
 	public Integer getIdDonazione() {
@@ -41,6 +43,10 @@ public class Donation {
 	public Date getDataDonazione() {
 		return this.dataDonazione;
 	}
+	
+	public String getTipo() {
+		return this.tipo;
+	}
 
 	public Optional<Integer> getIdProgetto() {
 		return this.idProgetto;
@@ -53,6 +59,7 @@ public class Donation {
 			.append(importo).append(" ")
 			.append(codiceFiscale).append(" ")
 			.append(dataDonazione).append(" ")
+			.append(tipo).append(" ")
 			.append(idProgetto).toString();
     }
 
@@ -63,11 +70,12 @@ public class Donation {
                 && ((Donation) other).getImporto().equals(this.getImporto())
                 && ((Donation) other).getCodiceFiscale().equals(this.getCodiceFiscale())
                 && ((Donation) other).getDataDonazione().equals(this.getDataDonazione())
+                && ((Donation) other).getTipo().equals(this.getTipo())
                 && ((Donation) other).getIdProgetto().equals(this.getIdProgetto());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.idDonazione, this.importo, this.codiceFiscale, this.dataDonazione, this.idProgetto);
+        return Objects.hash(this.idDonazione, this.importo, this.codiceFiscale, this.dataDonazione, this.tipo, this.idProgetto);
     }
 }

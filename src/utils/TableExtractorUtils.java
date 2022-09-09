@@ -223,12 +223,12 @@ public class TableExtractorUtils {
 		DonationTable donationTable = new DonationTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-		String[] columnNames = {"ID", "Importo", "Codice fiscale", "Data donazione", "ID progetto"};  
+		String[] columnNames = {"ID", "Importo", "Codice fiscale", "Data donazione", "Tipo", "ID progetto"};  
 	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Donation> donationList = donationTable.findAll();
 	    for( Donation x : donationList ) {
 			Object[] temp = { x.getIdDonazione(), x.getImporto(), x.getCodiceFiscale(),
-					checkIfEmpty(Utils.buildDate(x.getDataDonazione())), checkIfEmpty(x.getIdProgetto()) };
+					checkIfEmpty(Utils.buildDate(x.getDataDonazione())), x.getTipo(), checkIfEmpty(x.getIdProgetto()) };
 			data.addRow(temp);
 	    }
 	    return data;

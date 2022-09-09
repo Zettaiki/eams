@@ -49,13 +49,14 @@ public class DonationTable {
 				final BigDecimal importo = resultSet.getBigDecimal("importo");
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final Date dataDonazione = Utils.sqlDateToDate(resultSet.getDate("dataDonazione"));
+				final String tipo = resultSet.getString("tipo");
 				Optional<Integer> idProgetto = Optional.ofNullable(resultSet.getInt("idProgetto"));
 			    if(resultSet.wasNull()) {
 			    	idProgetto = Optional.empty();
 			    }
 				
 				final Donation donazione = new Donation(idDonazione, importo, codiceFiscale, dataDonazione,
-						idProgetto);
+						tipo, idProgetto);
 				donazioni.add(donazione);
 			}
 		} catch (final SQLException e) {
@@ -66,15 +67,16 @@ public class DonationTable {
 	// 19
 	public boolean save(Donation donazione) {
 		final String query = "INSERT INTO " + TABLE_NAME
-				+ "(importo, codiceFiscale, dataDonazione, idProgetto) VALUES (?,?,?,?)";
+				+ "(importo, codiceFiscale, dataDonazione, tipo, idProgetto) VALUES (?,?,?,?,?)";
 		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
 			statement.setBigDecimal(1, donazione.getImporto());
 			statement.setString(2, donazione.getCodiceFiscale());
 			statement.setDate(3, Utils.dateToSqlDate(donazione.getDataDonazione()));
+			statement.setString(4, donazione.getTipo());
 			if(donazione.getIdProgetto().isEmpty()) {
-                statement.setNull(4, Types.INTEGER);
+                statement.setNull(5, Types.INTEGER);
             } else {
-                statement.setInt(4, donazione.getIdProgetto().get());
+                statement.setInt(5, donazione.getIdProgetto().get());
             }
 			statement.executeUpdate();
 			return true;

@@ -8,6 +8,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
 import db.tables.DonationTable;
+import db.tables.MemberCardTable;
 import db.tables.PersonTable;
 import db.tables.ProjectTable;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 import gui.GUI;
 import gui.InsertPersonPanel;
 import model.Donation;
+import model.MemberCard;
 import utils.ConnectionProvider;
 import utils.JComponentLoader;
 
@@ -49,7 +51,13 @@ public class InsertDonationPanel extends JPanel {
         
         c.gridx = 0;
         c.gridy = 2;
-        var a1 = new JPanel();
+        var a1 = new JTextArea(1, 16);
+        a1.setBorder(BorderFactory.createTitledBorder("Importo:"));
+        this.add(a1, c);
+        
+        c.gridx = 0;
+        c.gridy = 3;
+        var a2 = new JPanel();
         
 	        SqlDateModel model = new SqlDateModel();
 			Properties p = new Properties();
@@ -58,15 +66,9 @@ public class InsertDonationPanel extends JPanel {
 			p.put("text.year", "Year");
 			JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 			JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
-	        a1.add(datePicker);
-	        a1.setBorder(BorderFactory.createTitledBorder("Data donazione:"));
+	        a2.add(datePicker);
+	        a2.setBorder(BorderFactory.createTitledBorder("Data donazione:"));
 	        
-        this.add(a1, c);
-        
-        c.gridx = 0;
-        c.gridy = 3;
-        var a2 = new JTextArea(1, 16);
-        a2.setBorder(BorderFactory.createTitledBorder("Importo:"));
         this.add(a2, c);
         
         c.gridx = 0;
@@ -95,7 +97,7 @@ public class InsertDonationPanel extends JPanel {
 	    c.insets = new Insets(10, 0, 0, 10);
         var a4 = new JCheckBox("Donazione periodica");
         a4.setSelected(false);
-        this.add(a3, c);
+        this.add(a4, c);
         
         // End panel
         
@@ -125,23 +127,51 @@ public class InsertDonationPanel extends JPanel {
         
         b0.addActionListener(e -> {
 	        PersonTable personTable = new PersonTable(ConnectionProvider.getMySQLConnection());
+	        // Check if user is registered
 	        if(personTable.findByPrimaryKey(a0.getText()).isEmpty()) {
 	        	JOptionPane.showMessageDialog(getParent(), "Utente non registrato.\nPer favore registrare l'utente.", "Errore", JOptionPane.ERROR_MESSAGE);
 	        	JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		        JComponentLoader.load(parentFrame, new InsertPersonPanel());
 	        } else {
+	        	// Check if the donation is for a project
 	        	Donation donation;
+	        	String memberShipInfo = "";
+        		MemberCardTable memberCardTable = new MemberCardTable(ConnectionProvider.getMySQLConnection());
+				MemberCard memberCard = new MemberCard(null, a0.getText(), model.getValue());
+	        	
 	        	if(projectCheck.isSelected()) {
-	        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a2.getText())), a0.getText(), model.getValue(), Optional.of(Integer.parseInt(projectPicker.getSelectedItem().toString())));
+	        		// Check if the donation is periodic
+	        		if(a4.isSelected()) {
+	        			// Check if the donator is a member
+	        			if(memberCardTable.findByCodiceFiscale(a0.getText()).isEmpty()) {
+	        				memberCardTable.save(memberCard);
+	        				memberShipInfo = "\nUtente registrato come socio.";
+	        			}    			
+    	        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a1.getText())), a0.getText(), model.getValue(), "periodica", Optional.of(Integer.parseInt(projectPicker.getSelectedItem().toString())));
+	        		} else {
+		        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a1.getText())), a0.getText(), model.getValue(), "singola", Optional.of(Integer.parseInt(projectPicker.getSelectedItem().toString())));
+	        		}
 	        	} else {
-	        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a2.getText())), a0.getText(), model.getValue(), Optional.empty()); // DA CORREGGERE
+	        		// Check if the donation is periodic
+	        		if(a4.isSelected()) {
+	        			// Check if the donator is a member
+	        			if(memberCardTable.findByCodiceFiscale(a0.getText()).isEmpty()) {
+	        				memberCardTable.save(memberCard);
+	        				memberShipInfo = "\nUtente registrato come socio.";
+	        			}    			
+    	        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a1.getText())), a0.getText(), model.getValue(), "periodica", Optional.empty());
+	        		} else {
+		        		donation = new Donation(null, BigDecimal.valueOf(Double.parseDouble(a1.getText())), a0.getText(), model.getValue(), "singola", Optional.empty());
+	        		}
 	        	}
+	        	
 	        	DonationTable donationTable = new DonationTable(ConnectionProvider.getMySQLConnection());
 	        	if(!donationTable.save(donation)) {
 	        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Error", JOptionPane.ERROR_MESSAGE);
 	        	} else {
-	        		JOptionPane.showMessageDialog(getParent(), "Donazione registrata", "Risultato donazione", JOptionPane.INFORMATION_MESSAGE);
+	        		JOptionPane.showMessageDialog(getParent(), "Donazione registrata." + memberShipInfo, "Risultato donazione", JOptionPane.INFORMATION_MESSAGE);
 	        	}
+	        	
         		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
     	        JComponentLoader.load(parentFrame, new ProjectDonationMenuPanel());
 	        };

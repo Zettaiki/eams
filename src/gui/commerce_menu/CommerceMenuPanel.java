@@ -76,7 +76,7 @@ public class CommerceMenuPanel extends JPanel {
 			productTable.getTableHeader().setReorderingAllowed(false);
 			productTable.getTableHeader().setEnabled(false);
 			JScrollPane productListPanel = new JScrollPane(productTable);
-			productListPanel.setBorder(BorderFactory.createTitledBorder("Listino prodotti:"));
+			productListPanel.setBorder(BorderFactory.createTitledBorder("Prodotti immagazzinati:"));
 		    a1.add(productListPanel, BorderLayout.CENTER);
 		
 		this.add(a1, BorderLayout.CENTER);

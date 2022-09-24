@@ -35,7 +35,7 @@ public class VolunteeringMenuPanel extends JPanel {
 	        b1.setBorder(BorderFactory.createTitledBorder("Opzioni:"));
 	        b1.setLayout(new GridLayout(1,0));
 	        
-		        var registerButton = new JButton("Registro volontario");
+		        var registerButton = new JButton("Registrare volontario");
 		        b1.add(registerButton);
 		        
 		        var officeFilter = new JButton("Controllo per sedi");

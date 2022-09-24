@@ -67,7 +67,7 @@ public class GarbageMenuPanel extends JPanel {
             c.gridx = 0;
             c.gridy = 3;
     	    c.insets = new Insets(10, 0, 10, 0);
-            var registerButton = new JButton("Registra evento");
+            var registerButton = new JButton("Registrare evento");
             a0.add(registerButton, c);
         
         c.gridx = 0;

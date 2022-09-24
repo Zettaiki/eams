@@ -1,7 +1,6 @@
 package gui.newsletter_menu;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -15,8 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 
 import gui.GUI;
 import gui.MenuPanel;
@@ -59,13 +56,11 @@ public class NewsletterMenuPanel extends JPanel {
     		b2.setBorder(BorderFactory.createTitledBorder("Newsletter:"));
     		b2.setLayout(new GridLayout(0,1));
     		
-            	var newsletterTable = new JTable(TableExtractorUtils.newsletterTable());
-            	newsletterTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            	resizeColumnWidth(newsletterTable);
-            	newsletterTable.setEnabled(false);
-            	newsletterTable.getTableHeader().setReorderingAllowed(false);
-            	newsletterTable.getTableHeader().setEnabled(false);
-            	JScrollPane volunteeringListPanel = new JScrollPane(newsletterTable);
+            	var volunteeringTable = new JTable(TableExtractorUtils.newsletterTable());
+            	volunteeringTable.setEnabled(false);
+            	volunteeringTable.getTableHeader().setReorderingAllowed(false);
+            	volunteeringTable.getTableHeader().setEnabled(false);
+            	JScrollPane volunteeringListPanel = new JScrollPane(volunteeringTable);
                 b2.add(volunteeringListPanel);
     		
             b0.add(b2, BorderLayout.CENTER);
@@ -92,19 +87,4 @@ public class NewsletterMenuPanel extends JPanel {
 	        JComponentLoader.load(parentFrame, new MenuPanel());
         });
     }
-    
-    public void resizeColumnWidth(JTable table) {
-	    final TableColumnModel columnModel = table.getColumnModel();
-	    for (int column = 0; column < table.getColumnCount(); column++) {
-	        int width = 15; // Min width
-	        for (int row = 0; row < table.getRowCount(); row++) {
-	            TableCellRenderer renderer = table.getCellRenderer(row, column);
-	            Component comp = table.prepareRenderer(renderer, row, column);
-	            width = Math.max(comp.getPreferredSize().width +1 , width);
-	        }
-	        if(width > 300)
-	            width=300;
-	        columnModel.getColumn(column).setPreferredWidth(width);
-	    }
-	}
 }

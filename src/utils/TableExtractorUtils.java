@@ -84,7 +84,7 @@ public class TableExtractorUtils {
 		NewsletterQuery newsletterQuery = new NewsletterQuery(ConnectionProvider.getMySQLConnection());
 		
 		// Ordering and collecting the data
-		String[] columnNames = {"ID", "Numero iscritti"};	    
+		String[] columnNames = {"ID", "Argomento", "Numero iscritti"};	    
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		List<Object[]> rankNewsletterList = newsletterQuery.rank();
 		for( Object[] x : rankNewsletterList ) {

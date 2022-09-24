@@ -41,7 +41,7 @@ public class MemberCardTable {
 	}
 
 	public Optional<MemberCard> findByCodiceFiscale(String codiceFiscale) {
-		final String query = "SELECT codiceFiscale FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
+		final String query = "SELECT idSocio FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
             final ResultSet resultSet = statement.executeQuery();            

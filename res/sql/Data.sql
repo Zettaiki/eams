@@ -587,13 +587,13 @@ DROP TABLE IF EXISTS `tesserasocio`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tesserasocio` (
-  `idSocio` varchar(15) NOT NULL,
+  `idSocio` INT NOT NULL AUTO_INCREMENT,
   `codiceFiscale` char(16) NOT NULL,
   `dataAssociazione` date NOT NULL,
   PRIMARY KEY (`idSocio`),
   KEY `fk_tesserasocio_persona1_idx` (`codiceFiscale`),
   CONSTRAINT `fk_tesserasocio_persona1` FOREIGN KEY (`codiceFiscale`) REFERENCES `persona` (`codiceFiscale`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -602,7 +602,7 @@ CREATE TABLE `tesserasocio` (
 
 LOCK TABLES `tesserasocio` WRITE;
 /*!40000 ALTER TABLE `tesserasocio` DISABLE KEYS */;
-INSERT INTO `tesserasocio` VALUES ('SOC0000001','CHRGTN88A01C352W','2022-05-24'),('SOC0000002','PLABNL91S14I608D','2021-12-07');
+INSERT INTO `tesserasocio` VALUES ('1','CHRGTN88A01C352W','2022-05-24'),('2','PLABNL91S14I608D','2021-12-07');
 /*!40000 ALTER TABLE `tesserasocio` ENABLE KEYS */;
 UNLOCK TABLES;
 

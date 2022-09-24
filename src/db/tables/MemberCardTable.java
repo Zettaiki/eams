@@ -64,7 +64,7 @@ public class MemberCardTable {
 		final List<MemberCard> tesseresocio = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final String idSocio = resultSet.getString("idSocio");
+				final Optional<Integer> idSocio = Optional.of(resultSet.getInt("idSocio"));
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final Date dataAssociazione = Utils.sqlDateToDate(resultSet.getDate("dataAssociazione"));
 				
@@ -77,9 +77,8 @@ public class MemberCardTable {
 
 	public boolean save(MemberCard tesserasocio) {
 		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idSocio, codiceFiscale, dataAssociazione) VALUES (?,?,?)";
+				"(codiceFiscale, dataAssociazione) VALUES (?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, tesserasocio.getIdSocio());
             statement.setString(2, tesserasocio.getCodiceFiscale());
             statement.setDate(3, Utils.dateToSqlDate(tesserasocio.getDataAssociazione()));
             statement.executeUpdate();
@@ -89,19 +88,6 @@ public class MemberCardTable {
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
-	}
-
-	public boolean update(MemberCard updatedTesserasocio) {
-		final String query = "UPDATE " + TABLE_NAME + " SET codiceFiscale = ?," + "dataAssociazione = ? "
-				+ "WHERE idSocio = ?";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, updatedTesserasocio.getCodiceFiscale());
-			statement.setDate(2, Utils.dateToSqlDate(updatedTesserasocio.getDataAssociazione()));
-			statement.setString(3, updatedTesserasocio.getIdSocio());
-			return statement.executeUpdate() > 0;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
 	}
 
 	public boolean delete(String idSocio) {

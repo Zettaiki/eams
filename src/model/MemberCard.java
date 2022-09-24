@@ -2,20 +2,23 @@ package model;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 public class MemberCard {
-	private final String idSocio;
+	private final Optional<Integer> idSocio;
     private final String codiceFiscale;
     private final Date dataAssociazione;
     
-	public MemberCard(String idSocio, String codiceFiscale, Date dataAssociazione) {
+	public MemberCard(Optional<Integer> idSocio, String codiceFiscale, Date dataAssociazione) {
 		this.idSocio = idSocio;
 		this.codiceFiscale = codiceFiscale;
 		this.dataAssociazione = dataAssociazione;
 	}
 
-	public String getIdSocio() {
-		return this.idSocio;
+	public Integer getIdSocio() {
+		if (this.idSocio.isPresent())
+			return this.idSocio.get();
+		return -1;
 	}
 
 	public String getCodiceFiscale() {

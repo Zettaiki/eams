@@ -7,12 +7,14 @@ import gui.events_menu.EventsMenuPanel;
 import gui.newsletter_menu.NewsletterMenuPanel;
 import gui.project_menu.ProjectDonationMenuPanel;
 import gui.volunteering_menu.VolunteeringMenuPanel;
+import model.User;
 import utils.JComponentLoader;
 
 import java.awt.*;
 
 public class MenuPanel extends JPanel {
     private static final long serialVersionUID = 8475751505006519027L;
+    private static User loggedUser;
     
     public MenuPanel() {
         this.setName("EAMS - Main menu");
@@ -30,7 +32,7 @@ public class MenuPanel extends JPanel {
 	        a0.add(panelTitle, BorderLayout.PAGE_START);
 	        
 	        // Titolo utente
-	        var userTitle = new JLabel("Utente connesso: <inserire nome qua>");
+	        var userTitle = new JLabel("Utente connesso: " + loggedUser.getUsername());
 	        // TODO: Aggiungere il nome dell'utente connesso.
 	        userTitle.setHorizontalAlignment(SwingConstants.CENTER);
 	        userTitle.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -100,5 +102,9 @@ public class MenuPanel extends JPanel {
              JComponentLoader.load(parentFrame, new LoginPanel());
         });
         this.add(c0, BorderLayout.PAGE_END);
+    }
+    
+    public static void setLoggedUser(final User user) {
+    	MenuPanel.loggedUser = user;
     }
 }

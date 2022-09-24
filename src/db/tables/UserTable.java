@@ -37,6 +37,17 @@ public class UserTable {
             throw new IllegalStateException(e);
         }
 	}
+	
+	public Optional<User> findByUsername(String username) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE username = ?";
+        try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            final ResultSet resultSet = statement.executeQuery();
+            return readFromResultSet(resultSet).stream().findFirst();
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+	}
 
 	public List<User> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {

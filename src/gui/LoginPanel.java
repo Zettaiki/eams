@@ -1,8 +1,14 @@
 package gui;
 
+import utils.ConnectionProvider;
 import utils.JComponentLoader;
 import javax.swing.*;
+
+import db.tables.UserTable;
+import model.User;
+
 import java.awt.*;
+import java.util.Optional;
 
 public class LoginPanel extends JPanel {
     private static final long serialVersionUID = 8475751505006519027L;
@@ -70,9 +76,15 @@ public class LoginPanel extends JPanel {
         b1.addActionListener((e) -> {
         	String username = t1.getText();
         	String password = t2.getText();
-        	if(username.equals("") && password.equals("")) {
+        	
+        	UserTable userTable = new UserTable(ConnectionProvider.getMySQLConnection());
+        	Optional<User> userData = userTable.findByUsername(username);
+        	
+        	if(!userData.isEmpty() && username.equals(userData.get().getUsername()) && password.equals(userData.get().getPassword())) {
         		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        		MenuPanel.setLoggedUser(userData.get());
 		        JComponentLoader.load(parentFrame, new MenuPanel());
+		        
         	} else {
         		JOptionPane.showMessageDialog(getParent(), "Utente o password sbagliati.", "Login error", JOptionPane.ERROR_MESSAGE);
         	}	

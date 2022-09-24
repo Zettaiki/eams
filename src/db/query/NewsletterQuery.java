@@ -19,17 +19,19 @@ public class NewsletterQuery {
 	// 5
 	public List<Object[]> rank() {
 		try (final Statement statement = this.connection.createStatement()) {
-            final ResultSet resultSet = statement.executeQuery("SELECT i.idNewsletter, " +
+            final ResultSet resultSet = statement.executeQuery("SELECT i.idNewsletter, n.argomento, " +
             		"COUNT(*) as iscritti " +
-            		"FROM iscrizione i " +
+            		"FROM iscrizione i, newsletter n " +
+            		"WHERE n.idNewsletter = i.idNewsletter " +
             		"GROUP BY i.idNewsletter " +
             		"ORDER BY iscritti DESC");
             try {
     			while (resultSet.next()) {
     				final Integer idNewsletter = resultSet.getInt("idNewsletter");
+    				final String argomento = resultSet.getString("argomento");
     				final Integer iscritti = resultSet.getInt("iscritti");
     				
-    				Object[] temp = {idNewsletter, iscritti};
+    				Object[] temp = {idNewsletter, argomento, iscritti};
     				
     				queryResultTable.add(temp);
     			}

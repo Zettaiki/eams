@@ -153,4 +153,7 @@ AND p.codiceFiscaleVolontario = pe.codiceFiscale;
 -- find by codice fiscale in tessera socio per controllo qnd registro donazione periodica se già socio o meno
 SELECT idSocio
 FROM tesserasocio
-WHERE codiceFiscale = "CHRGTN88A01C352W";
+WHERE codiceFiscale = "GNMRZN78A01B354R";
+
+
+INSERT INTO `tesserasocio` (codiceFiscale, dataAssociazione) VALUES ('NDRCSD00A01C573B','2022-05-24')

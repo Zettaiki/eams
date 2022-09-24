@@ -90,9 +90,9 @@ VALUES ("CLDMTR70A01G479X","e1"),
 -- -----------------------------------------------------
 -- TESSERASOCIO
 -- -----------------------------------------------------
-INSERT INTO tesserasocio (idSocio, codiceFiscale, dataAssociazione) 
-VALUES ("SOC0000001","CHRGTN88A01C352W","2022-05-24"), 
-("SOC0000002","PLABNL91S14I608D","2021-12-07");
+INSERT INTO tesserasocio (codiceFiscale, dataAssociazione) 
+VALUES ("CHRGTN88A01C352W","2022-05-24"), 
+("PLABNL91S14I608D","2021-12-07");
 -- SELECT * FROM eams.tesserasocio;
 
 -- -----------------------------------------------------

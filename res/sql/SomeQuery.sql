@@ -21,8 +21,9 @@ WHERE e.idEvento = s.idEvento
 AND s.tipo = "Stand di vendita";
 
 -- 5	classifica delle newsletter più seguite
-SELECT i.idNewsletter, COUNT(*) as iscritti
-FROM iscrizione i
+SELECT i.idNewsletter, n.argomento, COUNT(*) as iscritti
+FROM iscrizione i, newsletter n
+WHERE n.idNewsletter = i.idNewsletter
 GROUP BY i.idNewsletter
 ORDER BY iscritti DESC;
 
@@ -151,7 +152,7 @@ WHERE p.idServizio = "S4-1"
 AND p.codiceFiscaleVolontario = pe.codiceFiscale;
 
 -- find by codice fiscale in tessera socio per controllo qnd registro donazione periodica se già socio o meno
-SELECT idSocio
+SELECT *
 FROM tesserasocio
 WHERE codiceFiscale = "GNMRZN78A01B354R";
 

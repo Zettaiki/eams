@@ -40,12 +40,11 @@ public class MemberCardTable {
         }
 	}
 
-	public Optional<MemberCard> findByCodiceFiscale(String codiceFiscale) {
-		final String query = "SELECT idSocio FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
+	public Optional<MemberCard> findByCodiceFiscale(final String codiceFiscale) {
+		final String query = "SELECT * FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
             final ResultSet resultSet = statement.executeQuery(); 
-            System.out.println(readFromResultSet(resultSet).stream().findFirst());
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
@@ -61,14 +60,16 @@ public class MemberCardTable {
         }
 	}
 	
-	public List<MemberCard> readFromResultSet(ResultSet resultSet) {
+	public List<MemberCard> readFromResultSet(final ResultSet resultSet) {
 		final List<MemberCard> tesseresocio = new ArrayList<>();
 		try {
 			while (resultSet.next()) {
-				final Optional<Integer> idSocio = Optional.of(resultSet.getInt("idSocio"));
+				Optional<Integer> idSocio = Optional.of(resultSet.getInt("idSocio"));
 				final String codiceFiscale = resultSet.getString("codiceFiscale");
 				final Date dataAssociazione = Utils.sqlDateToDate(resultSet.getDate("dataAssociazione"));
-				
+				if(resultSet.wasNull()) {
+					idSocio = Optional.empty();
+				}
 				final MemberCard tesserasocio = new MemberCard(idSocio, codiceFiscale, dataAssociazione);
 				tesseresocio.add(tesserasocio);
 			}

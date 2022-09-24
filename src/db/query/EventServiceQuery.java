@@ -77,6 +77,33 @@ public class EventServiceQuery {
         }
 	}
 	
+	// 14
+	public Optional<List<Object[]>> volunteerPerService(String idServizio) {
+		final String query = "SELECT p.codiceFiscaleVolontario, pe.nome, pe.cognome "
+				+ "FROM partecipazione p, persona pe "
+				+ "WHERE p.idServizio = ? "
+				+ "AND p.codiceFiscaleVolontario = pe.codiceFiscale";
+		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
+			statement.setString(1, idServizio);
+			final ResultSet resultSet = statement.executeQuery();
+			try {
+				while (resultSet.next()) {
+					final String codiceFiscaleVolontario = resultSet.getString("codiceFiscaleVolontario");
+					final String nome = resultSet.getString("nome");
+					final String cognome = resultSet.getString("cognome");
+
+					Object[] data = { codiceFiscaleVolontario, nome, cognome };
+
+					queryResultTable.add(data);
+				}
+			} catch (final SQLException e) {
+			}
+			return Optional.ofNullable(queryResultTable);
+		} catch (final SQLException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+	
 	// 17
 	public Optional<List<Object[]>> avgCollectedGarbagePerYear() {
 		final String query = "SELECT r.materiale, FORMAT(AVG(r.kg), 2) AS mediaKgRaccolti "

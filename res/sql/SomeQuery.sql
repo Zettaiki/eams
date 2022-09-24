@@ -147,5 +147,10 @@ GROUP BY p.codiceFiscaleVolontario;
 -- 14 volontari che partecipano a un servizio
 SELECT p.codiceFiscaleVolontario, pe.nome, pe.cognome
 FROM partecipazione p, persona pe
-WHERE p.idServizio = "S5-1"
+WHERE p.idServizio = "S4-1"
 AND p.codiceFiscaleVolontario = pe.codiceFiscale;
+
+-- find by codice fiscale in tessera socio per controllo qnd registro donazione periodica se già socio o meno
+SELECT idSocio
+FROM tesserasocio
+WHERE codiceFiscale = "CHRGTN88A01C352W";

@@ -44,7 +44,8 @@ public class MemberCardTable {
 		final String query = "SELECT idSocio FROM " + TABLE_NAME + " WHERE codiceFiscale = ?";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, codiceFiscale);
-            final ResultSet resultSet = statement.executeQuery();            
+            final ResultSet resultSet = statement.executeQuery(); 
+            System.out.println(readFromResultSet(resultSet).stream().findFirst());
             return readFromResultSet(resultSet).stream().findFirst();
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
@@ -79,8 +80,8 @@ public class MemberCardTable {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				"(codiceFiscale, dataAssociazione) VALUES (?,?)";
         try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(2, tesserasocio.getCodiceFiscale());
-            statement.setDate(3, Utils.dateToSqlDate(tesserasocio.getDataAssociazione()));
+            statement.setString(1, tesserasocio.getCodiceFiscale());
+            statement.setDate(2, Utils.dateToSqlDate(tesserasocio.getDataAssociazione()));
             statement.executeUpdate();
             return true;
         } catch (final SQLIntegrityConstraintViolationException e) {

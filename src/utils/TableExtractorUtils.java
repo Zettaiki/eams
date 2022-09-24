@@ -184,6 +184,21 @@ public class TableExtractorUtils {
 		return data;
 	}
 	
+	public static DefaultTableModel volunteerInService(String idService) {
+		// Requesting connection
+		EventServiceQuery eventServiceQuery = new EventServiceQuery(ConnectionProvider.getMySQLConnection());
+		
+		// Ordering and collection
+		String[] columnNames = {"Codice fiscale", "Nome", "Cognome"};
+		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+		Optional<List<Object[]>> volunteers = eventServiceQuery.volunteerPerService(idService);
+		if(volunteers.isEmpty()) return data;
+		for( Object[] x : volunteers.get() ) {
+			data.addRow(x);
+		}
+		return data;
+	}
+	
 	// STANDARD TABLES
 	
 	public static DefaultTableModel volunteerTable() {

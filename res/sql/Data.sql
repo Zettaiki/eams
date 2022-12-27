@@ -559,6 +559,7 @@ CREATE TABLE `servizio` (
   `idEvento` char(20) NOT NULL,
   `oraInizio` time NOT NULL,
   `oraFine` time NOT NULL,
+  `durata` time GENERATED ALWAYS AS (timediff(`oraFine`,`oraInizio`)) VIRTUAL,
   `tipo` varchar(45) NOT NULL,
   `idProgetto` int DEFAULT NULL,
   PRIMARY KEY (`idServizio`),
@@ -575,7 +576,7 @@ CREATE TABLE `servizio` (
 
 LOCK TABLES `servizio` WRITE;
 /*!40000 ALTER TABLE `servizio` DISABLE KEYS */;
-INSERT INTO `servizio` VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e1','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S2-2','e3','15:00:00','18:30:00','Stand di vendita',NULL),('S4-1','e7','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e7','15:00:00','17:00:00','Fabbricazione prodotti',NULL),('S5-1','e4','16:30:00','19:00:00','Raccolta fondi',NULL),('S6-1','e8','15:00:00','18:30:00','Stand di vendita',NULL),('S6-2','e8','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S6-3','e8','15:00:00','18:00:00','Raccolta rifiuti',NULL);
+INSERT INTO `servizio` (`idServizio`, `idEvento`, `oraInizio`, `oraFine`, `tipo`, `idProgetto`) VALUES ('S1-1','e1','15:00:00','18:00:00','Stand di vendita',NULL),('S1-2','e3','17:00:00','19:00:00','Raccolta fondi',NULL),('S2-1','e3','17:30:00','18:00:00','Attività ludico-istruttiva',NULL),('S2-2','e7','13:00:00','15:00:00','Stand di vendita',NULL),('S4-1','e7','10:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-2','e7','15:00:00','17:00:00','Raccolta rifiuti',NULL),('S4-3','e4','15:00:00','18:30:00','Fabbricazione prodotti',NULL),('S5-1','e8','16:30:00','19:00:00','Raccolta fondi',NULL),('S6-1','e8','15:00:00','18:30:00','Stand di vendita',NULL),('S6-2','e8','10:00:00','13:00:00','Raccolta rifiuti',NULL),('S6-3','e8','15:00:00','18:00:00','Raccolta rifiuti',NULL);
 /*!40000 ALTER TABLE `servizio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -719,4 +720,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-27 21:29:21
+-- Dump completed on 2022-12-27 23:05:21

@@ -1,8 +1,4 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `sconto` AS
+CREATE VIEW `sconto` AS
     SELECT DISTINCT
         `p`.`codiceFiscale` AS `codiceFiscale`,
         IFNULL((SELECT 

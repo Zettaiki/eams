@@ -37,7 +37,7 @@ public class VolunteerQuery {
 	// 7
 	public Optional<List<Object[]>> mostActiveVolunteer() {
 		final String query = "SELECT pa.codiceFiscaleVolontario, pe.nome, pe.cognome, MAX(classificaVolontari.oreServizio) AS oreServizio "
-				+ "FROM partecipazione pa, persona pe, (SELECT p.codiceFiscaleVolontario, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) "
+				+ "FROM partecipazione pa, persona pe, (SELECT p.codiceFiscaleVolontario, CAST(SUM(s.durata) AS TIME) "
 				+ "AS oreServizio FROM partecipazione p, servizio s WHERE p.idServizio = s.idServizio "
 				+ "GROUP BY p.codiceFiscaleVolontario) as classificaVolontari "
 				+ "WHERE pa.codiceFiscaleVolontario = classificaVolontari.codiceFiscaleVolontario "
@@ -64,7 +64,7 @@ public class VolunteerQuery {
 	
 	// 18
 	public Optional<List<Object[]>> mostActiveOffice() {
-		final String query = "SELECT v.sedeCittà, CAST(SUM(TIMEDIFF(s.oraFine,s.oraInizio)) AS TIME) AS oreServizio "
+		final String query = "SELECT v.sedeCittà, CAST(SUM(s.durata) AS TIME) AS oreServizio "
 				+ "FROM partecipazione p, servizio s, volontario v "
 				+ "WHERE p.idServizio = s.idServizio AND p.codiceFiscaleVolontario = v.codiceFiscale "
 				+ "GROUP BY v.sedeCittà "

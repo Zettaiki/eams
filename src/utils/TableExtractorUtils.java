@@ -159,7 +159,7 @@ public class TableExtractorUtils {
 		CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
 		
 		// Ordering and collecting the data
-		String[] columnNames = {"ID prodotto", "Prezzo", "Sconto", "Prezzo scontato"};
+		String[] columnNames = {"ID prodotto", "Codice Fiscale", "Prezzo", "Sconto", "Prezzo scontato"};
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 		Optional<List<Object[]>> productList = commerceQuery.showProductSalePrice();
 		if(productList.isEmpty()) return data;

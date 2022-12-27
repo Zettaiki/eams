@@ -29,11 +29,12 @@ public class CommerceQuery {
         	try {
     			while (resultSet.next()) {
     				final String idProdotto = resultSet.getString("idProdotto");
+    				final String codiceFiscaleCliente = resultSet.getString("codiceFiscaleCliente");
     				final String prezzoVendita = resultSet.getString("prezzoVendita");
     				final String sconto = resultSet.getString("sconto");
     				final String prezzoScontato = resultSet.getString("prezzoScontato");
     				
-    				Object[] data = {idProdotto, prezzoVendita, sconto, prezzoScontato};
+    				Object[] data = {idProdotto, codiceFiscaleCliente, prezzoVendita, sconto, prezzoScontato};
     				
     				queryResultTable.add(data);
     			}

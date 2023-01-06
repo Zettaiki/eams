@@ -99,7 +99,7 @@ public class InsertEventPanel extends JPanel {
 	        Event event = new Event(a0.getText(), a1.getText(), model.getValue(), Optional.of(a3.getText()));
 	        EventTable table = new EventTable(ConnectionProvider.getMySQLConnection());
 	        if(!table.save(event)) {
-        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Project error", JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registrazione annullata.", "Project error", JOptionPane.ERROR_MESSAGE);
 	        } else {
         		JOptionPane.showMessageDialog(getParent(), "Progetto registrato!.", "Register result", JOptionPane.INFORMATION_MESSAGE);
 	        };

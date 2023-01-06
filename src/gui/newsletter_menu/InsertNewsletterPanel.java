@@ -69,7 +69,7 @@ public class InsertNewsletterPanel extends JPanel {
 	        Newsletter newsletter = new Newsletter(null, a0.getText(), Optional.of(a1.getText()));
 	        NewsletterTable table = new NewsletterTable(ConnectionProvider.getMySQLConnection());
 	        if(!table.save(newsletter)) {
-        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Newsletter error", JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registrazione annullata.", "Newsletter error", JOptionPane.ERROR_MESSAGE);
 	        } else {
         		JOptionPane.showMessageDialog(getParent(), "Newsletter registrata!.", "Register result", JOptionPane.INFORMATION_MESSAGE);
 	        };

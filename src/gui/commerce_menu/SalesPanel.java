@@ -33,7 +33,7 @@ public class SalesPanel extends JPanel {
         this.add(a0, BorderLayout.PAGE_START);
         
         // Centro
-    	var listTable = new JTable(TableExtractorUtils.productSaleList());
+    	var listTable = new JTable(TableExtractorUtils.saleTable());
     	listTable.setEnabled(false);
     	listTable.getTableHeader().setReorderingAllowed(false);
     	listTable.getTableHeader().setEnabled(false);

@@ -45,11 +45,9 @@ public class ProductTable {
 				final String categoria = resultSet.getString("categoria");
 				final String nome = resultSet.getString("nome");
 				final BigDecimal prezzo = resultSet.getBigDecimal("prezzo");
-				final Integer quantitàImmagazzinata = resultSet.getInt("quantitàImmagazzinata");
-				final String provenienza = resultSet.getString("provenienza");
 				final Optional<String> descrizione = Optional.ofNullable(resultSet.getString("descrizione"));
 								
-				final Product prodotto = new Product(idProdotto, categoria, nome, prezzo, quantitàImmagazzinata, provenienza, descrizione);
+				final Product prodotto = new Product(idProdotto, categoria, nome, prezzo, descrizione);
 				prodotti.add(prodotto);
 			}
 		} catch (final SQLException e) {}

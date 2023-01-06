@@ -98,7 +98,7 @@ FROM donazione d JOIN persona AS p ON d.codiceFiscale = p.codiceFiscale
 WHERE d.idProgetto = ?;
 
 -- 16	acquisto prodotto (sconto su prezzo se socio acquista)
-/**** è  la save quindi già fatta ****/
+/**** SENZA RIDONDANZA è la save quindi già fatta ****/
 /*SELECT IFNULL((SELECT 20.00 WHERE 'CHRGTN88A01C352W' IN (SELECT codiceFiscale FROM tesserasocio)),0.00);
 SELECT IFNULL((SELECT 20.00 WHERE 'NDRCSD00A01C573B' IN (SELECT codiceFiscale FROM tesserasocio)),0.00);
 
@@ -111,9 +111,21 @@ SELECT (CASE WHEN (tesserasocio.codiceFiscale = vendita.codiceFiscaleCliente)
       00.00 
  END) AS bo
  FROM vendita as v, tesserasocio as ts;*/
+ 
+ 
+-- CON RIDONDANZA!!!!!!!!!!
+INSERT INTO vendita (idProdotto, idServizio, codiceFiscaleCliente, quantità, prezzoVendita) 
+SELECT DISTINCT 'F003','S6-1','GNMRZN78A01B354R', 5, (FORMAT(((p.prezzo / 100) * (100 - IF(t.codiceFiscale = 'GNMRZN78A01B354R', 20, 0))*5), 5)) as prezzoVendita 
+FROM prodotto p, persona pe , servizio s, vendita v, tesserasocio t 
+WHERE p.idProdotto = 'F003' 
+AND s.idServizio = 'S6-1' 
+AND pe.codiceFiscale = 'GNMRZN78A01B354R'
+;
 
 -- 16 bis mostra vendite con prezzo di vendita (uso query perché non ci serve memo nel db e view perché non sono riuscita diverso)
 -- prezzo di vendita senza sconto, sconto e prezzo scontato
+
+-- SENZA RIDONDANZA 
 SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) AS prezzoVendita, s.sconto, 
 FORMAT ((((p.prezzo / 100) * (100-s.sconto))*v.quantità), 2) AS prezzoScontato
 FROM vendita v, prodotto p, sconto s
@@ -122,6 +134,11 @@ AND s.codiceFiscale = v.codiceFiscaleCliente;
 
 SELECT *
 FROM sconto;
+
+-- CON RIDONDANZA!!!!!!!!!!
+SELECT *
+FROM vendita;
+
 
 -- 17	media nell'ultimo anno quantità rifiuti raccolti (tramite date eventi risaliamo per la query, valutare analisi ridondanze)
 SELECT r.materiale, FORMAT(AVG(r.kg), 2) AS mediaKgRaccolti

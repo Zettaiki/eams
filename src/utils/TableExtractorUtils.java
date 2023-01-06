@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.swing.table.DefaultTableModel;
 
-import db.query.CommerceQuery;
 import db.query.EventServiceQuery;
 import db.query.NewsletterQuery;
 import db.query.ProjectDonatorQuery;
@@ -182,7 +181,7 @@ public class TableExtractorUtils {
 			    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 			    List<Sale> saleList = saleTable.findAll();
 			    for( Sale x : saleList ) {
-			    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità(), x.getPrezzoVendita()};
+			    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità(), checkIfEmpty(x.getPrezzoVendita())};
 			    	data.addRow(temp);
 			    }
 			    return data;

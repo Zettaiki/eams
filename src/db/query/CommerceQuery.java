@@ -17,34 +17,6 @@ public class CommerceQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
-	// 16 bis SENZA RIDONDANZA
-	/*public Optional<List<Object[]>> showProductSalePrice() {
-		final String query = "SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) "
-				+ "AS prezzoVendita, s.sconto, "
-				+ "FORMAT((((p.prezzo / 100) * (100-s.sconto))*v.quantità), 2) AS prezzoScontato "
-				+ "FROM vendita v, prodotto p, sconto s WHERE p.idProdotto = v.idProdotto "
-				+ "AND s.codiceFiscale = v.codiceFiscaleCliente";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-        	final ResultSet resultSet = statement.executeQuery();
-        	try {
-    			while (resultSet.next()) {
-    				final String idProdotto = resultSet.getString("idProdotto");
-    				final String codiceFiscaleCliente = resultSet.getString("codiceFiscaleCliente");
-    				final String prezzoVendita = resultSet.getString("prezzoVendita");
-    				final String sconto = resultSet.getString("sconto");
-    				final String prezzoScontato = resultSet.getString("prezzoScontato");
-    				
-    				Object[] data = {idProdotto, codiceFiscaleCliente, prezzoVendita, sconto, prezzoScontato};
-    				
-    				queryResultTable.add(data);
-    			}
-    		} catch (final SQLException e) {}
-            return Optional.ofNullable(queryResultTable);
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
-        }
-	}*/
-	
 	// 11
 	public Optional<List<Object[]>> amountProductSoldLastMonth(String idProdotto) {
 		final String query = "SELECT v.idProdotto, SUM(v.quantità) AS quantità "

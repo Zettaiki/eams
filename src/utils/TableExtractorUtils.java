@@ -155,40 +155,6 @@ public class TableExtractorUtils {
 		return data;
 	}
 	
-	/*public static DefaultTableModel productSaleList() {
-		// Requesting connection
-		CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
-		
-		// Ordering and collecting the data
-		String[] columnNames = {"ID prodotto", "Codice Fiscale", "Prezzo", "Sconto", "Prezzo scontato"};
-		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
-		Optional<List<Object[]>> productList = commerceQuery.showProductSalePrice();
-		if(productList.isEmpty()) return data;
-		for( Object[] x : productList.get() ) {
-			data.addRow(x);
-		}
-		return data;
-	}*/
-	
-	// STANDARD TABLE CON RIDONDANZA
-	
-			public static DefaultTableModel saleTable() {
-				// Requesting connection
-			    SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
-			    
-			    // Ordering and collecting the data
-				String[] columnNames = {"ID prodotto", "Id servizio", "Codice Fiscale", "quantità", "prezzo di vendita"};
-			    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
-			    List<Sale> saleList = saleTable.findAll();
-			    for( Sale x : saleList ) {
-			    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità(), checkIfEmpty(x.getPrezzoVendita())};
-			    	data.addRow(temp);
-			    }
-			    return data;
-			}
-			
-		//
-	
 	public static DefaultTableModel garbageYearStatistics() {
 		// Requesting connection
 		EventServiceQuery eventServiceQuery = new EventServiceQuery(ConnectionProvider.getMySQLConnection());
@@ -319,11 +285,27 @@ public class TableExtractorUtils {
 		ProductTable productTable = new ProductTable(ConnectionProvider.getMySQLConnection());
 	    
 	    // Ordering and collecting the data
-		String[] columnNames = {"ID", "Categoria", "Nome", "Prezzo", "Quantita", "Provenienza", "Descrizione"};	    
+		String[] columnNames = {"ID", "Categoria", "Nome", "Prezzo", "Descrizione"};	    
 		DefaultTableModel data = new DefaultTableModel(columnNames, 0);
 	    List<Product> saleList = productTable.findAll();
 	    for( Product x : saleList ) {
-	    	Object[] temp = {x.getIdProdotto(), x.getCategoria(), x.getNome(), x.getPrezzo(), x.getQuantitàImmagazzinata(), x.getProvenienza(), checkIfEmpty(x.getDescrizione())};
+	    	Object[] temp = {x.getIdProdotto(), x.getCategoria(), x.getNome(), x.getPrezzo(), checkIfEmpty(x.getDescrizione())};
+	    	data.addRow(temp);
+	    }
+	    return data;
+	}
+	
+	// CON RIDONDANZA
+	public static DefaultTableModel saleTable() {
+		// Requesting connection
+	    SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
+	    
+	    // Ordering and collecting the data
+		String[] columnNames = {"ID prodotto", "Id servizio", "Codice Fiscale", "quantità", "prezzo di vendita"};
+	    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+	    List<Sale> saleList = saleTable.findAll();
+	    for( Sale x : saleList ) {
+	    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità(), checkIfEmpty(x.getPrezzoVendita())};
 	    	data.addRow(temp);
 	    }
 	    return data;

@@ -28,26 +28,7 @@ public class SaleTable {
 		return TABLE_NAME;
 	}
 
-	// 16 SENZA RIDONDANZA
-	/*	public boolean save(Sale vendita) {
-		final String query = "INSERT INTO " + TABLE_NAME +
-				"(idProdotto, idServizio, codiceFiscaleCliente, quantità) " +
-				"VALUES (?,?,?,?)";
-		try (final PreparedStatement statement = this.connection.prepareStatement(query)) {
-			statement.setString(1, vendita.getIdProdotto());
-			statement.setString(2, vendita.getIdServizio());
-			statement.setString(3, vendita.getCodiceFiscaleCliente());
-			statement.setInt(4, vendita.getQuantità());
-			statement.executeUpdate();
-			return true;
-		} catch (final SQLIntegrityConstraintViolationException e) {
-			return false;
-		} catch (final SQLException e) {
-			throw new IllegalStateException(e);
-		}
-	}*/
-
-	// 16 CON RIDONDANZA prezzo vendita
+	// 16 CON RIDONDANZA
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				" (idProdotto, idServizio, codiceFiscaleCliente, quantità, prezzoVendita) " +
@@ -61,14 +42,11 @@ public class SaleTable {
 			statement.setString(2, vendita.getIdServizio());
 			statement.setString(3, vendita.getCodiceFiscaleCliente());
 			statement.setInt(4, vendita.getQuantità());
-
-			//
 			statement.setString(5, vendita.getCodiceFiscaleCliente());
 			statement.setInt(6, vendita.getQuantità());
 			statement.setString(7, vendita.getIdProdotto());
 			statement.setString(8, vendita.getIdServizio());
 			statement.setString(9, vendita.getCodiceFiscaleCliente());
-			//
 			statement.executeUpdate();
 			return true;
 		} catch (final SQLIntegrityConstraintViolationException e) {
@@ -78,7 +56,7 @@ public class SaleTable {
 		}
 	}
 
-	// 16 bis CON RIDONDANZA !!!!
+	// 16 bis CON RIDONDANZA
 	public List<Sale> findAll() {
 		try (final Statement statement = this.connection.createStatement()) {
 			final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);

@@ -92,6 +92,15 @@ public class LoginPanel extends JPanel {
         p3.add(b1, c);
         
         c.gridx = 0;
+        c.gridy = 1;
+        var b2 = new JButton("Opzioni connessione");
+        b2.addActionListener((e) -> {
+    		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        JComponentLoader.load(parentFrame, new SettingsPanel());
+        });
+        p3.add(b2, c);
+        
+        c.gridx = 0;
         c.gridy = 3;
         this.add(p3, c);
     }

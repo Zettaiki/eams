@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import model.Newsletter;
 import model.Sale;
 
 public class SaleTable {
@@ -52,7 +51,7 @@ public class SaleTable {
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				" (idProdotto, idServizio, codiceFiscaleCliente, quantità, prezzoVendita) " +
-				"SELECT DISTINCT ?,?,?,?, (FORMAT(((p.prezzo / 100) * (100 - IF(t.codiceFiscale = ?, 20, 0))*?), 5)) as prezzoVendita " +
+				"SELECT ?,?,?,?, MIN((FORMAT(((p.prezzo / 100) * (100 - IF(t.codiceFiscale = ?, 20, 0))*?), 5))) as prezzoVendita " +
 				"FROM prodotto p, persona pe , servizio s, vendita v, tesserasocio t " +
 				"WHERE p.idProdotto = ?" +
 				"AND s.idServizio = ?" +
@@ -97,7 +96,7 @@ public class SaleTable {
 				final String idServizio = resultSet.getString("idServizio");
 				final  String codiceFiscaleCliente = resultSet.getString("codiceFiscaleCliente");
 			    final Integer quantità = resultSet.getInt("quantità");
-			    final BigDecimal prezzoVendita = resultSet.getBigDecimal("prezzoVendita");
+			    final Optional<BigDecimal> prezzoVendita = Optional.ofNullable(resultSet.getBigDecimal("prezzoVendita"));
 							    
 				final Sale sale = new Sale(idProdotto, idServizio, codiceFiscaleCliente, quantità, prezzoVendita);
 				sales.add(sale);

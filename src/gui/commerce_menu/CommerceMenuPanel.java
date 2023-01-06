@@ -99,10 +99,14 @@ public class CommerceMenuPanel extends JPanel {
 		
 		searchButton.addActionListener(e -> {
 			CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
-    		JOptionPane.showMessageDialog(getParent(),
-    		"ID prodotto: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[0] +
-	    	"\nQuantità: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[1],
-    		"Informazione", JOptionPane.INFORMATION_MESSAGE);
+			if(commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().size() == 0) {
+        		JOptionPane.showMessageDialog(getParent(), "Nessun prodotto venduto in questo mese.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+			}	else {
+	    		JOptionPane.showMessageDialog(getParent(),
+	    		"ID prodotto: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[0] +
+		    	"\nQuantità: " + commerceQuery.amountProductSoldLastMonth(searchBar.getText()).get().get(0)[1],
+	    		"Informazione", JOptionPane.INFORMATION_MESSAGE);
+			}
 		});
 		
 		c0.addActionListener(e -> {

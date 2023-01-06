@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `eams` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `eams`;
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eams
@@ -183,7 +185,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
-INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.'),('e8','Green day','2022-08-27',NULL);
+INSERT INTO `evento` VALUES ('e1','Giornata della terra','2023-04-22','Manifestazione in piazza con raccolte fondi per i progetti, stand di vendita,\n e attività di gioco e istruzione ambientale per bambini.'),('e2','Spiagge pulite','2022-06-15',NULL),('e3','Giornata del leone','2022-08-10',NULL),('e4','Eco-photo run','2023-05-10','Raccolta fondi tramite offerta libera per partecipare a una maratona di foto green.'),('e5','Friday for future','2022-03-25',NULL),('e6','Earth hour','2021-03-21','Spegnamo le luci per l\'inquinamento luminoso.'),('e7','Liberi dai rifiuti','2022-11-21','Raccolte rifiuti urbani, fabbricazione prodotti da materiale riciclabile.'),('e8','Green day','2022-12-27',NULL);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -720,4 +722,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-06 16:34:22
+-- Dump completed on 2023-01-06 17:14:23

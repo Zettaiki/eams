@@ -32,7 +32,7 @@ public class SaleTable {
 	public boolean save(Sale vendita) {
 		final String query = "INSERT INTO " + TABLE_NAME +
 				" (idProdotto, idServizio, codiceFiscaleCliente, quantità, prezzoVendita) " +
-				"SELECT ?,?,?,?, MIN(CAST((FORMAT(((p.prezzo / 100) * (100 - IF(t.codiceFiscale = ?, 20, 0))*?), 5)) as DECIMAL(8,2))) " +
+				"SELECT ?,?,?,?, MIN(CAST((FORMAT(((p.prezzo / 100) * (100 - IF(t.codiceFiscale = ?, 20, 0))*?), 5)) AS DECIMAL(8,2))) " +
 				"FROM prodotto p, persona pe , servizio s, vendita v, tesserasocio t " +
 				"WHERE p.idProdotto = ?" +
 				"AND s.idServizio = ?" +

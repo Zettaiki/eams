@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `eams` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `eams`;
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eams
@@ -645,6 +643,8 @@ CREATE TABLE `vendita` (
   `idServizio` char(20) NOT NULL,
   `codiceFiscaleCliente` char(16) NOT NULL,
   `quantità` int NOT NULL,
+  `prezzoVendita` decimal(8,2) NOT NULL,
+  PRIMARY KEY (`idProdotto`,`codiceFiscaleCliente`,`idServizio`),
   KEY `fk_persona_has_prodotto_persona1_idx` (`codiceFiscaleCliente`),
   KEY `fk_vendita_servizio1_idx` (`idServizio`),
   KEY `fk_vendita_prodotto1_idx` (`idProdotto`),
@@ -660,7 +660,7 @@ CREATE TABLE `vendita` (
 
 LOCK TABLES `vendita` WRITE;
 /*!40000 ALTER TABLE `vendita` DISABLE KEYS */;
-INSERT INTO `vendita` VALUES ('DG56','S1-1','GNMRZN78A01B354R',1),('DG56','S1-1','NDRCSD00A01C573B',1),('EC51','S1-1','CLDMTR70A01G479X',2),('F003','S1-1','CHRGTN88A01C352W',4),('DG56','S2-2','CLDMTR70A01G479X',1),('DG56','S6-1','GNMRZN78A01B354R',2);
+INSERT INTO `vendita` VALUES ('DG56','S2-2','CLDMTR70A01G479X',1,20.00),('DG56','S1-1','GNMRZN78A01B354R',1,20.00),('DG56','S6-1','GNMRZN78A01B354R',2,40.00),('DG56','S1-1','NDRCSD00A01C573B',1,20.00),('EC51','S1-1','CLDMTR70A01G479X',2,20.00),('F003','S1-1','CHRGTN88A01C352W',4,32.00);
 /*!40000 ALTER TABLE `vendita` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -720,4 +720,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-27 23:05:21
+-- Dump completed on 2023-01-06 16:34:22

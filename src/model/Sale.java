@@ -2,15 +2,16 @@ package model;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Sale {
 	private final String idProdotto;
 	private final String idServizio;
 	private final String codiceFiscaleCliente;
 	private final Integer quantità;
-	private final BigDecimal prezzoVendita;
+	private final Optional<BigDecimal> prezzoVendita;
 
-	public Sale(String idProdotto, String idServizio, String codiceFiscaleCliente, Integer quantità, BigDecimal prezzoVendita) {
+	public Sale(String idProdotto, String idServizio, String codiceFiscaleCliente, Integer quantità, Optional<BigDecimal> prezzoVendita) {
 		this.idProdotto = idProdotto;
 		this.idServizio = idServizio;
 		this.codiceFiscaleCliente = codiceFiscaleCliente;
@@ -19,23 +20,23 @@ public class Sale {
 	}
 
 	public String getIdProdotto() {
-		return idProdotto;
+		return this.idProdotto;
 	}
 
 	public String getIdServizio() {
-		return idServizio;
+		return this.idServizio;
 	}
 
 	public String getCodiceFiscaleCliente() {
-		return codiceFiscaleCliente;
+		return this.codiceFiscaleCliente;
 	}
 
 	public Integer getQuantità() {
-		return quantità;
+		return this.quantità;
 	}
 
-	public BigDecimal getPrezzoVendita() {
-		return prezzoVendita;
+	public Optional<BigDecimal> getPrezzoVendita() {
+		return this.prezzoVendita;
 	}
 
 	@Override

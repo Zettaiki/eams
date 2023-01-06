@@ -17,8 +17,8 @@ public class CommerceQuery {
         this.connection = Objects.requireNonNull(connection);
     }
 	
-	// 16 bis
-	public Optional<List<Object[]>> showProductSalePrice() {
+	// 16 bis SENZA RIDONDANZA
+	/*public Optional<List<Object[]>> showProductSalePrice() {
 		final String query = "SELECT v.idProdotto, v.codiceFiscaleCliente, (v.quantità * p.prezzo) "
 				+ "AS prezzoVendita, s.sconto, "
 				+ "FORMAT((((p.prezzo / 100) * (100-s.sconto))*v.quantità), 2) AS prezzoScontato "
@@ -43,7 +43,7 @@ public class CommerceQuery {
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
-	}
+	}*/
 	
 	// 11
 	public Optional<List<Object[]>> amountProductSoldLastMonth(String idProdotto) {

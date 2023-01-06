@@ -15,6 +15,7 @@ import db.tables.EventTable;
 import db.tables.NewsletterTable;
 import db.tables.ProductTable;
 import db.tables.ProjectTable;
+import db.tables.SaleTable;
 import db.tables.ServiceTable;
 import db.tables.VolunteerTable;
 import model.Donation;
@@ -22,6 +23,7 @@ import model.Event;
 import model.Newsletter;
 import model.Product;
 import model.Project;
+import model.Sale;
 import model.Service;
 import model.Volunteer;
 
@@ -154,7 +156,7 @@ public class TableExtractorUtils {
 		return data;
 	}
 	
-	public static DefaultTableModel productSaleList() {
+	/*public static DefaultTableModel productSaleList() {
 		// Requesting connection
 		CommerceQuery commerceQuery = new CommerceQuery(ConnectionProvider.getMySQLConnection());
 		
@@ -167,7 +169,26 @@ public class TableExtractorUtils {
 			data.addRow(x);
 		}
 		return data;
-	}
+	}*/
+	
+	// STANDARD TABLE CON RIDONDANZA
+	
+			public static DefaultTableModel saleTable() {
+				// Requesting connection
+			    SaleTable saleTable = new SaleTable(ConnectionProvider.getMySQLConnection());
+			    
+			    // Ordering and collecting the data
+				String[] columnNames = {"ID prodotto", "Id servizio", "Codice Fiscale", "quantità", "prezzo di vendita"};
+			    DefaultTableModel data = new DefaultTableModel(columnNames, 0);
+			    List<Sale> saleList = saleTable.findAll();
+			    for( Sale x : saleList ) {
+			    	Object[] temp = {x.getIdProdotto(), x.getIdServizio(), x.getCodiceFiscaleCliente(), x.getQuantità(), x.getPrezzoVendita()};
+			    	data.addRow(temp);
+			    }
+			    return data;
+			}
+			
+		//
 	
 	public static DefaultTableModel garbageYearStatistics() {
 		// Requesting connection

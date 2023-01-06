@@ -84,10 +84,10 @@ public class InsertBuyPanel extends JPanel {
         
         // Action listener
         b0.addActionListener(e -> {
-        	Sale sale = new Sale(a0.getSelectedItem().toString(), a1.getText(), a2.getText(), Integer.parseInt(a3.getText()));
+        	Sale sale = new Sale(a0.getSelectedItem().toString(), a1.getText(), a2.getText(), Integer.parseInt(a3.getText()), null);
         	SaleTable table = new SaleTable(ConnectionProvider.getMySQLConnection());
 	        if(!table.save(sale)) {
-        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registro annullato.", "Error", JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(getParent(), "Dati sbagliati. Registrazione annullata.", "Error", JOptionPane.ERROR_MESSAGE);
 	        } else {
         		JOptionPane.showMessageDialog(getParent(), "Vendita registrata!.", "Register result", JOptionPane.INFORMATION_MESSAGE);
 	        };

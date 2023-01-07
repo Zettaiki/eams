@@ -150,7 +150,7 @@ CREATE TABLE `donazione` (
   KEY `fk_donazione_persona1_idx` (`codiceFiscale`),
   CONSTRAINT `fk_donazione_persona1` FOREIGN KEY (`codiceFiscale`) REFERENCES `persona` (`codiceFiscale`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_donazione_progetto1` FOREIGN KEY (`idProgetto`) REFERENCES `progetto` (`idProgetto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +159,7 @@ CREATE TABLE `donazione` (
 
 LOCK TABLES `donazione` WRITE;
 /*!40000 ALTER TABLE `donazione` DISABLE KEYS */;
-INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24','periodica',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24','periodica',6),(3,5.00,'PLABNL91S14I608D','2022-06-29','singola',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24','periodica',6),(5,35.00,'PLABNL91S14I608D','2022-06-29','singola',1);
+INSERT INTO `donazione` VALUES (1,20.00,'CHRGTN88A01C352W','2022-05-24','periodica',4),(2,20.00,'CHRGTN88A01C352W','2022-06-24','periodica',6),(3,5.00,'PLABNL91S14I608D','2022-06-29','singola',NULL),(4,20.00,'CHRGTN88A01C352W','2022-07-24','periodica',6),(5,35.00,'PLABNL91S14I608D','2022-06-29','singola',1),(6,50.00,'GNMRZN78A01B354R','2023-01-02','periodica',2);
 /*!40000 ALTER TABLE `donazione` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -594,7 +594,7 @@ CREATE TABLE `tesserasocio` (
   PRIMARY KEY (`idSocio`),
   KEY `fk_tesserasocio_persona1_idx` (`codiceFiscale`),
   CONSTRAINT `fk_tesserasocio_persona1` FOREIGN KEY (`codiceFiscale`) REFERENCES `persona` (`codiceFiscale`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -603,7 +603,7 @@ CREATE TABLE `tesserasocio` (
 
 LOCK TABLES `tesserasocio` WRITE;
 /*!40000 ALTER TABLE `tesserasocio` DISABLE KEYS */;
-INSERT INTO `tesserasocio` VALUES (1,'CHRGTN88A01C352W','2022-05-24'),(2,'PLABNL91S14I608D','2021-12-07');
+INSERT INTO `tesserasocio` VALUES (1,'CHRGTN88A01C352W','2022-05-24'),(2,'PLABNL91S14I608D','2021-12-07'),(3,'GNMRZN78A01B354R','2023-01-02');
 /*!40000 ALTER TABLE `tesserasocio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -722,4 +722,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-06 17:14:23
+-- Dump completed on 2023-01-07 12:42:07

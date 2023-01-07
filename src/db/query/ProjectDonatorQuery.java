@@ -72,7 +72,7 @@ public class ProjectDonatorQuery {
             		+ "	    WHERE d.idProgetto IS NOT NULL "
             		+ "	) * 100 ),2),'%') AS percentuale "
             		+ "	FROM donazione AS d JOIN progetto AS p ON d.idProgetto = p.idProgetto "
-            		+ "	WHERE p.dataInizio >= current_date() "
+            		+ "	WHERE current_date() BETWEEN p.dataInizio AND p.dataFine "
             		+ "	GROUP BY p.idProgetto "
             		+ "	ORDER BY percentuale DESC"
             		);

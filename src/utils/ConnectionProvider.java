@@ -23,6 +23,7 @@ public final class ConnectionProvider {
         try {
             return DriverManager.getConnection(dbUri, USERNAME, PASSWORD);
         } catch (final SQLException e) {
+        	
             throw new IllegalStateException("Could not establish a connection with db", e);
         }
     }

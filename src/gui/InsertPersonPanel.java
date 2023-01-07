@@ -101,7 +101,7 @@ public class InsertPersonPanel extends JPanel {
         c.gridy = 6;
 	    c.insets = new Insets(10, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
-        var b0 = new JButton("Registra donazione");
+        var b0 = new JButton("Registra persona");
         this.add(b0, c);
         
         c.gridx = 0;

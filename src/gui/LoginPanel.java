@@ -77,17 +77,21 @@ public class LoginPanel extends JPanel {
         	String username = t1.getText();
         	String password = t2.getText();
         	
-        	UserTable userTable = new UserTable(ConnectionProvider.getMySQLConnection());
-        	Optional<User> userData = userTable.findByUsername(username);
-        	
-        	if(!userData.isEmpty() && username.equals(userData.get().getUsername()) && password.equals(userData.get().getPassword())) {
-        		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        		MenuPanel.setLoggedUser(userData.get());
-		        JComponentLoader.load(parentFrame, new MenuPanel());
-		        
-        	} else {
-        		JOptionPane.showMessageDialog(getParent(), "Utente o password sbagliati.", "Login error", JOptionPane.ERROR_MESSAGE);
-        	}	
+        	try {
+	        	UserTable userTable = new UserTable(ConnectionProvider.getMySQLConnection());
+	        	Optional<User> userData = userTable.findByUsername(username);
+	        	
+	        	if(!userData.isEmpty() && username.equals(userData.get().getUsername()) && password.equals(userData.get().getPassword())) {
+	        		JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	        		MenuPanel.setLoggedUser(userData.get());
+			        JComponentLoader.load(parentFrame, new MenuPanel());
+			        
+	        	} else {
+	        		JOptionPane.showMessageDialog(getParent(), "Utente o password sbagliati.", "Login error", JOptionPane.ERROR_MESSAGE);
+	        	}	
+        	} catch (IllegalStateException errorConnection) {
+        		JOptionPane.showMessageDialog(getParent(), "Impossibile conettersi al database.\nControllare le impostazioni.", "Connection error", JOptionPane.ERROR_MESSAGE);
+        	}
         });
         p3.add(b1, c);
         
